@@ -1,3 +1,3 @@
 ﻿
-using var game = new Garden_Watchers.Game1();
+using var game = new Garden_Watchers.GameWorld();
 game.Run();
