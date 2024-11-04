@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
@@ -18,9 +16,16 @@ namespace Garden_Watchers
         protected float speed;
 
         //Properties
-        
+
 
         //Methods
+        protected override void Initialize()
+        {
+
+        }
+
+
+
 
         /// <summary>
         /// Method that allows characters to move

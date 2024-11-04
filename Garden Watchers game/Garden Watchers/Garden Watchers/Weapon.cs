@@ -9,5 +9,6 @@ namespace Garden_Watchers
     internal abstract class Weapon: Item
     {
         protected int damage;
+        protected int range;
     }
 }

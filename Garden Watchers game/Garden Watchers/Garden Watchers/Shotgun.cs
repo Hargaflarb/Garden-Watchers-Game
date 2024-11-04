@@ -8,5 +8,6 @@ namespace Garden_Watchers
 {
     internal class Shotgun
     {
+        public Shotgun() { }
     }
 }
