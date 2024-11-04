@@ -19,10 +19,6 @@ namespace Garden_Watchers
 
 
         //Methods
-        protected override void Initialize()
-        {
-
-        }
 
 
 
