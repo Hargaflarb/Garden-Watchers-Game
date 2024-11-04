@@ -13,10 +13,6 @@ namespace Garden_Watchers
 
         }
 
-        protected override void Initialize()
-        {
-
-        }
 
 
         public virtual void OnCollision(GameObject other)

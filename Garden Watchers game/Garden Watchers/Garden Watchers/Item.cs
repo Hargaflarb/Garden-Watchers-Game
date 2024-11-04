@@ -10,11 +10,6 @@ namespace Garden_Watchers
         protected bool pickedUp;
 
 
-        protected override void Initialize()
-        {
-
-        }
-
 
         public override void LoadContent(ContentManager content)
         {
