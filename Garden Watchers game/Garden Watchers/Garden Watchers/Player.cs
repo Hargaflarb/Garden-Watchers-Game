@@ -11,6 +11,9 @@ namespace Garden_Watchers
 {
     internal class Player : Character
     {
+
+
+
         public override void LoadContent(ContentManager content)
         {
             
