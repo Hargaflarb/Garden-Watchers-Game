@@ -1,15 +1,22 @@
-﻿using SharpDX.Direct3D11;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Garden_Watchers
 {
     internal abstract class GameObject
     {
         protected Texture2D sprite;
+        private Rectangle hitbox;
+        private Point position;
+
+        protected Rectangle Hitbox { get => hitbox; set => hitbox = value; }
+        protected Point Position { get => position; set => position = value; }
+
+        protected abstract void Initialize();
+
+
         public virtual void OnCollision(GameObject other)
         {
 
@@ -17,6 +24,13 @@ namespace Garden_Watchers
 
         public abstract void LoadContent();
 
-        public abstract void Update();
+        public abstract void Update(GameTime gameTime);
+
+        protected virtual void Draw(GameTime gameTime)
+        {
+
+        }
+
+
     }
 }
