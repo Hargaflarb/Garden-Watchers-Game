@@ -12,6 +12,7 @@ namespace Garden_Watchers
     {
         //Fields
         protected Texture2D sprite;
+        protected Texture2D[] sprites;
         private Rectangle hitbox;
 
         protected Rectangle Hitbox { get => hitbox; set => hitbox = value; }
