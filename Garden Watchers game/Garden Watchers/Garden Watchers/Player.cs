@@ -32,6 +32,9 @@ namespace Garden_Watchers
             }
             sprite = sprites[0];
 
+            // base.LoadContent is called to (fx.) set the hitbox
+            base.LoadContent(content);
+
         }
 
 
