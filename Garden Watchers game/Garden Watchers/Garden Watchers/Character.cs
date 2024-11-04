@@ -21,6 +21,12 @@ namespace Garden_Watchers
         
 
         //Methods
+
+        /// <summary>
+        /// Method that allows characters to move
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="screenSize"></param>
         protected void Move(GameTime gameTime, Vector2 screenSize)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
