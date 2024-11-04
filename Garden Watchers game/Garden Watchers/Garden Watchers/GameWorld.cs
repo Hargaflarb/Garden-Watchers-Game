@@ -13,6 +13,10 @@ namespace Garden_Watchers
         private List<GameObject> removedObjects;
         private List<GameObject> addedObjects;
 
+#if DEBUG
+        private Texture2D hitboxPixel;
+#endif
+
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -23,7 +27,8 @@ namespace Garden_Watchers
         protected override void Initialize()
         {
             GameObject player = new Player();
-            gameObjects = new List<GameObject>() { player };
+            GameObject tempObstacle = new Obstacle(new Vector2(200,200));
+            gameObjects = new List<GameObject>() { player, tempObstacle };
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
             base.Initialize();
@@ -37,6 +42,11 @@ namespace Garden_Watchers
             {
                 gameObject.LoadContent(Content);
             }
+
+#if DEBUG
+            //loads the hitbox sprite.
+            hitboxPixel = Content.Load<Texture2D>("Hitbox pixel");
+#endif
 
         }
 
@@ -75,8 +85,6 @@ namespace Garden_Watchers
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-
             _spriteBatch.Begin();
 
 
@@ -84,6 +92,31 @@ namespace Garden_Watchers
             {
                 gameObject.Draw(_spriteBatch);
             }
+
+
+#if DEBUG
+            // draw the hitbox and position of every gameObject
+            foreach (GameObject gameObject in gameObjects)
+            {
+                Rectangle hitBox = gameObject.Hitbox;
+                Rectangle topline = new Rectangle(hitBox.X, hitBox.Y, hitBox.Width, 1);
+                Rectangle bottomline = new Rectangle(hitBox.X, hitBox.Y + hitBox.Height, hitBox.Width, 1);
+                Rectangle rightline = new Rectangle(hitBox.X + hitBox.Width, hitBox.Y, 1, hitBox.Height);
+                Rectangle leftline = new Rectangle(hitBox.X, hitBox.Y, 1, hitBox.Height);
+
+                _spriteBatch.Draw(hitboxPixel, topline, null, Color.White);
+                _spriteBatch.Draw(hitboxPixel, bottomline, null, Color.White);
+                _spriteBatch.Draw(hitboxPixel, rightline, null, Color.White);
+                _spriteBatch.Draw(hitboxPixel, leftline, null, Color.White);
+
+                Vector2 position = gameObject.Position;
+                Rectangle centerDot = new Rectangle((int)position.X - 1, (int)position.Y - 1, 3, 3);
+
+                _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
+            }
+#endif
+
+
 
             _spriteBatch.End();
 

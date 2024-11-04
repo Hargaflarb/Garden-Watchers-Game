@@ -14,10 +14,27 @@ namespace Garden_Watchers
         protected Texture2D sprite;
         protected Texture2D[] sprites;
         private Rectangle hitbox;
-
-        protected Rectangle Hitbox { get => hitbox; set => hitbox = value; }
-        protected Vector2 position = Vector2.Zero;
+        protected Vector2 position;
         protected Vector2 origin;
+
+        /// <summary>
+        /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
+        /// </summary>
+        public Rectangle Hitbox { get => hitbox; private set => hitbox = value; }
+
+        /// <summary>
+        /// The Position is at the center of the gameObject and determines where the object is on the in the game
+        /// </summary>
+        public Vector2 Position 
+        {
+            get => position; 
+            set { position = value; Hitbox = new Rectangle((int)value.X - (Hitbox.Width / 2), (int)value.Y - (Hitbox.Height / 2), Hitbox.Width, Hitbox.Height); }
+        }
+
+        public GameObject()
+        {
+            position = Vector2.Zero;
+        }
 
         //Methods
 
@@ -34,7 +51,10 @@ namespace Garden_Watchers
         /// Abstract method for loading sprites
         /// </summary>
         /// <param name="content"></param>
-        public abstract void LoadContent(ContentManager content);
+        public virtual void LoadContent(ContentManager content)
+        {
+            Hitbox = new Rectangle((int)position.X - (sprite.Width/2), (int)position.Y - (sprite.Height/2), sprite.Width, sprite.Height);
+        }
 
 
         /// <summary>
@@ -50,7 +70,7 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin = new Vector2(sprite.Width / 2, sprite.Height / 2), 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(sprite, Hitbox, null, Color.White, 0, origin = Vector2.Zero, SpriteEffects.None, 1);
         }
 
     }
