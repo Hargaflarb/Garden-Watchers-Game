@@ -32,8 +32,12 @@ namespace Garden_Watchers
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-           
+
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.LoadContent(Content);
+            }
+
         }
 
         protected override void Update(GameTime gameTime)
