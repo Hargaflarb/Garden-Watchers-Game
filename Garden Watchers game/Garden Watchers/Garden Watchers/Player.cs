@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,12 @@ namespace Garden_Watchers
 
         public override void LoadContent(ContentManager content)
         {
-            
+            sprites = new Texture2D[1];
+
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                sprites[i] = content.Load<Texture2D>("temp_playercharacter");
+            }
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
