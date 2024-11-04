@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Garden_Watchers
 {
-    internal abstract class GameObject
+    internal class Gnome : Enemy
     {
+
     }
 }
