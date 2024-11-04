@@ -17,7 +17,7 @@ namespace Garden_Watchers
         //Constructor
         public Player (Vector2 position, int speed)
         {
-            this.position = position;
+            Position = position;
             this.speed = 500;
         }
 
@@ -31,6 +31,7 @@ namespace Garden_Watchers
                 sprites[i] = content.Load<Texture2D>("temp_playercharacter");
             }
             sprite = sprites[0];
+
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
