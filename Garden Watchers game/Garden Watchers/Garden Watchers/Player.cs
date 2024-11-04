@@ -23,6 +23,7 @@ namespace Garden_Watchers
             {
                 sprites[i] = content.Load<Texture2D>("temp_playercharacter");
             }
+            sprite = sprites[0];
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
