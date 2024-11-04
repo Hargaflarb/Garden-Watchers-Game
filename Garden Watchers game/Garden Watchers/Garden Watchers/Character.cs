@@ -13,7 +13,7 @@ namespace Garden_Watchers
     internal abstract class Character : GameObject
     {
         //Fields
-        protected Vector2 position = Vector2.Zero;
+       
         protected Vector2 velocity;
         protected float speed;
 
