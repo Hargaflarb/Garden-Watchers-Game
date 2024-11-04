@@ -14,12 +14,16 @@ namespace Garden_Watchers
     {
 
 
+        //Constructor
+        public Player (Vector2 position, int speed)
+        {
+            this.position = position;
+            this.speed = 500;
+        }
 
+        //Methods
         public override void LoadContent(ContentManager content)
         {
-
-            
-
             sprites = new Texture2D[1];
 
             for (int i = 0; i < sprites.Length; i++)
@@ -29,6 +33,7 @@ namespace Garden_Watchers
             sprite = sprites[0];
 
         }
+
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {

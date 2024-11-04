@@ -7,11 +7,16 @@ namespace Garden_Watchers
 {
     public class GameWorld : Game
     {
+        //Fields
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects;
         private List<GameObject> removedObjects;
         private List<GameObject> addedObjects;
+        private static Vector2 screenSize;
+
+        //Properties
+        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
 
         public GameWorld()
         {
@@ -22,7 +27,8 @@ namespace Garden_Watchers
 
         protected override void Initialize()
         {
-            GameObject player = new Player();
+            Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y);
+            GameObject player = new Player(playerPosition, 200);
             gameObjects = new List<GameObject>() { player };
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
