@@ -30,8 +30,6 @@ namespace Garden_Watchers
 
         }
       
-        protected abstract void Initialize();
-
         /// <summary>
         /// Abstract method for loading sprites
         /// </summary>
