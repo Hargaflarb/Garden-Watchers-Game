@@ -1,4 +1,6 @@
-﻿using SharpDX.Direct3D11;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,8 @@ namespace Garden_Watchers
 
         }
 
-        public abstract void LoadContent();
+        public abstract void LoadContent(ContentManager content);
 
-        public abstract void Update();
+        public abstract void Update(GameTime gameTime, Vector2 screenSize);
     }
 }
