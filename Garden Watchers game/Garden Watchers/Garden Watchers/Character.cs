@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
@@ -13,14 +11,21 @@ namespace Garden_Watchers
     internal abstract class Character : GameObject
     {
         //Fields
-        protected Vector2 position = Vector2.Zero;
+       
         protected Vector2 velocity;
         protected float speed;
 
         //Properties
-        
+
 
         //Methods
+        protected override void Initialize()
+        {
+
+        }
+
+
+
 
         /// <summary>
         /// Method that allows characters to move
@@ -33,6 +38,8 @@ namespace Garden_Watchers
 
             position += ((velocity * speed) * deltaTime);
         }
+
+
 
     }
 }
