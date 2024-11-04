@@ -24,7 +24,6 @@ namespace Garden_Watchers
         /// Runs when GameObject is colliding with something else
         /// </summary>
         /// <param name="other"></param>
-
         public virtual void OnCollision(GameObject other)
         {
 

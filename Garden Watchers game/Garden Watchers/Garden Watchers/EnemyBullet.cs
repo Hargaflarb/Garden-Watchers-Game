@@ -5,13 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
-    internal class Obstacle : GameObject
+    internal class EnemyBullet : GameObject
     {
-
-        public Obstacle() : base()
-        {
-
-        }
 
         protected override void Initialize()
         {
@@ -19,7 +14,7 @@ namespace Garden_Watchers
         }
 
 
-        public virtual void OnCollision(GameObject other)
+        public override void Update(GameTime gameTime, Vector2 screenSize)
         {
 
         }
@@ -28,11 +23,5 @@ namespace Garden_Watchers
         {
 
         }
-
-        public override void Update(GameTime gameTime, Vector2 screenSize)
-        {
-
-        }
-
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
@@ -11,22 +9,28 @@ namespace Garden_Watchers
     {
         protected bool pickedUp;
 
+
+        protected override void Initialize()
+        {
+
+        }
+
+
+        public override void LoadContent(ContentManager content)
+        {
+            //load kode
+        }
+
+        public override void Update(GameTime gameTime, Vector2 screenSize)
+        {
+            //update kode
+        }
         public override void OnCollision(GameObject other)
         {
             if(other is Player)
             {
                 PickUp();
             }
-        }
-
-        public override void LoadContent()
-        {
-            //load kode
-        }
-
-        public override void Update()
-        {
-            //update kode
         }
         public void PickUp()
         {
