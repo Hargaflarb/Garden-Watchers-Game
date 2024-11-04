@@ -17,6 +17,7 @@ namespace Garden_Watchers
 
         public override void LoadContent(ContentManager content)
         {
+<<<<<<< HEAD
             sprite = content.Load<Texture2D>("temp_playercharacter");
 =======
             sprites = new Texture2D[1];
