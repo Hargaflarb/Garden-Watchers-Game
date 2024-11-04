@@ -14,12 +14,6 @@ namespace Garden_Watchers
             
         }
 
-<<<<<<< HEAD
-        
-
-=======
->>>>>>> 87145a8fc06eefa9f9e91f67d718fed6823fc7ee
-
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             

@@ -17,9 +17,9 @@ namespace Garden_Watchers
 
         public override void LoadContent(ContentManager content)
         {
-<<<<<<< HEAD
-            sprite = content.Load<Texture2D>("temp_playercharacter");
-=======
+
+            
+
             sprites = new Texture2D[1];
 
             for (int i = 0; i < sprites.Length; i++)
@@ -27,7 +27,7 @@ namespace Garden_Watchers
                 sprites[i] = content.Load<Texture2D>("temp_playercharacter");
             }
             sprite = sprites[0];
->>>>>>> 87145a8fc06eefa9f9e91f67d718fed6823fc7ee
+
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
