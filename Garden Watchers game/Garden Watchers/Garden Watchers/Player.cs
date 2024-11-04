@@ -14,7 +14,14 @@ namespace Garden_Watchers
     {
 
 
+        //Constructor
+        public Player (Vector2 position, int speed)
+        {
+            this.position = position;
+            this.speed = 500;
+        }
 
+        //Methods
         public override void LoadContent(ContentManager content)
         {
             sprites = new Texture2D[1];
@@ -27,7 +34,9 @@ namespace Garden_Watchers
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
+
         }
+
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
