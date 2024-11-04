@@ -14,10 +14,7 @@ namespace Garden_Watchers
             
         }
 
-        protected override void Initialize()
-        {
-
-        }
+        
 
 
         public override void Update(GameTime gameTime, Vector2 screenSize)

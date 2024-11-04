@@ -23,6 +23,9 @@ namespace Garden_Watchers
         protected override void Initialize()
         {
             GameObject player = new Player();
+            gameObjects = new List<GameObject>() { player };
+            removedObjects = new List<GameObject>();
+            addedObjects = new List<GameObject>();
             base.Initialize();
         }
 
