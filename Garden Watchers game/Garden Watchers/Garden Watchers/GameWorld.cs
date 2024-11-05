@@ -35,19 +35,21 @@ namespace Garden_Watchers
 
         protected override void Initialize()
         {
-            Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y);
-            GameObject player = new Player(playerPosition, 200);
+            TheGameWorld = this;
+        
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.ApplyChanges();
+
+            ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
+            Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
+            GameObject player = new Player(playerPosition, 500);
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             gameObjects = new List<GameObject>() { player, tempObstacle };
 
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
-
-            TheGameWorld = this;
-
-            _graphics.PreferredBackBufferHeight = 1080;
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -75,7 +77,7 @@ namespace Garden_Watchers
                 Exit();
 
             // game object update
-            Vector2 screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
