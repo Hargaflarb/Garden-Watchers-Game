@@ -24,7 +24,7 @@ namespace Garden_Watchers
         public Player (Vector2 position, int speed)
         {
             Position = position;
-            this.speed = 500;
+            this.speed = speed;
         }
 
         //Methods
