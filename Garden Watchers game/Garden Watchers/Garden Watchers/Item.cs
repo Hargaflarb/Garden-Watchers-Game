@@ -10,15 +10,21 @@ namespace Garden_Watchers
         protected bool pickedUp;
 
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         public override void LoadContent(ContentManager content)
         {
-            //load kode
+            //load kode            
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
-            //update kode
+            if (!pickedUp) 
+            { 
+                
+            }
         }
         public override void OnCollision(GameObject other)
         {
@@ -32,9 +38,13 @@ namespace Garden_Watchers
             //pickup code
         }
 
-        public virtual void Use()
+        public virtual void UseItem()
         {
-            if (pickedUp) { }
+            if(this is not Weapon)
+            {
+                
+            }
         }
+
     }
 }

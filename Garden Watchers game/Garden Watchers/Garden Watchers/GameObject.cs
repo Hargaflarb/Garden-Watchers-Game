@@ -46,7 +46,11 @@ namespace Garden_Watchers
         {
 
         }
+<<<<<<< Updated upstream
       
+=======
+
+>>>>>>> Stashed changes
         /// <summary>
         /// Abstract method for loading sprites
         /// </summary>

@@ -10,5 +10,6 @@ namespace Garden_Watchers
     {
         protected int damage;
         protected int range;
+        protected bool projectiles;
     }
 }
