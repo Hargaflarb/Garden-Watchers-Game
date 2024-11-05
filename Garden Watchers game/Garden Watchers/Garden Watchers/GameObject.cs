@@ -2,10 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-
 using System;
-using SharpDX.Direct3D9;
 
 namespace Garden_Watchers
 {
@@ -17,6 +14,7 @@ namespace Garden_Watchers
         private Rectangle hitbox;
         protected Vector2 position;
         protected Vector2 origin;
+        
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -60,6 +58,13 @@ namespace Garden_Watchers
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="screenSize"></param>
+        /// <param name="vector"></param>
+        /// <returns></returns>
         public virtual Vector2 CheckOutOfBounds(Vector2 screenSize, Vector2 vector)
         {
             float X = vector.X;
@@ -84,7 +89,6 @@ namespace Garden_Watchers
 
             return new Vector2(X, Y);
         }
-
 
 
         /// <summary>
@@ -114,6 +118,7 @@ namespace Garden_Watchers
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, Hitbox, null, Color.White, 0, origin = Vector2.Zero, SpriteEffects.None, 1);
+            
         }
 
     }

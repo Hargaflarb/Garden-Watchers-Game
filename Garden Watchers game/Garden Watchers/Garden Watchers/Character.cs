@@ -14,8 +14,25 @@ namespace Garden_Watchers
        
         protected Vector2 velocity;
         protected float speed;
+        private int health;
+
 
         //Properties
+        public int Health 
+        { 
+            get => health; 
+            set
+            {
+                if (value < 0)
+                {
+                    health = 0;
+                }
+                else
+                {
+                    health = value;
+                }
+            }
+        }
 
         //Methods
 
