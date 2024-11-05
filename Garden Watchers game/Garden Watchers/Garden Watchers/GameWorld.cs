@@ -39,7 +39,11 @@ namespace Garden_Watchers
 
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
-            
+
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.ApplyChanges();
+
             base.Initialize();
         }
 
@@ -70,6 +74,11 @@ namespace Garden_Watchers
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
+
+                foreach (GameObject other in gameObjects)
+                {
+                    gameObject.CheckCollision(other);
+                }
             }
 
             // remove game objects
@@ -88,6 +97,7 @@ namespace Garden_Watchers
 
             base.Update(gameTime);
         }
+
 
 
         protected override void Draw(GameTime gameTime)
