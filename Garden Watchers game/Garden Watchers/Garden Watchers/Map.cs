@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Garden_Watchers
 {
-    internal class Map
+    public static class Map
     {
 
     }
