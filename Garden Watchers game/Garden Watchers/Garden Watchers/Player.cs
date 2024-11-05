@@ -46,7 +46,6 @@ namespace Garden_Watchers
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
-
         }
 
         /// <summary>
@@ -58,6 +57,9 @@ namespace Garden_Watchers
         {
             HandleInput();
             Move(gameTime, screenSize);
+
+            // world board check
+            base.Update(gameTime, screenSize);
         }
 
         /// <summary>
