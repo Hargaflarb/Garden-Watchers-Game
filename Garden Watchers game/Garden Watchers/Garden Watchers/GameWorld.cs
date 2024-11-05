@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -10,20 +10,24 @@ namespace Garden_Watchers
         //Fields
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private List<GameObject> gameObjects;
-        private List<GameObject> removedObjects;
-        private List<GameObject> addedObjects;
         private SpriteFont textFont;
+        private static List<GameObject> gameObjects;
+        private static List<GameObject> removedObjects;
+        private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
         private Player player;
         
 
-        //Properties
-        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
-
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
+
+
+        //Properties
+        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
+        private static GameWorld TheGameWorld { get; set; }
+
+
 
         public GameWorld()
         {
@@ -34,6 +38,8 @@ namespace Garden_Watchers
 
         protected override void Initialize()
         {
+            TheGameWorld = this;
+        
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
@@ -45,10 +51,9 @@ namespace Garden_Watchers
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             gameObjects = new List<GameObject>() { player, tempObstacle };
 
-
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
-            
+
 
             base.Initialize();
         }
@@ -106,6 +111,16 @@ namespace Garden_Watchers
             base.Update(gameTime);
         }
 
+        public static void KillObject(GameObject gameObject)
+        {
+            removedObjects.Add(gameObject);
+        }
+
+        public static void MakeObject(GameObject gameObject)
+        {
+            gameObject.LoadContent(TheGameWorld.Content);
+            addedObjects.Add(gameObject);
+        }
 
 
         protected override void Draw(GameTime gameTime)
