@@ -27,6 +27,8 @@ namespace Garden_Watchers
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
            
+
+            base.Update(gameTime, screenSize);
         }
     }
 }
