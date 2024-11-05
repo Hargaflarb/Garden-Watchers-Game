@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -10,10 +10,13 @@ namespace Garden_Watchers
         //Fields
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteFont textFont;
         private static List<GameObject> gameObjects;
         private static List<GameObject> removedObjects;
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
+        private Player player;
+        
 
 #if DEBUG
         private Texture2D hitboxPixel;
@@ -44,12 +47,13 @@ namespace Garden_Watchers
             ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
-            GameObject player = new Player(playerPosition, 500);
+            player = new Player(10, playerPosition, 500);
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             gameObjects = new List<GameObject>() { player, tempObstacle };
 
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
+
 
             base.Initialize();
         }
@@ -57,6 +61,8 @@ namespace Garden_Watchers
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            textFont = Content.Load<SpriteFont>("File");
+            
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -123,12 +129,14 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, Vector2.Zero, Color.Black);
 
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
 
+            
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
@@ -151,7 +159,6 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
-
 
 
             _spriteBatch.End();
