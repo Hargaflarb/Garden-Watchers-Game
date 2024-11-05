@@ -8,10 +8,6 @@ namespace Garden_Watchers
     internal class EnemyBullet : GameObject
     {
 
-        protected override void Initialize()
-        {
-
-        }
 
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
