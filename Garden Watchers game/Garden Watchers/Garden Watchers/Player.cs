@@ -21,8 +21,9 @@ namespace Garden_Watchers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="speed"></param>
-        public Player (Vector2 position, int speed)
+        public Player (int health, Vector2 position, float speed)
         {
+            Health = health;
             Position = position;
             this.speed = speed;
         }
