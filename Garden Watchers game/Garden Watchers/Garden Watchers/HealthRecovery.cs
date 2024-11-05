@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,18 +15,28 @@ namespace Garden_Watchers
         private int healthRecovery=5;
         private int charges = 1;
         
+        public HealthRecovery(int recoveredHP,int charges)
+        {
+            healthRecovery = recoveredHP;
+            this.charges = charges;
+        }
         public int RecoverHealth() 
         {
-                charges--;
-                return healthRecovery;
+            charges--;
+            return healthRecovery;
         }
 
         public void Update()
         {
             if (charges < 1)
             {
-                //despawn this gameobject
+                GameWorld.RemovedObjects.Add(this);
             }
+        }
+
+        public override void UseItem()
+        {
+            RecoverHealth();
         }
     }
 }

@@ -10,34 +10,39 @@ namespace Garden_Watchers
         private int damage = 3;
         private Vector2 direction;
         private float speed = 2;
+        bool playerBullet;
 
-        public Bullet(Texture2D sprite, Vector2 position,Vector2 direction)
+        public Bullet(Texture2D sprite, Vector2 position,Vector2 direction,bool playerBullet):base()
         { 
-<<<<<<< Updated upstream
-            
-        }
-
-=======
             this.sprite = sprite;
-            this.position = position;
+            Position = position;
             this.direction = direction;
+            this.playerBullet=playerBullet;
+            Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
 
 
->>>>>>> Stashed changes
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             position += direction * speed;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            
-        }
-
         public override void OnCollision(GameObject other)
         {
-            
+            if(other is Character)
+            {
+                if (playerBullet && other is Enemy)
+                {
+                    //that enemy takes damage
+                    //add this to list of objects to be destroyed
+                }
+                else if (!playerBullet && other is Player) 
+                {
+                    //Player takes damage
+                    //add this to list of objects to be destroyed
+                }
+                //potentially add wall collision as well
+            }
         }
     }
 }
