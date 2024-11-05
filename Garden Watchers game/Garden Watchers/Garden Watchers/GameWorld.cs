@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -10,11 +10,14 @@ namespace Garden_Watchers
         //Fields
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteFont textFont;
         private static List<GameObject> gameObjects;
         private static List<GameObject> removedObjects;
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
-        private static Vector2 player;
+        private Player player;
+        
+        private static Vector2 playerLocation;
 
         //Properties
         public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
@@ -28,6 +31,13 @@ namespace Garden_Watchers
         private Texture2D hitboxPixel;
 #endif
 
+
+        //Properties
+        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
+        private static GameWorld TheGameWorld { get; set; }
+
+
+
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -37,6 +47,16 @@ namespace Garden_Watchers
 
         protected override void Initialize()
         {
+            TheGameWorld = this;
+        
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.ApplyChanges();
+
+            ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
+            Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
+            player = new Player(10, playerPosition, 500);
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y);
             PlayerCharacterPosition = playerPosition;
             GameObject player = new Player(playerPosition, 200);
@@ -53,6 +73,8 @@ namespace Garden_Watchers
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            textFont = Content.Load<SpriteFont>("File");
+            
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -77,6 +99,11 @@ namespace Garden_Watchers
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
+
+                foreach (GameObject other in gameObjects)
+                {
+                    gameObject.CheckCollision(other);
+                }
             }
 
             // remove game objects
@@ -96,6 +123,17 @@ namespace Garden_Watchers
             base.Update(gameTime);
         }
 
+        public static void KillObject(GameObject gameObject)
+        {
+            removedObjects.Add(gameObject);
+        }
+
+        public static void MakeObject(GameObject gameObject)
+        {
+            gameObject.LoadContent(TheGameWorld.Content);
+            addedObjects.Add(gameObject);
+        }
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -103,12 +141,14 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, Vector2.Zero, Color.Black);
 
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
 
+            
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
@@ -131,7 +171,6 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
-
 
 
             _spriteBatch.End();

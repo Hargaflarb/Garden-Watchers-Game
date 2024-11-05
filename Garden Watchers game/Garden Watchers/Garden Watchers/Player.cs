@@ -22,10 +22,11 @@ namespace Garden_Watchers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="speed"></param>
-        public Player (Vector2 position, int speed)
+        public Player (int health, Vector2 position, float speed)
         {
+            Health = health;
             Position = position;
-            this.speed = 500;
+            this.speed = speed;
             GameWorld.PlayerCharacterPosition = Position;
         }
 
@@ -53,7 +54,6 @@ namespace Garden_Watchers
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
-
         }
 
         /// <summary>
@@ -65,6 +65,8 @@ namespace Garden_Watchers
         {
             HandleInput();
             Move(gameTime, screenSize);
+            // world board check
+            base.Update(gameTime, screenSize);
             GameWorld.PlayerCharacterPosition = Position;
         }
 

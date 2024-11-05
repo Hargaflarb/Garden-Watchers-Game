@@ -21,6 +21,7 @@ namespace Garden_Watchers
         /// <param name="other">The other obejct that is intersecting with this one.</param>
         public override void OnCollision(GameObject other)
         {
+            base.OnCollision(other);
             if (other is Character)
             {
                 Vector2 otherPos = ((Character)other).Position;
@@ -28,8 +29,8 @@ namespace Garden_Watchers
 
                 Vector2 distance = new Vector2(otherPos.X - position.X, otherPos.Y - position.Y);
 
-                int newXPosition;
-                int newYPosition;
+                float newXPosition = otherPos.X;
+                float newYPosition = otherPos.Y;
                 
                 if (Math.Abs(distance.X) > Math.Abs(distance.Y))
                 { // most likely hit from x-axis
@@ -54,6 +55,8 @@ namespace Garden_Watchers
                     }
                 }
 
+
+                ((Character)other).Position = new Vector2(newXPosition, newYPosition);
             }
         }
 
