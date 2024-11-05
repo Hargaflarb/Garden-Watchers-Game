@@ -10,15 +10,18 @@ namespace Garden_Watchers
         protected bool pickedUp;
 
 
-
         public override void LoadContent(ContentManager content)
         {
-            //load kode
+            base.LoadContent(content);
+            Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
-            //update kode
+            if (pickedUp) 
+            {
+                position = new Vector2(GameWorld.ScreenSize.X / 2, GameWorld.ScreenSize.Y / 2);
+            }
         }
         public override void OnCollision(GameObject other)
         {
@@ -29,12 +32,12 @@ namespace Garden_Watchers
         }
         public void PickUp()
         {
-            //pickup code
+            pickedUp = true;
+            this.position = GameWorld.PlayerCharacterPosition;
         }
 
-        public virtual void Use()
-        {
-            if (pickedUp) { }
-        }
+        public abstract void UseItem();
+
+
     }
 }

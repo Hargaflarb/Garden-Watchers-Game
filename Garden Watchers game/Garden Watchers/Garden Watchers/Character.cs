@@ -8,7 +8,7 @@ namespace Garden_Watchers
     /// <summary>
     /// The Character class which Enemy and Player uses
     /// </summary>
-    internal abstract class Character : GameObject
+    public abstract class Character : GameObject
     {
         //Fields
        

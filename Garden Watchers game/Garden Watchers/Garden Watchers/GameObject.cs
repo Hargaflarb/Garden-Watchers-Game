@@ -19,7 +19,7 @@ namespace Garden_Watchers
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
         /// </summary>
-        public Rectangle Hitbox { get => hitbox; private set => hitbox = value; }
+        public Rectangle Hitbox { get => hitbox; protected set => hitbox = value; }
 
         /// <summary>
         /// The Position is at the center of the gameObject and determines where the object is on the in the game
@@ -89,8 +89,6 @@ namespace Garden_Watchers
 
             return new Vector2(X, Y);
         }
-
-
         /// <summary>
         /// Abstract method for loading sprites
         /// </summary>

@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace Garden_Watchers
 {
-    internal class Player : Character
+    public class Player : Character
     {
-
+        private Shotgun gun;
+        private Chainsaw saw;
 
         //Constructor
 
@@ -26,6 +27,7 @@ namespace Garden_Watchers
             Health = health;
             Position = position;
             this.speed = speed;
+            GameWorld.PlayerCharacterPosition = Position;
         }
 
         //Methods
@@ -40,10 +42,15 @@ namespace Garden_Watchers
 
             for (int i = 0; i < sprites.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>("temp_playercharacter");
+                sprites[i] = content.Load<Texture2D>("temp playercharacter");
             }
             sprite = sprites[0];
 
+            gun = new Shotgun(2,position,true);
+            saw = new Chainsaw(position,true);
+
+            gun.LoadContent(content);
+            saw.LoadContent(content);
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
@@ -58,9 +65,9 @@ namespace Garden_Watchers
         {
             HandleInput();
             Move(gameTime, screenSize);
-
             // world board check
             base.Update(gameTime, screenSize);
+            GameWorld.PlayerCharacterPosition = Position;
         }
 
         /// <summary>
@@ -90,6 +97,15 @@ namespace Garden_Watchers
             if (keyState.IsKeyDown(Keys.D))
             {
                 velocity += new Vector2(+1, 0);
+            }
+
+            if (keyState.IsKeyDown(Keys.Space))
+            {
+                gun.UseItem();
+            }
+            if (keyState.IsKeyDown(Keys.Enter))
+            {
+                saw.UseItem();
             }
 
             if (velocity != Vector2.Zero)
