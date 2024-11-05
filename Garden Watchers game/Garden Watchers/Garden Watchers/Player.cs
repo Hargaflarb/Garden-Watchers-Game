@@ -15,6 +15,12 @@ namespace Garden_Watchers
 
 
         //Constructor
+
+        /// <summary>
+        /// The Player construction
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="speed"></param>
         public Player (Vector2 position, int speed)
         {
             Position = position;
@@ -22,6 +28,11 @@ namespace Garden_Watchers
         }
 
         //Methods
+
+        /// <summary>
+        /// Loads textures for the player character into an array
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
             sprites = new Texture2D[1];
@@ -38,13 +49,20 @@ namespace Garden_Watchers
 
         }
 
-
+        /// <summary>
+        /// Runs methods so that it can be used in GameWorld
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="screenSize"></param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             HandleInput();
             Move(gameTime, screenSize);
         }
 
+        /// <summary>
+        /// Reads player input and changes movement speed accordingly
+        /// </summary>
         private void HandleInput()
         {
             velocity = Vector2.Zero;
