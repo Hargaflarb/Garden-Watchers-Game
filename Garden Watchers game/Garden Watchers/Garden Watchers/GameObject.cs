@@ -33,7 +33,7 @@ namespace Garden_Watchers
 
         public GameObject()
         {
-            position = Vector2.Zero;
+            
         }
 
         //Methods
