@@ -17,7 +17,6 @@ namespace Garden_Watchers
 
         //Properties
 
-
         //Methods
 
 
@@ -32,7 +31,7 @@ namespace Garden_Watchers
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            position += ((velocity * speed) * deltaTime);
+            Position += ((velocity * speed) * deltaTime);
         }
 
 
