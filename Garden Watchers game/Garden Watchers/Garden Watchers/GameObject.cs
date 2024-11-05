@@ -8,7 +8,7 @@ using System;
 
 namespace Garden_Watchers
 {
-    internal abstract class GameObject
+    public abstract class GameObject
     {
         //Fields
         protected Texture2D sprite;
@@ -38,13 +38,25 @@ namespace Garden_Watchers
 
         //Methods
 
+        public void CheckCollision(GameObject other)
+        {
+            if (Hitbox.Intersects(other.Hitbox))
+            {
+                OnCollision(other);
+            }
+        }
+
+
         /// <summary>
         /// Runs when GameObject is colliding with something else
         /// </summary>
         /// <param name="other"></param>
         public virtual void OnCollision(GameObject other)
         {
-
+            if (this == other)
+            {
+                return;
+            }
         }
       
         /// <summary>
