@@ -68,7 +68,7 @@ namespace Garden_Watchers
             // world board check
             base.Update(gameTime, screenSize);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            GameWorld.PlayerCharacterPosition= Position;
+            GameWorld.PlayerCharacterPosition= Position;            
         }
 
         /// <summary>

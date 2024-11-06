@@ -18,13 +18,14 @@ namespace Garden_Watchers
             Position = position;
             this.direction = direction;
             this.playerBullet=playerBullet;
-            Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
+            Hitbox = new Rectangle((int)Position.X - (sprite.Width / 2), (int)Position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
 
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
-            position += direction * speed;
+            Position += direction * speed;
+            base.Update(gameTime, screenSize);
         }
 
         public override void OnCollision(GameObject other)
@@ -40,8 +41,7 @@ namespace Garden_Watchers
                 {
                     //Player takes damage
                     //add this to list of objects to be destroyed
-                }
-                //potentially add wall collision as well
+                }                
             }
         }
     }

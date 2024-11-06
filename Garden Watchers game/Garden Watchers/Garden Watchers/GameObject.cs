@@ -72,19 +72,35 @@ namespace Garden_Watchers
             if (vector.Y > screenSize.Y - Hitbox.Height / 2)
             {
                 Y = screenSize.Y - Hitbox.Height / 2;
+                if(this is Bullet)
+                {
+                    GameWorld.KillObject(this);
+                }
             }
             else if (vector.Y < 0 + Hitbox.Height / 2)
             {
                 Y = 0 + Hitbox.Height / 2;
+                if (this is Bullet)
+                {
+                    GameWorld.KillObject(this);
+                }
             }
 
             if (vector.X > screenSize.X - Hitbox.Width / 2)
             {
                 X = screenSize.X - Hitbox.Width / 2;
+                if (this is Bullet)
+                {
+                    GameWorld.KillObject(this);
+                }
             }
             else if (vector.X < 0 + Hitbox.Width / 2)
             {
                 X = 0 + Hitbox.Width / 2;
+                if (this is Bullet)
+                {
+                    GameWorld.KillObject(this);
+                }
             }
 
             return new Vector2(X, Y);
@@ -107,6 +123,7 @@ namespace Garden_Watchers
         public virtual void Update(GameTime gameTime, Vector2 screenSize)
         {
             Position = CheckOutOfBounds(screenSize, Position);
+            
         }
 
         /// <summary>
