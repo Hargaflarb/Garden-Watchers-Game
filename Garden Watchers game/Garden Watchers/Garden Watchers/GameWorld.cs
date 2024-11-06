@@ -25,9 +25,9 @@ namespace Garden_Watchers
 
         //Properties
         public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
-        private static GameWorld TheGameWorld { get; set; }
-
-
+        public static GameWorld TheGameWorld { get; set; }
+        public static List<GameObject> GameObjects { get => gameObjects; private set => gameObjects = value; }
+        internal Player Player { get => player; private set => player = value; }
 
         public GameWorld()
         {
@@ -47,24 +47,25 @@ namespace Garden_Watchers
             ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
-            player = new Player(10, playerPosition, 500);
+            Player = new Player(10, playerPosition, 500);
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
-            gameObjects = new List<GameObject>() { player, tempObstacle };
+            GameObjects = new List<GameObject>() { Player, tempObstacle };
 
             removedObjects = new List<GameObject>();
             addedObjects = new List<GameObject>();
 
+            Map.GoToRoom(0,0);
 
             base.Initialize();
         }
 
         protected override void LoadContent()
-        {
+        { 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
             
 
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.LoadContent(Content);
             }
@@ -84,11 +85,11 @@ namespace Garden_Watchers
 
             // game object update
             
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
 
-                foreach (GameObject other in gameObjects)
+                foreach (GameObject other in GameObjects)
                 {
                     gameObject.CheckCollision(other);
                 }
@@ -97,12 +98,12 @@ namespace Garden_Watchers
             // remove game objects
             foreach (GameObject removedObject in removedObjects)
             {
-                gameObjects.Remove(removedObject);
+                GameObjects.Remove(removedObject);
             }
             removedObjects.Clear();
 
             // add game objects
-            gameObjects.AddRange(addedObjects);
+            GameObjects.AddRange(addedObjects);
             addedObjects.Clear();
 
 
@@ -114,6 +115,22 @@ namespace Garden_Watchers
         public static void KillObject(GameObject gameObject)
         {
             removedObjects.Add(gameObject);
+        }
+
+        public static void KillAllObjects()
+        {
+            foreach (GameObject theObject in gameObjects)
+            {
+                if (!(theObject is Player))
+                {
+                    removedObjects.Add(theObject);
+                }
+            }
+        }
+
+        public static void AddObjects(List<GameObject> gameObjects)
+        {
+            addedObjects.AddRange(gameObjects);
         }
 
         public static void MakeObject(GameObject gameObject)
@@ -129,9 +146,9 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
-            _spriteBatch.DrawString(textFont, "Health: " + player.Health, Vector2.Zero, Color.Black);
+            _spriteBatch.DrawString(textFont, "Health: " + Player.Health, Vector2.Zero, Color.Black);
 
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
@@ -140,7 +157,7 @@ namespace Garden_Watchers
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 Rectangle hitBox = gameObject.Hitbox;
                 Rectangle topline = new Rectangle(hitBox.X, hitBox.Y, hitBox.Width, 1);
