@@ -48,7 +48,8 @@ namespace Garden_Watchers
 
             gun = new Shotgun(2,position,true);
             saw = new Chainsaw(position,true);
-
+            GameWorld.AddedObjects.Add(gun);
+            GameWorld.AddedObjects.Add(saw);
             gun.LoadContent(content);
             saw.LoadContent(content);
 

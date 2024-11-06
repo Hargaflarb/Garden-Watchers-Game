@@ -29,7 +29,7 @@ namespace Garden_Watchers
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             base.Update(gameTime, screenSize);
-            this.timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         }
 
