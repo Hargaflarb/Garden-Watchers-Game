@@ -129,7 +129,6 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
-            _spriteBatch.DrawString(textFont, "Health: " + player.Health, Vector2.Zero, Color.Black);
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -159,6 +158,7 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
 
 
             _spriteBatch.End();
