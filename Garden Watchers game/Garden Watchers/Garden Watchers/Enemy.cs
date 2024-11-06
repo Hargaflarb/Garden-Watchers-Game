@@ -10,6 +10,13 @@ namespace Garden_Watchers
 {
     internal class Enemy : Character
     {
+        public Enemy(int health, Vector2 position, float speed)
+        {
+            Health = health;
+            Position = position;
+            this.speed = speed;
+        }
+
         /// <summary>
         /// Loads sprites
         /// </summary>
@@ -29,6 +36,11 @@ namespace Garden_Watchers
            
 
             base.Update(gameTime, screenSize);
+        }
+
+        public void DetectPlayer(Vector2 playerPosition, Vector2 enemyPosition)
+        {
+
         }
     }
 }

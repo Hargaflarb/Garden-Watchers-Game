@@ -146,14 +146,16 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
-            _spriteBatch.DrawString(textFont, "Health: " + Player.Health, Vector2.Zero, Color.Black);
+
 
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
-
             
+            
+            // is UI so do after other stuff.
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
@@ -176,6 +178,7 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
+
 
 
             _spriteBatch.End();
