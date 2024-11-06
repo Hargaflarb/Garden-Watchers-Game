@@ -27,17 +27,13 @@ namespace Garden_Watchers
 
         public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
         private static GameWorld TheGameWorld { get; set; }
+        internal Player Player { get => player; private set => player = value; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
 
 
-        //Properties
-        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
-        public static GameWorld TheGameWorld { get; set; }
-        public static List<GameObject> GameObjects { get => gameObjects; private set => gameObjects = value; }
-        internal Player Player { get => player; private set => player = value; }
 
         public GameWorld()
         {
