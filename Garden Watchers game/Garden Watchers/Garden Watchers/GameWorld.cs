@@ -17,6 +17,16 @@ namespace Garden_Watchers
         private static Vector2 screenSize;
         private Player player;
         
+        private static Vector2 playerLocation;
+
+        //Properties
+        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
+        public static List<GameObject> GameObjects { get => gameObjects; set => gameObjects = value; }
+        public static List<GameObject> RemovedObjects { get => removedObjects; set => removedObjects = value; }
+        public static List<GameObject> AddedObjects { get => addedObjects; set => addedObjects = value; }
+
+        public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
+        private static GameWorld TheGameWorld { get; set; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
@@ -51,11 +61,12 @@ namespace Garden_Watchers
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             GameObjects = new List<GameObject>() { Player, tempObstacle };
 
-            removedObjects = new List<GameObject>();
-            addedObjects = new List<GameObject>();
 
+            
+
+            RemovedObjects = new List<GameObject>();
+            AddedObjects = new List<GameObject>();
             Map.GoToRoom(0,0);
-
             base.Initialize();
         }
 
@@ -84,7 +95,7 @@ namespace Garden_Watchers
                 Exit();
 
             // game object update
-            
+            Vector2 screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
@@ -96,15 +107,16 @@ namespace Garden_Watchers
             }
 
             // remove game objects
-            foreach (GameObject removedObject in removedObjects)
+            foreach (GameObject removedObject in RemovedObjects)
             {
                 GameObjects.Remove(removedObject);
             }
-            removedObjects.Clear();
+            RemovedObjects.Clear();
 
             // add game objects
-            GameObjects.AddRange(addedObjects);
-            addedObjects.Clear();
+            GameObjects.AddRange(AddedObjects);
+            AddedObjects.Clear();
+
 
 
 
@@ -145,7 +157,6 @@ namespace Garden_Watchers
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
-
 
 
             foreach (GameObject gameObject in GameObjects)
