@@ -35,8 +35,11 @@ namespace Garden_Watchers
         {
             if (bullets > 0)
             {                
-                Vector2 direction = new Vector2(position.X+(Mouse.GetState().Position.X-(GameWorld.ScreenSize.X/2)),position.Y+(Mouse.GetState().Position.Y-(GameWorld.ScreenSize.Y/2)));
-                Bullet newBullet = new Bullet(attackSprite, position,direction,true);
+                //get direction to be a 1-0
+                
+                Vector2 direction = new Vector2((Mouse.GetState().Position.X-position.X),(Mouse.GetState().Position.Y-position.Y));
+                
+                Bullet newBullet = new Bullet(attackSprite, GameWorld.PlayerCharacterPosition, direction,true);
                 GameWorld.AddedObjects.Add(newBullet);
                 bullets--;
             }

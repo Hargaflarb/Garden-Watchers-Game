@@ -25,16 +25,13 @@ namespace Garden_Watchers
         public static List<GameObject> RemovedObjects { get => removedObjects; set => removedObjects = value; }
         public static List<GameObject> AddedObjects { get => addedObjects; set => addedObjects = value; }
 
-        public static Vector2 PlayerCharacterPosition { get => player; set => player = value; }
+        public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
+        private static GameWorld TheGameWorld { get; set; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
 
-
-        //Properties
-        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
-        private static GameWorld TheGameWorld { get; set; }
 
 
 
@@ -57,9 +54,7 @@ namespace Garden_Watchers
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
             player = new Player(10, playerPosition, 500);
-            Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y);
-            PlayerCharacterPosition = playerPosition;
-            GameObject player = new Player(playerPosition, 200);
+            PlayerCharacterPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             GameObjects = new List<GameObject>() { player, tempObstacle };
 

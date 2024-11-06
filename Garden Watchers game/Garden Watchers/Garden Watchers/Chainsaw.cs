@@ -31,8 +31,8 @@ namespace Garden_Watchers
 
         public override void UseItem()
         {
-            Vector2 direction = new Vector2(position.X + (Mouse.GetState().X - (GameWorld.ScreenSize.X / 2)), position.Y + (Mouse.GetState().Position.Y - (GameWorld.ScreenSize.Y / 2)));
-            MeleeAttack attack = new MeleeAttack(attackSprite, position, direction, true);
+            Vector2 direction = new Vector2(position.X + (Mouse.GetState().Position.X - (GameWorld.ScreenSize.X / 2)), position.Y + (Mouse.GetState().Position.Y - (GameWorld.ScreenSize.Y / 2)));
+            MeleeAttack attack = new MeleeAttack(attackSprite, GameWorld.PlayerCharacterPosition, direction, true);
             GameWorld.AddedObjects.Add(attack);
         }
     }

@@ -20,7 +20,7 @@ namespace Garden_Watchers
         {
             if (pickedUp) 
             {
-                position = new Vector2(GameWorld.ScreenSize.X / 2, GameWorld.ScreenSize.Y / 2);
+                position = GameWorld.PlayerCharacterPosition;
             }
         }
         public override void OnCollision(GameObject other)
