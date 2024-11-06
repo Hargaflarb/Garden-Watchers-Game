@@ -26,7 +26,7 @@ namespace Garden_Watchers
         public static List<GameObject> AddedObjects { get => addedObjects; set => addedObjects = value; }
 
         public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
-        private static GameWorld TheGameWorld { get; set; }
+        public static GameWorld TheGameWorld { get; set; }
         internal Player Player { get => player; private set => player = value; }
 
 #if DEBUG
