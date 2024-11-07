@@ -16,7 +16,7 @@ namespace Garden_Watchers
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
         private Player player;
-        
+        private Texture2D background;
 
 #if DEBUG
         private Texture2D hitboxPixel;
@@ -63,7 +63,8 @@ namespace Garden_Watchers
         { 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
-            
+            background = Content.Load<Texture2D>("dirt");
+
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -146,7 +147,10 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
-            _spriteBatch.DrawString(textFont, "Health: " + Player.Health, Vector2.Zero, Color.Black);
+
+            _spriteBatch.Draw(background, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.Orange);
+
+            
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -154,6 +158,7 @@ namespace Garden_Watchers
             }
 
             
+            _spriteBatch.DrawString(textFont, "Health: " + Player.Health, Vector2.Zero, Color.Black);
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
