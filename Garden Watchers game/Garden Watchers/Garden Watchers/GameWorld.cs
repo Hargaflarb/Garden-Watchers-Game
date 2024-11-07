@@ -57,7 +57,8 @@ namespace Garden_Watchers
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             GameObjects = new List<GameObject>() { Player, tempObstacle };
 
-
+            GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
+            GameObjects.Add(gnome);
             
 
             RemovedObjects = new List<GameObject>();
