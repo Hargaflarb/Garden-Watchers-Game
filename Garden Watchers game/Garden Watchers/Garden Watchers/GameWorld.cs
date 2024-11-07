@@ -17,6 +17,7 @@ namespace Garden_Watchers
         private static Vector2 screenSize;
         private Player player;
         private Texture2D background;
+        
 
 #if DEBUG
         private Texture2D hitboxPixel;
@@ -150,7 +151,6 @@ namespace Garden_Watchers
 
             _spriteBatch.Draw(background, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.Orange);
 
-            
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -158,7 +158,8 @@ namespace Garden_Watchers
             }
 
             
-            _spriteBatch.DrawString(textFont, "Health: " + Player.Health, Vector2.Zero, Color.Black);
+            // is UI so do after other stuff.
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
