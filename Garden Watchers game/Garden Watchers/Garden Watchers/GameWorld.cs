@@ -17,15 +17,21 @@ namespace Garden_Watchers
         private static Vector2 screenSize;
         private Player player;
         
+        private static Vector2 playerLocation;
+
+        //Properties
+        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
+        public static List<GameObject> GameObjects { get => gameObjects; set => gameObjects = value; }
+        public static List<GameObject> RemovedObjects { get => removedObjects; set => removedObjects = value; }
+        public static List<GameObject> AddedObjects { get => addedObjects; set => addedObjects = value; }
+
+        public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
+        public static GameWorld TheGameWorld { get; set; }
+        internal Player Player { get => player; private set => player = value; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
-
-
-        //Properties
-        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
-        private static GameWorld TheGameWorld { get; set; }
 
 
 
@@ -47,24 +53,26 @@ namespace Garden_Watchers
             ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
-            player = new Player(10, playerPosition, 500);
+            Player = new Player(10, playerPosition, 500);
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
-            gameObjects = new List<GameObject>() { player, tempObstacle };
-
-            removedObjects = new List<GameObject>();
-            addedObjects = new List<GameObject>();
+            GameObjects = new List<GameObject>() { Player, tempObstacle };
 
 
+            
+
+            RemovedObjects = new List<GameObject>();
+            AddedObjects = new List<GameObject>();
+            Map.GoToRoom(0,0);
             base.Initialize();
         }
 
         protected override void LoadContent()
-        {
+        { 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
             
 
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.LoadContent(Content);
             }
@@ -83,27 +91,28 @@ namespace Garden_Watchers
                 Exit();
 
             // game object update
-            
-            foreach (GameObject gameObject in gameObjects)
+            Vector2 screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
 
-                foreach (GameObject other in gameObjects)
+                foreach (GameObject other in GameObjects)
                 {
                     gameObject.CheckCollision(other);
                 }
             }
 
             // remove game objects
-            foreach (GameObject removedObject in removedObjects)
+            foreach (GameObject removedObject in RemovedObjects)
             {
-                gameObjects.Remove(removedObject);
+                GameObjects.Remove(removedObject);
             }
-            removedObjects.Clear();
+            RemovedObjects.Clear();
 
             // add game objects
-            gameObjects.AddRange(addedObjects);
-            addedObjects.Clear();
+            GameObjects.AddRange(AddedObjects);
+            AddedObjects.Clear();
+
 
 
 
@@ -114,6 +123,22 @@ namespace Garden_Watchers
         public static void KillObject(GameObject gameObject)
         {
             removedObjects.Add(gameObject);
+        }
+
+        public static void KillAllObjects()
+        {
+            foreach (GameObject theObject in gameObjects)
+            {
+                if (!(theObject is Player))
+                {
+                    removedObjects.Add(theObject);
+                }
+            }
+        }
+
+        public static void AddObjects(List<GameObject> gameObjects)
+        {
+            addedObjects.AddRange(gameObjects);
         }
 
         public static void MakeObject(GameObject gameObject)
@@ -130,16 +155,18 @@ namespace Garden_Watchers
             _spriteBatch.Begin();
 
 
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
-
             
+            
+            // is UI so do after other stuff.
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 Rectangle hitBox = gameObject.Hitbox;
                 Rectangle topline = new Rectangle(hitBox.X, hitBox.Y, hitBox.Width, 1);
@@ -158,7 +185,7 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
-            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
+
 
 
             _spriteBatch.End();
