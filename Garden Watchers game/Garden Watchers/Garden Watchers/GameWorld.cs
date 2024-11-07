@@ -26,12 +26,12 @@ namespace Garden_Watchers
         public static List<GameObject> AddedObjects { get => addedObjects; set => addedObjects = value; }
 
         public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
-        private static GameWorld TheGameWorld { get; set; }
+        public static GameWorld TheGameWorld { get; set; }
+        internal Player Player { get => player; private set => player = value; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
-
 
 
 
@@ -53,20 +53,21 @@ namespace Garden_Watchers
             ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
-            player = new Player(10, playerPosition, 500);
-            PlayerCharacterPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
+            Player = new Player(10, playerPosition, 500);
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
-            GameObjects = new List<GameObject>() { player, tempObstacle };
+            GameObjects = new List<GameObject>() { Player, tempObstacle };
 
+
+            
 
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
-            
+            Map.GoToRoom(0,0);
             base.Initialize();
         }
 
         protected override void LoadContent()
-        {
+        { 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
             
@@ -95,7 +96,7 @@ namespace Garden_Watchers
             {
                 gameObject.Update(gameTime, screenSize);
 
-                foreach (GameObject other in gameObjects)
+                foreach (GameObject other in GameObjects)
                 {
                     gameObject.CheckCollision(other);
                 }
@@ -115,12 +116,29 @@ namespace Garden_Watchers
 
 
 
+
             base.Update(gameTime);
         }
 
         public static void KillObject(GameObject gameObject)
         {
             removedObjects.Add(gameObject);
+        }
+
+        public static void KillAllObjects()
+        {
+            foreach (GameObject theObject in gameObjects)
+            {
+                if (!(theObject is Player))
+                {
+                    removedObjects.Add(theObject);
+                }
+            }
+        }
+
+        public static void AddObjects(List<GameObject> gameObjects)
+        {
+            addedObjects.AddRange(gameObjects);
         }
 
         public static void MakeObject(GameObject gameObject)
@@ -136,14 +154,15 @@ namespace Garden_Watchers
 
             _spriteBatch.Begin();
 
-            _spriteBatch.DrawString(textFont, "Health: " + player.Health, Vector2.Zero, Color.Black);
 
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
-
             
+            
+            // is UI so do after other stuff.
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
@@ -166,6 +185,7 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
+
 
 
             _spriteBatch.End();
