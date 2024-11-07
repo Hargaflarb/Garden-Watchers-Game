@@ -31,12 +31,12 @@ namespace Garden_Watchers
                 if (playerAttack && other is Enemy)
                 {
                     //that enemy takes damage
-                    GameWorld.RemovedObjects.Add(this);
+                    
                 }
                 else if (!playerAttack && other is Player) 
                 {
                     //Player takes damage
-                    GameWorld.RemovedObjects.Add(this);
+                    
                 }
             }
         }
