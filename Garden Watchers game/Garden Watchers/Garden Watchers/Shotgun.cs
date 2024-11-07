@@ -18,6 +18,7 @@ namespace Garden_Watchers
         private int maxBullets=6;
         private float timeBetweenBullets = 0.2f;
         private float timer;
+        private static bool inUse = true;
         public Shotgun(int bullets, Vector2 position,bool pickedUp) : base()
         {
             projectiles = true;    
@@ -25,6 +26,7 @@ namespace Garden_Watchers
             this.position = position;
             this.pickedUp = pickedUp;            
         }
+
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {

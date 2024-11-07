@@ -12,7 +12,7 @@ namespace Garden_Watchers
     internal class MeleeAttack:GameObject
     {
         private Vector2 direction;
-        private float swipeTime=0.3f;
+        private float swipeTime=0.2f;
         private bool playerAttack;
         private float timePassed = 0;
         public MeleeAttack(Texture2D sprite,Vector2 position, Vector2 direction, bool playerAttack)
@@ -31,12 +31,12 @@ namespace Garden_Watchers
                 if (playerAttack && other is Enemy)
                 {
                     //that enemy takes damage
-                    GameWorld.RemovedObjects.Add(this);
+                    
                 }
                 else if (!playerAttack && other is Player) 
                 {
                     //Player takes damage
-                    GameWorld.RemovedObjects.Add(this);
+                    
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace Garden_Watchers
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             base.Update(gameTime, screenSize);
-            timePassed += gameTime.ElapsedGameTime.Milliseconds;
+            timePassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (timePassed>=swipeTime)
             {
                 GameWorld.RemovedObjects.Add(this);
