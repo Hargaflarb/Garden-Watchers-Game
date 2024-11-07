@@ -35,7 +35,7 @@ namespace Garden_Watchers
             if (true)
             {
                 Vector2 direction = new Vector2(position.X + (Mouse.GetState().Position.X - (GameWorld.ScreenSize.X / 2)), position.Y + (Mouse.GetState().Position.Y - (GameWorld.ScreenSize.Y / 2)));
-                MeleeAttack attack = new MeleeAttack(attackSprite, GameWorld.PlayerCharacterPosition, direction, true);
+                MeleeAttack attack = new MeleeAttack(attackSprite, GameWorld.PlayerCharacterPosition, direction, true,timeBetweenAttacks);
                 GameWorld.AddedObjects.Add(attack);
                 //timer = 0;
             }

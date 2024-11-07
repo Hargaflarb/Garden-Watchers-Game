@@ -14,7 +14,7 @@ namespace Garden_Watchers
         private Rectangle hitbox;
         protected Vector2 position;
         protected Vector2 origin;
-        
+        protected float rotation;
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -106,7 +106,10 @@ namespace Garden_Watchers
         /// <param name="content"></param>
         public virtual void LoadContent(ContentManager content)
         {
+            origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
+            //hitbox does not currently change with rotation
             Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
+            
         }
 
 
@@ -126,9 +129,8 @@ namespace Garden_Watchers
         /// </summary>
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
-        {
-           
-                spriteBatch.Draw(sprite, Hitbox, null, Color.White, 0, origin = Vector2.Zero, SpriteEffects.None, 1);
+        {           
+            spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin,1, SpriteEffects.None, 1);
         }
 
     }
