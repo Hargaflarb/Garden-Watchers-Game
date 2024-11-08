@@ -30,11 +30,6 @@ namespace Garden_Watchers
             set { position = value; Hitbox = new Rectangle((int)value.X - (Hitbox.Width / 2), (int)value.Y - (Hitbox.Height / 2), Hitbox.Width, Hitbox.Height); }
         }
 
-        public GameObject()
-        {
-          
-        }
-
         //Methods
 
         public void CheckCollision(GameObject other)
@@ -132,8 +127,8 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, Hitbox, null, Color.White, 0, origin = Vector2.Zero, SpriteEffects.None, 1);
-            
+           
+                spriteBatch.Draw(sprite, Hitbox, null, Color.White, 0, origin = Vector2.Zero, SpriteEffects.None, 1);
         }
 
     }
