@@ -60,6 +60,9 @@ namespace Garden_Watchers
 
             GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
             GameObjects.Add(gnome);
+
+            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
+            GameObjects.Add(flamingo);
             
 
             RemovedObjects = new List<GameObject>();
