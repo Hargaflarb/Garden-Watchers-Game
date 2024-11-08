@@ -173,7 +173,7 @@ namespace Garden_Watchers
 
             
             // is UI so do after other stuff.
-            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
+            _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Red);
 
 #if DEBUG
             // draw the hitbox and position of every gameObject
