@@ -133,5 +133,9 @@ namespace Garden_Watchers
             spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin,1, SpriteEffects.None, 1);
         }
 
+        public virtual void TakeDamage(int damage)
+        {
+            //this is empty on purpose, as to not activate on non-characters
+        }
     }
 }

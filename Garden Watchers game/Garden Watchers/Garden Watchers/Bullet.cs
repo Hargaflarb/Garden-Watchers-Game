@@ -34,16 +34,11 @@ namespace Garden_Watchers
         {
             if(other is Character)
             {
-                if (playerBullet && other is Enemy)
+                if ((playerBullet && other is Enemy)||(!playerBullet && other is Player))
                 {
-                    //that enemy takes damage
-                    //add this to list of objects to be destroyed
+                    other.TakeDamage(damage);
+                    GameWorld.KillObject(this);
                 }
-                else if (!playerBullet && other is Player) 
-                {
-                    //Player takes damage
-                    //add this to list of objects to be destroyed
-                }                
             }
         }
     }

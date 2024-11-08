@@ -51,7 +51,23 @@ namespace Garden_Watchers
             Position += ((velocity * speed) * deltaTime);
         }
 
-
+        public override void TakeDamage(int damage)
+        {
+            Health -= damage;
+            if (Health <= 0) 
+            { 
+                if (this is Enemy)
+                {
+                    //death animation?
+                    GameWorld.KillObject(this);
+                }
+                else
+                {
+                    //Game Over sequence
+                    GameWorld.KillObject(this);
+                }
+            }
+        }
 
     }
 }

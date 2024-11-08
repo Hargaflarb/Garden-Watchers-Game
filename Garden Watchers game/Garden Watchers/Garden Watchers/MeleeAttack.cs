@@ -16,6 +16,7 @@ namespace Garden_Watchers
         private float swipeTime=0.2f;
         private bool playerAttack;
         private float timePassed = 0;
+        private int damage = 4;
         public MeleeAttack(Texture2D sprite,Vector2 position, Vector2 direction, bool playerAttack,float rotation)
         {
             this.sprite = sprite;
@@ -31,15 +32,9 @@ namespace Garden_Watchers
         {
             if(other is Character)
             {
-                if (playerAttack && other is Enemy)
+                if ((playerAttack && other is Enemy) || (!playerAttack && other is Player))
                 {
-                    //that enemy takes damage
-                    
-                }
-                else if (!playerAttack && other is Player) 
-                {
-                    //Player takes damage
-                    
+                    other.TakeDamage(damage);
                 }
             }
         }
