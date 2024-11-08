@@ -11,7 +11,12 @@ namespace Garden_Watchers
 {
     internal class Flamingo : Enemy, IChase
     {
-        // *boom!*
+        //Field
+        private float timer;
+        private bool timerStarted = false;
+        private bool explode = false;
+        private int damage = 10;
+
         public Flamingo(int health, Vector2 position, float speed) : base(health, position, speed)
         {
         }
@@ -46,6 +51,20 @@ namespace Garden_Watchers
             if (pythagorasDistance <= 150)
             {
                 speed = 0;
+                timerStarted = true;
+                explode = true;
+            }
+
+            if (explode == true)
+            {
+                if (timer >= 2)
+                {
+                    GameWorld.KillObject(this);
+                    Explosion explosion = new Explosion(this.position);
+                    GameWorld.MakeObject(explosion);
+                }
+                
+                
             }
         }
 
@@ -53,6 +72,11 @@ namespace Garden_Watchers
         {
             Chase();
             Explode();
+
+            if (timerStarted)
+            {
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             base.Update(gameTime, screenSize);
         }
 
