@@ -69,9 +69,9 @@ namespace Garden_Watchers
         }
 
 
-        public static void GoToRoom(int x, int y)
+        public static void GoToRoom(int x, int y, bool saveRoom = true)
         {
-            if (x != 0 & y != 0)
+            if (saveRoom)
             {
                 shownRoom.SaveRoomObjects(GameWorld.GameObjects);
             }
@@ -82,7 +82,7 @@ namespace Garden_Watchers
             }
             shownRoom = rooms[new Vector2(x, y)];
 
-            shownRoom.WriteRoomObjects();
+            shownRoom.WriteRoomObjects(saveRoom);
         }
 
 

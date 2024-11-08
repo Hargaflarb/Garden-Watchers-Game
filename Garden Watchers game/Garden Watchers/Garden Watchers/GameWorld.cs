@@ -64,7 +64,7 @@ namespace Garden_Watchers
 
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
-            Map.GoToRoom(0,0);
+            Map.GoToRoom(0,0, false);
             base.Initialize();
         }
 
