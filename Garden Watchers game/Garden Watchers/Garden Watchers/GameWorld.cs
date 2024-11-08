@@ -16,6 +16,7 @@ namespace Garden_Watchers
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
         private Player player;
+        private Texture2D background;
         
         private static Vector2 playerLocation;
 
@@ -57,7 +58,8 @@ namespace Garden_Watchers
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             GameObjects = new List<GameObject>() { Player, tempObstacle };
 
-
+            GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
+            GameObjects.Add(gnome);
             
 
             RemovedObjects = new List<GameObject>();
@@ -70,7 +72,8 @@ namespace Garden_Watchers
         { 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
-            
+            background = Content.Load<Texture2D>("dirt");
+
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -155,11 +158,16 @@ namespace Garden_Watchers
             _spriteBatch.Begin();
 
 
+
+            _spriteBatch.Draw(background, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.Orange);
+
+
+
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
-            
+
             
             // is UI so do after other stuff.
             _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Black);
@@ -185,7 +193,6 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
-
 
 
             _spriteBatch.End();
