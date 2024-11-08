@@ -15,6 +15,7 @@ namespace Garden_Watchers
         private float bulletRate = 0.4f;
         private bool fleeing = false;
         private float movementSpeed;
+        private float bulletTimer;
         public Fairy(int health, Vector2 position, float speed) : base(health, position, speed)
         {
             movementSpeed = speed;
@@ -31,7 +32,9 @@ namespace Garden_Watchers
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
+            bulletTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             FindPlayer();
+            Shoot();
             base.Update(gameTime, screenSize);
         }
 
@@ -59,6 +62,21 @@ namespace Garden_Watchers
             else
             {
                 speed = 0;
+            }
+        }
+
+        public void Shoot()
+        {
+            if (bulletTimer >= bulletRate)
+            {
+                Vector2 direction = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
+                double directionSum = Math.Atan2(direction.Y, direction.X);
+                float XDirection = (float)Math.Cos(directionSum);
+                float YDirection = (float)Math.Sin(directionSum);
+                direction = new Vector2(XDirection, YDirection);
+                Bullet newBullet = new Bullet(bulletSprite, position, direction, false, (float)directionSum,200);
+                GameWorld.AddedObjects.Add(newBullet);
+                bulletTimer = 0;
             }
         }
     }

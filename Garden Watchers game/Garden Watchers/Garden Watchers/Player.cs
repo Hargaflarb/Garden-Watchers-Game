@@ -152,7 +152,7 @@ namespace Garden_Watchers
                     float XDirection = (float)Math.Cos(directionSum);
                     float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
-                    Bullet newBullet = new Bullet(bulletSprite, position, direction, true, (float)directionSum);
+                    Bullet newBullet = new Bullet(bulletSprite, position, direction, true, (float)directionSum,200);
                     GameWorld.AddedObjects.Add(newBullet);
                     timer = 0;
                     bullets--;
