@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Garden_Watchers
 {
@@ -15,12 +16,15 @@ namespace Garden_Watchers
         private float swipeTime=0.2f;
         private bool playerAttack;
         private float timePassed = 0;
-        public MeleeAttack(Texture2D sprite,Vector2 position, Vector2 direction, bool playerAttack)
+        private int damage = 4;
+        public MeleeAttack(Texture2D sprite,Vector2 position, Vector2 direction, bool playerAttack,float rotation)
         {
             this.sprite = sprite;
             Position = position;
             this.direction = direction;
             this.playerAttack = playerAttack;
+            this.rotation = rotation - 90;
+            origin=new Vector2(sprite.Width/2,sprite.Height/2);
             Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
 
@@ -28,15 +32,9 @@ namespace Garden_Watchers
         {
             if(other is Character)
             {
-                if (playerAttack && other is Enemy)
+                if ((playerAttack && other is Enemy) || (!playerAttack && other is Player))
                 {
-                    //that enemy takes damage
-                    
-                }
-                else if (!playerAttack && other is Player) 
-                {
-                    //Player takes damage
-                    
+                    other.TakeDamage(damage);
                 }
             }
         }
