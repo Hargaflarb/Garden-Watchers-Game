@@ -18,6 +18,7 @@ namespace Garden_Watchers
         protected float invincibilityFrames = 0.3f;
         protected float invincibilityTimer;
         protected bool takingDamage = false;
+        protected Vector2 velocity;
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -34,7 +35,6 @@ namespace Garden_Watchers
         }    
 
         //Methods
-
         public void CheckCollision(GameObject other)
         {
             if (Hitbox.Intersects(other.Hitbox))
@@ -42,7 +42,6 @@ namespace Garden_Watchers
                 OnCollision(other);
             }
         }
-
 
         /// <summary>
         /// Runs when GameObject is colliding with something else
@@ -65,11 +64,13 @@ namespace Garden_Watchers
         /// <returns></returns>
         public virtual Vector2 CheckOutOfBounds(Vector2 screenSize, Vector2 vector)
         {
+            bool hitWall = false;
             float X = vector.X;
             float Y = vector.Y;
             if (vector.Y > screenSize.Y - Hitbox.Height / 2)
             {
                 Y = screenSize.Y - Hitbox.Height / 2;
+                hitWall = true;
                 if(this is Bullet)
                 {
                     GameWorld.KillObject(this);
@@ -78,6 +79,7 @@ namespace Garden_Watchers
             else if (vector.Y < 0 + Hitbox.Height / 2)
             {
                 Y = 0 + Hitbox.Height / 2;
+                hitWall = true;
                 if (this is Bullet)
                 {
                     GameWorld.KillObject(this);
@@ -87,6 +89,7 @@ namespace Garden_Watchers
             if (vector.X > screenSize.X - Hitbox.Width / 2)
             {
                 X = screenSize.X - Hitbox.Width / 2;
+                hitWall = true;
                 if (this is Bullet)
                 {
                     GameWorld.KillObject(this);
@@ -95,12 +98,16 @@ namespace Garden_Watchers
             else if (vector.X < 0 + Hitbox.Width / 2)
             {
                 X = 0 + Hitbox.Width / 2;
+                hitWall = true;
                 if (this is Bullet)
                 {
                     GameWorld.KillObject(this);
                 }
             }
-
+            if (hitWall)
+            {
+                velocity = Vector2.Zero;
+            }
             return new Vector2(X, Y);
         }
         /// <summary>

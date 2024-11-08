@@ -84,7 +84,7 @@ namespace Garden_Watchers
             // world board check
             base.Update(gameTime, screenSize);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            GameWorld.PlayerCharacterPosition= Position;
+            GameWorld.PlayerCharacterPosition= position;
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;   
             buttonTimer+= (float)gameTime.ElapsedGameTime.TotalSeconds;
             mouseState =Mouse.GetState();
