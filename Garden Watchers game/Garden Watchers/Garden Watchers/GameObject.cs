@@ -15,6 +15,9 @@ namespace Garden_Watchers
         protected Vector2 position;
         protected Vector2 origin;
         protected float rotation;
+        protected float invincibilityFrames = 0.3f;
+        protected float invincibilityTimer;
+        protected bool takingDamage = false;
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -28,7 +31,7 @@ namespace Garden_Watchers
         {
             get => position;
             set { position = value; Hitbox = new Rectangle((int)value.X - (Hitbox.Width / 2), (int)value.Y - (Hitbox.Height / 2), Hitbox.Width, Hitbox.Height); }
-        }
+        }    
 
         //Methods
 
@@ -121,7 +124,12 @@ namespace Garden_Watchers
         public virtual void Update(GameTime gameTime, Vector2 screenSize)
         {
             Position = CheckOutOfBounds(screenSize, Position);
-            
+            invincibilityTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (invincibilityTimer > invincibilityFrames)
+            {
+                takingDamage = false;
+            }
         }
 
         /// <summary>
@@ -129,8 +137,15 @@ namespace Garden_Watchers
         /// </summary>
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
-        {           
-            spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin,1, SpriteEffects.None, 1);
+        {
+            if (takingDamage)
+            {
+                spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, 1, SpriteEffects.None, 1);
+            }
+            else
+            {
+                spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, 1, SpriteEffects.None, 1);
+            }            
         }
 
         public virtual void TakeDamage(int damage)
