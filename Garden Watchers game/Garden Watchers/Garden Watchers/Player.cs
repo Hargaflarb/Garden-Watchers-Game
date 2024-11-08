@@ -148,11 +148,11 @@ namespace Garden_Watchers
                 if (bullets > 0 && timer >= timeBetweenBullets)
                 {
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
-                    double test = Math.Atan2(direction.Y, direction.X);
-                    float XDirection = (float)Math.Cos(test);
-                    float YDirection = (float)Math.Sin(test);
+                    double directionSum = Math.Atan2(direction.Y, direction.X);
+                    float XDirection = (float)Math.Cos(directionSum);
+                    float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
-                    Bullet newBullet = new Bullet(bulletSprite, GameWorld.PlayerCharacterPosition, direction, true);
+                    Bullet newBullet = new Bullet(bulletSprite, position, direction, true, (float)directionSum);
                     GameWorld.AddedObjects.Add(newBullet);
                     timer = 0;
                     bullets--;
@@ -163,15 +163,15 @@ namespace Garden_Watchers
                 if (timer >= timeBetweenAttacks)
                 {
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
-                    double test = Math.Atan2(direction.Y, direction.X);
-                    float XDirection = (float)Math.Cos(test);
-                    float YDirection = (float)Math.Sin(test);
+                    double directionSum = Math.Atan2(direction.Y, direction.X);
+                    float XDirection = (float)Math.Cos(directionSum);
+                    float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
                     Vector2 spawnpoint = new Vector2();
                     spawnpoint.Y = position.Y+(direction.Y * sprite.Height);
                     spawnpoint.X = position.X+(direction.X * sprite.Width);
                    
-                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true);
+                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true,(float)directionSum);
                     GameWorld.AddedObjects.Add(attack);
                     timer = 0;
                 }
