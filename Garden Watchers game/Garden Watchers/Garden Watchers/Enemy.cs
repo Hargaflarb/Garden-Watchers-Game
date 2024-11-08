@@ -23,7 +23,7 @@ namespace Garden_Watchers
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
-            
+            base.LoadContent(content);
         }
 
         /// <summary>
@@ -33,14 +33,11 @@ namespace Garden_Watchers
         /// <param name="screenSize"></param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
-           
-
+            Move(gameTime, screenSize);
+            
             base.Update(gameTime, screenSize);
         }
 
-        public void DetectPlayer(Vector2 playerPosition, Vector2 enemyPosition)
-        {
-
-        }
+        
     }
 }

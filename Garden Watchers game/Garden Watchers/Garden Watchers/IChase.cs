@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Garden_Watchers
 {
-    internal class Fairy : Enemy
+    internal interface IChase
     {
-        public Fairy(int health, Vector2 position, float speed) : base(health, position, speed)
-        {
-        }
+        void Chase();
     }
 }

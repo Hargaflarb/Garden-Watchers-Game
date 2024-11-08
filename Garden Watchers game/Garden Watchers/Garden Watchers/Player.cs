@@ -5,14 +5,33 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Garden_Watchers
 {
-    internal class Player : Character
+    public class Player : Character
     {
+        //gun things
+        private int bullets;
+        private int maxBullets = 6;
+        private float timeBetweenBullets = 0.2f;
+        private Texture2D bulletSprite;
+        //chainsaw things
+        private Texture2D meleeSprite;
+        private float timeBetweenAttacks = 0.5f;
 
+        //which weapon is in use
+        private bool usingGun = true;
+
+        private float timer;
+
+        MouseState mouseState;
+
+        private float buttonCooldown = 0.3f;
+        private float buttonTimer;
 
         //Constructor
 
@@ -26,6 +45,8 @@ namespace Garden_Watchers
             Health = health;
             Position = position;
             this.speed = speed;
+            bullets = 2;
+            GameWorld.PlayerCharacterPosition = Position;
         }
 
         //Methods
@@ -40,10 +61,12 @@ namespace Garden_Watchers
 
             for (int i = 0; i < sprites.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>("temp_playercharacter");
+                sprites[i] = content.Load<Texture2D>("temp playercharacter");
             }
             sprite = sprites[0];
 
+            bulletSprite = content.Load<Texture2D>("laserRed08");
+            meleeSprite = content.Load<Texture2D>("tempSwipe");
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
@@ -58,9 +81,13 @@ namespace Garden_Watchers
         {
             HandleInput();
             Move(gameTime, screenSize);
-
             // world board check
             base.Update(gameTime, screenSize);
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            GameWorld.PlayerCharacterPosition= Position;
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;   
+            buttonTimer+= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            mouseState =Mouse.GetState();
         }
 
         /// <summary>
@@ -92,10 +119,69 @@ namespace Garden_Watchers
                 velocity += new Vector2(+1, 0);
             }
 
+            if (keyState.IsKeyDown(Keys.Q)&&buttonTimer>=buttonCooldown)
+            {
+                usingGun = !usingGun;
+                buttonTimer = 0;
+            }
+
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                UseWeapon();
+            }
+
+            if (keyState.IsKeyDown(Keys.R))
+            {
+                Reload();
+            }
+
             if (velocity != Vector2.Zero)
             {
                 velocity.Normalize();
             }
         } 
+
+        private void UseWeapon()
+        {
+            if (usingGun)
+            {
+                if (bullets > 0 && timer >= timeBetweenBullets)
+                {
+                    Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
+                    double test = Math.Atan2(direction.Y, direction.X);
+                    float XDirection = (float)Math.Cos(test);
+                    float YDirection = (float)Math.Sin(test);
+                    direction = new Vector2(XDirection, YDirection);
+                    Bullet newBullet = new Bullet(bulletSprite, GameWorld.PlayerCharacterPosition, direction, true);
+                    GameWorld.AddedObjects.Add(newBullet);
+                    timer = 0;
+                    bullets--;
+                }
+            }
+            else
+            {
+                if (timer >= timeBetweenAttacks)
+                {
+                    Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
+                    double test = Math.Atan2(direction.Y, direction.X);
+                    float XDirection = (float)Math.Cos(test);
+                    float YDirection = (float)Math.Sin(test);
+                    direction = new Vector2(XDirection, YDirection);
+                    Vector2 spawnpoint = new Vector2();
+                    spawnpoint.Y = position.Y+(direction.Y * sprite.Height);
+                    spawnpoint.X = position.X+(direction.X * sprite.Width);
+                   
+                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true);
+                    GameWorld.AddedObjects.Add(attack);
+                    timer = 0;
+                }
+            }
+        }
+
+        private void Reload()
+        {
+            bullets = maxBullets;
+            //time to reload?
+        }
     }
 }

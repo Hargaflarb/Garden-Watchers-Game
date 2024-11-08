@@ -18,17 +18,23 @@ namespace Garden_Watchers
         private Player player;
         private Texture2D background;
         
+        private static Vector2 playerLocation;
+
+        //Properties
+        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
+        public static List<GameObject> GameObjects { get => gameObjects; set => gameObjects = value; }
+        public static List<GameObject> RemovedObjects { get => removedObjects; set => removedObjects = value; }
+        public static List<GameObject> AddedObjects { get => addedObjects; set => addedObjects = value; }
+
+        public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
+        public static GameWorld TheGameWorld { get; set; }
+        internal Player Player { get => player; private set => player = value; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
 
 
-        //Properties
-        public static Vector2 ScreenSize { get => screenSize; set => screenSize = value; }
-        public static GameWorld TheGameWorld { get; set; }
-        public static List<GameObject> GameObjects { get => gameObjects; private set => gameObjects = value; }
-        internal Player Player { get => player; private set => player = value; }
 
         public GameWorld()
         {
@@ -52,11 +58,13 @@ namespace Garden_Watchers
             GameObject tempObstacle = new Obstacle(new Vector2(200,200));
             GameObjects = new List<GameObject>() { Player, tempObstacle };
 
-            removedObjects = new List<GameObject>();
-            addedObjects = new List<GameObject>();
+            GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
+            GameObjects.Add(gnome);
+            
 
+            RemovedObjects = new List<GameObject>();
+            AddedObjects = new List<GameObject>();
             Map.GoToRoom(0,0);
-
             base.Initialize();
         }
 
@@ -86,7 +94,7 @@ namespace Garden_Watchers
                 Exit();
 
             // game object update
-            
+            Vector2 screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(gameTime, screenSize);
@@ -98,15 +106,16 @@ namespace Garden_Watchers
             }
 
             // remove game objects
-            foreach (GameObject removedObject in removedObjects)
+            foreach (GameObject removedObject in RemovedObjects)
             {
                 GameObjects.Remove(removedObject);
             }
-            removedObjects.Clear();
+            RemovedObjects.Clear();
 
             // add game objects
-            GameObjects.AddRange(addedObjects);
-            addedObjects.Clear();
+            GameObjects.AddRange(AddedObjects);
+            AddedObjects.Clear();
+
 
 
 
@@ -149,7 +158,9 @@ namespace Garden_Watchers
             _spriteBatch.Begin();
 
 
+
             _spriteBatch.Draw(background, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.Orange);
+
 
 
             foreach (GameObject gameObject in GameObjects)
