@@ -84,7 +84,7 @@ namespace Garden_Watchers
             // world board check
             base.Update(gameTime, screenSize);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            GameWorld.PlayerCharacterPosition= Position;
+            GameWorld.PlayerCharacterPosition= position;
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;   
             buttonTimer+= (float)gameTime.ElapsedGameTime.TotalSeconds;
             mouseState =Mouse.GetState();
@@ -152,7 +152,7 @@ namespace Garden_Watchers
                     float XDirection = (float)Math.Cos(directionSum);
                     float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
-                    Bullet newBullet = new Bullet(bulletSprite, position, direction, true, (float)directionSum);
+                    Bullet newBullet = new Bullet(bulletSprite, position, direction, true, (float)directionSum,200);
                     GameWorld.AddedObjects.Add(newBullet);
                     timer = 0;
                     bullets--;
