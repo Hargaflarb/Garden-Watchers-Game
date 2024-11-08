@@ -16,7 +16,6 @@ namespace Garden_Watchers
         protected float speed;
         private int health;
 
-
         //Properties
         public int Health 
         { 
@@ -53,20 +52,26 @@ namespace Garden_Watchers
 
         public override void TakeDamage(int damage)
         {
-            Health -= damage;
-            if (Health <= 0) 
-            { 
-                if (this is Enemy)
+            if (invincibilityTimer >= invincibilityFrames)
+            {
+                Health -= damage;
+                invincibilityTimer = 0;
+                takingDamage = true;
+                if (Health <= 0)
                 {
-                    //death animation?
-                    GameWorld.KillObject(this);
-                }
-                else
-                {
-                    //Game Over sequence
-                    GameWorld.KillObject(this);
+                    if (this is Enemy)
+                    {
+                        //death animation?
+                        GameWorld.KillObject(this);
+                    }
+                    else
+                    {
+                        //Game Over sequence
+                        GameWorld.KillObject(this);
+                    }
                 }
             }
+            
         }
 
     }

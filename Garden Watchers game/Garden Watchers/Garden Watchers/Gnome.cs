@@ -14,6 +14,7 @@ namespace Garden_Watchers
         //Fields
         private bool charging;
         private float cooldown;
+        private int damage = 2;
             
         public Gnome(int health, Vector2 position, float speed) : base(health, position, speed)
         {
@@ -81,6 +82,7 @@ namespace Garden_Watchers
                 velocity = Vector2.Zero;
                 speed = 250;
                 charging = false;
+                other.TakeDamage(damage);
             }
         }
     }
