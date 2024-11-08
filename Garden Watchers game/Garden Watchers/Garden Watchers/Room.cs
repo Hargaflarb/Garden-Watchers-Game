@@ -60,7 +60,7 @@ namespace Garden_Watchers
             }
             else
             {
-                if (random.Next(0, 3) == 1)
+                if (random.Next(0, 1) == 0)
                 {
                     MakeDoor((int)coordinates.X, (int)coordinates.Y + 1, Direction.Up);
                 }
@@ -72,7 +72,7 @@ namespace Garden_Watchers
             }
             else
             {
-                if (random.Next(0, 3) == 1)
+                if (random.Next(0, 4) == 1)
                 {
                     MakeDoor((int)coordinates.X, (int)coordinates.Y - 1, Direction.Down);
                 }
@@ -86,7 +86,7 @@ namespace Garden_Watchers
             {
                 if (random.Next(0, 3) == 1)
                 {
-                    MakeDoor((int)coordinates.X, (int)coordinates.Y - 1, Direction.Down);
+                    MakeDoor((int)coordinates.X + 1, (int)coordinates.Y, Direction.Right);
                 }
             }
 
@@ -137,12 +137,19 @@ namespace Garden_Watchers
 
         public void SaveRoomObjects(List<GameObject> gameObjects)
         {
-            roomObjects = gameObjects;
+            roomObjects.Clear();
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (gameObject is not Player)
+                {
+                    roomObjects.Add(gameObject);
+                }
+            }
         }
 
-        public void WriteRoomObjects()
+        public void WriteRoomObjects(bool killPrevious)
         {
-            if (coordinates != new Vector2(0, 0))
+            if (killPrevious)
             {
                 GameWorld.KillAllObjects();
             }

@@ -65,7 +65,7 @@ namespace Garden_Watchers
 
         public override void OnCollision(GameObject other)
         {
-            if (other != this)
+            if (other != this & other is Player)
             {
                 Vector2 size = GameWorld.ScreenSize;
                 GameWorld.TheGameWorld.Player.Position = new Vector2(size.X / 2, size.Y / 2);
