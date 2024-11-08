@@ -20,6 +20,54 @@ namespace Garden_Watchers
             rooms = new Dictionary<Vector2, Room>();
         }
 
+        /// <summary>
+        /// Finds the directions of doors in adjacent room, and is used to find out wether or not to place a door.
+        /// </summary>
+        /// <param name="roomCoordinates">The coordinates of the room whose adjacent rooms are search.</param>
+        /// <returns>The directions in which there are door.</returns>
+        public static Direction GetSurroundingDoors(Vector2 roomCoordinates)
+        {
+            Direction directions = Direction.None;
+
+            // up
+            if (rooms.ContainsKey(new Vector2(roomCoordinates.X, roomCoordinates.Y + 1)))
+            {
+                if (rooms[new Vector2(roomCoordinates.X, roomCoordinates.Y + 1)].HasOppositeDirection(Direction.Up))
+                {
+                    directions += (int)Direction.Up;
+                }
+            }
+
+            // down
+            if (rooms.ContainsKey(new Vector2(roomCoordinates.X, roomCoordinates.Y - 1)))
+            {
+                if (rooms[new Vector2(roomCoordinates.X, roomCoordinates.Y - 1)].HasOppositeDirection(Direction.Down))
+                {
+                    directions += (int)Direction.Down;
+                }
+            }
+
+            // right
+            if (rooms.ContainsKey(new Vector2(roomCoordinates.X + 1, roomCoordinates.Y)))
+            {
+                if (rooms[new Vector2(roomCoordinates.X + 1, roomCoordinates.Y)].HasOppositeDirection(Direction.Right))
+                {
+                    directions += (int)Direction.Right;
+                }
+            }
+
+            // left
+            if (rooms.ContainsKey(new Vector2(roomCoordinates.X - 1, roomCoordinates.Y)))
+            {
+                if (rooms[new Vector2(roomCoordinates.X - 1, roomCoordinates.Y)].HasOppositeDirection(Direction.Left))
+                {
+                    directions += (int)Direction.Left;
+                }
+            }
+
+            return directions;
+        }
+
 
         public static void GoToRoom(int x, int y)
         {
