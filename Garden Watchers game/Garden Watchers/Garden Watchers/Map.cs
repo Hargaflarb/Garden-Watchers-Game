@@ -73,6 +73,11 @@ namespace Garden_Watchers
 
         public static void GoToRoom(int x, int y, Direction comingFrom, bool saveRoom = true)
         {
+            if (RoomCount == 12)
+            {
+                GameWorld.YouWon();
+            }
+
             if (saveRoom)
             {
                 shownRoom.SaveRoomObjects(GameWorld.GameObjects);

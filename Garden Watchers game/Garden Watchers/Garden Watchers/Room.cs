@@ -25,7 +25,7 @@ namespace Garden_Watchers
         private Vector2 coordinates;
         private Direction doorDirection;
         private static Random random;
-        private static Enemy[][] enemyApearanceProgression;
+        private static Dictionary<int, Enemy[]> enemyApearanceProgression;
 
         public Room(int X, int Y)
         {
@@ -37,15 +37,14 @@ namespace Garden_Watchers
         static Room()
         {
             random = new Random();
-            enemyApearanceProgression = new Enemy[][]
-            {
-                new Enemy[] { },
-                new Enemy[] { new Gnome(new Vector2(1500, 500)) },
-                new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) },
-                new Enemy[] { new Fairy(new Vector2(1000, 500)) },
-                new Enemy[] { new Fairy(new Vector2(750, 500)), new Fairy(new Vector2(250, 500)) },
-                new Enemy[] { new Flamingo(new Vector2(1000, 500)) },
-            };
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>();
+            enemyApearanceProgression.Add(0, new Enemy[] { });
+            enemyApearanceProgression.Add(1, new Enemy[] { new Gnome(new Vector2(1500, 500)) });
+            enemyApearanceProgression.Add(2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) });
+            enemyApearanceProgression.Add(3, new Enemy[] { new Fairy(new Vector2(1000, 500)) });
+            enemyApearanceProgression.Add(4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) });
+            enemyApearanceProgression.Add(5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) });
+            enemyApearanceProgression.Add(12, new Enemy[] { new Gnome(20, new Vector2(1000, 500), 400) });
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
@@ -65,7 +64,7 @@ namespace Garden_Watchers
 
         public void InitializeEnemies()
         {
-            if (enemyApearanceProgression.Length <= Map.RoomCount)
+            if (!enemyApearanceProgression.ContainsKey(Map.RoomCount))
             {
                 // random enemy
                 int enemyAmount = random.Next(2, 4);

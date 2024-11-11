@@ -137,6 +137,11 @@ namespace Garden_Watchers
         }
 
 
+        public static void YouWon()
+        {
+
+        }
+
         public static void KillObject(GameObject gameObject)
         {
             removedObjects.Add(gameObject);
