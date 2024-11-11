@@ -57,8 +57,15 @@ namespace Garden_Watchers
             Player = new Player(10, playerPosition, 500);
             GameObjects = new List<GameObject>() { Player };
 
-            
 
+            GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
+            GameObjects.Add(gnome);
+
+            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
+            GameObjects.Add(flamingo);
+
+            GameObject fairy = new Fairy(2, new Vector2(1000, 900), 150);
+            gameObjects.Add(fairy);
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
             Map.GoToRoom(0,0, Direction.None, false);
