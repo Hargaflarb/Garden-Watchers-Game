@@ -52,6 +52,8 @@ namespace Garden_Watchers
                 float XDirection=(float)Math.Cos(test);
                 float YDirection= (float)Math.Sin(test);
                 direction = new Vector2(XDirection,YDirection);
+                Bullet newBullet = new Bullet(attackSprite, GameWorld.PlayerCharacterPosition, direction,true,(float)test,1);
+                GameWorld.AddedObjects.Add(newBullet);
                 timer = 0;
                 bullets--;
             }
