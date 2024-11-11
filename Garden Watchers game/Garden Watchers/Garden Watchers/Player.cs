@@ -17,7 +17,7 @@ namespace Garden_Watchers
         //gun things
         private int bullets;
         private int maxBullets = 6;
-        private float timeBetweenBullets = 0.2f;
+        private float timeBetweenBullets = 1f;
         private Texture2D bulletSprite;
         //chainsaw things
         private Texture2D meleeSprite;
