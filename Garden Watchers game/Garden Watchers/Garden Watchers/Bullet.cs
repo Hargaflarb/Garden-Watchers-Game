@@ -8,7 +8,7 @@ namespace Garden_Watchers
 {
     internal class Bullet : GameObject
     {
-        private int damage = 3;
+        private int damage = 2;
         private Vector2 direction;
         private float speed = 200;
         private bool playerBullet;
@@ -38,7 +38,7 @@ namespace Garden_Watchers
             {
                 if ((playerBullet && other is Enemy)||(!playerBullet && other is Player))
                 {
-                    other.TakeDamage(damage);
+                    other.TakeDamage(damage, false);
                     GameWorld.KillObject(this);
                 }
             }
