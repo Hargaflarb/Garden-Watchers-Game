@@ -48,7 +48,7 @@ namespace Garden_Watchers
         {
             if (other is Player)
             {
-                other.TakeDamage(damage);
+                other.TakeDamage(damage, true);
             }
             base.OnCollision(other);
         }
