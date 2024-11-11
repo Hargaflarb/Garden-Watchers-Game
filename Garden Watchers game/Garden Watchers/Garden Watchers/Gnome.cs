@@ -16,11 +16,10 @@ namespace Garden_Watchers
         private float cooldown;
         private int damage = 2;
             
-        public Gnome(int health, Vector2 position, float speed) : base(health, position, speed)
+        public Gnome(Vector2 position) : base(position)
         {
-            Health = health;
-            Position = position;
-            this.speed = speed;
+            Health = 3;
+            speed = 250;
         }
 
         public override void LoadContent(ContentManager content)

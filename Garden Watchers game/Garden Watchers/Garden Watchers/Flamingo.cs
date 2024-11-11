@@ -17,8 +17,10 @@ namespace Garden_Watchers
         private bool explode = false;
         private int damage = 10;
 
-        public Flamingo(int health, Vector2 position, float speed) : base(health, position, speed)
+        public Flamingo(Vector2 position) : base(position)
         {
+            Health = 3;
+            speed = 200;
         }
 
         public override void LoadContent(ContentManager content)

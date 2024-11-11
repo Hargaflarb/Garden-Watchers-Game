@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Garden_Watchers
@@ -17,6 +18,7 @@ namespace Garden_Watchers
         private static Vector2 screenSize;
         private static Player player;
         private static Texture2D background;
+        private static Random random;
         
         private static Vector2 playerLocation;
 
@@ -28,6 +30,7 @@ namespace Garden_Watchers
 
         public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
         public static GameWorld TheGameWorld { get; set; }
+        public static Random Random { get => random; private set => random = value; }
         public static Player Player { get => player; private set => player = value; }
 
 #if DEBUG
@@ -41,6 +44,10 @@ namespace Garden_Watchers
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+        }
+        static GameWorld()
+        {
+            Random = new Random();
         }
 
         protected override void Initialize()
@@ -58,14 +65,6 @@ namespace Garden_Watchers
             GameObjects = new List<GameObject>() { Player };
 
 
-            GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
-            GameObjects.Add(gnome);
-
-            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
-            GameObjects.Add(flamingo);
-
-            GameObject fairy = new Fairy(2, new Vector2(1000, 900), 150);
-            gameObjects.Add(fairy);
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
             Map.GoToRoom(0,0, Direction.None, false);
