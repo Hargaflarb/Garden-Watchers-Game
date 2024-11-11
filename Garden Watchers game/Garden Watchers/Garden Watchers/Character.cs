@@ -49,10 +49,11 @@ namespace Garden_Watchers
             Position += ((velocity * speed) * deltaTime);
         }
 
-        public override void TakeDamage(int damage)
+        public override void TakeDamage(int damage, bool isMeleeAttack)
         {
-            if (invincibilityTimer >= invincibilityFrames)
+            if (invincibilityTimer >= invincibilityFrames || isMeleeAttack == false)
             {
+                
                 Health -= damage;
                 invincibilityTimer = 0;
                 takingDamage = true;
@@ -67,6 +68,9 @@ namespace Garden_Watchers
                     {
                         //Game Over sequence
                         GameWorld.KillObject(this);
+                        GameWorld.TheGameWorld.IsAlive = false;
+                        
+                      
                     }
                 }
             }

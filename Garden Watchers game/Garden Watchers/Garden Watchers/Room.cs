@@ -46,9 +46,27 @@ namespace Garden_Watchers
         public void Initialize()
         {
             InitializeDoors();
+            InitializeEnemies();
+            InitializeObstacles();
             //member to load content of new stuff
         }
 
+
+        public void InitializeEnemies()
+        {
+            GameObject gnome = new Gnome(3, new Vector2(50, 50), 250);
+            GameWorld.MakeObject(gnome);
+
+            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
+            GameWorld.MakeObject(flamingo);
+
+        }
+
+        public void InitializeObstacles()
+        {
+            GameObject tempObstacle = new Obstacle(new Vector2(200, 200));
+            GameWorld.MakeObject(tempObstacle);
+        }
 
         public void InitializeDoors()
         {

@@ -34,7 +34,7 @@ namespace Garden_Watchers
             {
                 if ((playerAttack && other is Enemy) || (!playerAttack && other is Player))
                 {
-                    other.TakeDamage(damage);
+                    other.TakeDamage(damage, true);
                 }
             }
         }
