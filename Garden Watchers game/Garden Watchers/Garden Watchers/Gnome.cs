@@ -37,11 +37,17 @@ namespace Garden_Watchers
         }
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
-
+            if (velocity == Vector2.Zero)
+            {
+                charging = false;
+            }
             Chase();
             Charge();
 
-            cooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!charging)
+            {
+                cooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }            
             if (cooldown <= 0)
             {
                 cooldown = 0;
@@ -59,6 +65,11 @@ namespace Garden_Watchers
                 float YDirection = (float)Math.Sin(test);
                 direction = new Vector2(XDirection, YDirection);
                 velocity = (direction);
+                speed = 250;
+            }
+            else if (velocity == Vector2.Zero)
+            {
+                charging = false;
             }
         }
 
@@ -72,15 +83,14 @@ namespace Garden_Watchers
                 charging = true;
                 speed = 500;
                 cooldown = 2;
-            }
+            }            
         }
 
         public override void OnCollision(GameObject other)
         {
             if (other is Player)
             {
-                velocity = Vector2.Zero;
-                speed = 250;
+                velocity = Vector2.Zero;                
                 charging = false;
                 other.TakeDamage(damage);
             }

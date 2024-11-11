@@ -12,7 +12,6 @@ namespace Garden_Watchers
     {
         //Fields
        
-        protected Vector2 velocity;
         protected float speed;
         private int health;
 
