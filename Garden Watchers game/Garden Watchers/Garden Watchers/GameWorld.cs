@@ -62,9 +62,8 @@ namespace Garden_Watchers
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
             Player = new Player(10, playerPosition, 500);
+
             GameObjects = new List<GameObject>() { Player };
-
-
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
             Map.GoToRoom(0,0, Direction.None, false);
@@ -120,11 +119,23 @@ namespace Garden_Watchers
             AddedObjects.Clear();
 
 
-
-
-
             base.Update(gameTime);
         }
+
+
+        public static int GetNumberOfEnemies()
+        {
+            int output = 0;
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (gameObject is Enemy)
+                {
+                    output++;
+                }
+            }
+            return output;
+        }
+
 
         public static void KillObject(GameObject gameObject)
         {
