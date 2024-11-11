@@ -22,7 +22,7 @@ namespace Garden_Watchers
             switch (direction)
             {
                 case Direction.Up:
-                    Position = new Vector2(size.X/2, size.Y);
+                    Position = new Vector2(size.X / 2, size.Y);
                     break;
                 case Direction.Down:
                     Position = new Vector2(size.X / 2, 0);
@@ -85,7 +85,10 @@ namespace Garden_Watchers
         {
             if (other != this & other is Player)
             {
-                Map.GoToRoom((int)leadingTo.X, (int)leadingTo.Y, GetOppositeDirection(direction));
+                if (GameWorld.GetNumberOfEnemies() == 0)
+                {
+                    Map.GoToRoom((int)leadingTo.X, (int)leadingTo.Y, GetOppositeDirection(direction));
+                }
             }
         }
 

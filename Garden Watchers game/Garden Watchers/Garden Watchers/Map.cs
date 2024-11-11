@@ -15,6 +15,8 @@ namespace Garden_Watchers
         private static Dictionary<Vector2, Room> rooms;
         private static Room shownRoom;
 
+        public static int RoomCount { get => rooms.Count; }
+
         static Map()
         {
             rooms = new Dictionary<Vector2, Room>();
@@ -97,10 +99,10 @@ namespace Garden_Watchers
                     GameWorld.Player.Position = new Vector2(size.X / 2, size.Y - 300);
                     break;
                 case Direction.Left:
-                    GameWorld.Player.Position = new Vector2(0 + 300, size.Y / 2);
+                    GameWorld.Player.Position = new Vector2(size.X - 300, size.Y / 2);
                     break;
                 case Direction.Right:
-                    GameWorld.Player.Position = new Vector2(size.X + 300, size.Y / 2);
+                    GameWorld.Player.Position = new Vector2(0 + 300, size.Y / 2);
                     break;
                 default:
                     break;

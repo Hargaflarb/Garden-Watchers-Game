@@ -17,6 +17,12 @@ namespace Garden_Watchers
             this.speed = speed;
         }
 
+        public Enemy(Vector2 position)
+        {
+            Position = position;
+        }
+
+
         /// <summary>
         /// Loads sprites
         /// </summary>
@@ -37,6 +43,23 @@ namespace Garden_Watchers
             
             base.Update(gameTime, screenSize);
         }
-       
+
+
+        public static Enemy GetRandomNewEnemy(Vector2 position)
+        {
+            int random = GameWorld.Random.Next(0,3);
+
+            switch (random)
+            {
+                case 0:
+                    return new Gnome(position);
+                case 1:
+                    return new Flamingo(position);
+                case 2:
+                    return new Fairy(position);
+                default:
+                    return new Gnome(position);
+            }
+        }
     }
 }

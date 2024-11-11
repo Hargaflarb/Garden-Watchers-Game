@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 
 namespace Garden_Watchers
@@ -24,6 +25,7 @@ namespace Garden_Watchers
         private Vector2 coordinates;
         private Direction doorDirection;
         private static Random random;
+        private static Enemy[][] enemyApearanceProgression;
 
         public Room(int X, int Y)
         {
@@ -35,6 +37,15 @@ namespace Garden_Watchers
         static Room()
         {
             random = new Random();
+            enemyApearanceProgression = new Enemy[][]
+            {
+                new Enemy[] { },
+                new Enemy[] { new Gnome(new Vector2(1500, 500)) },
+                new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) },
+                new Enemy[] { new Fairy(new Vector2(1000, 500)) },
+                new Enemy[] { new Fairy(new Vector2(750, 500)), new Fairy(new Vector2(250, 500)) },
+                new Enemy[] { new Flamingo(new Vector2(1000, 500)) },
+            };
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
@@ -48,18 +59,31 @@ namespace Garden_Watchers
             InitializeDoors();
             InitializeEnemies();
             InitializeObstacles();
-            //member to load content of new stuff
+            //remember to load content of new stuff
         }
 
 
         public void InitializeEnemies()
         {
-            GameObject gnome = new Gnome(3, new Vector2(50, 50), 250);
-            GameWorld.MakeObject(gnome);
-
-            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
-            GameWorld.MakeObject(flamingo);
-
+            if (enemyApearanceProgression.Length <= Map.RoomCount)
+            {
+                // random enemy
+                int enemyAmount = random.Next(2, 4);
+                for (int i = 0; i < enemyAmount; i++)
+                {
+                    Vector2 screenSize = GameWorld.ScreenSize;
+                    Vector2 position = new Vector2(random.Next(0, (int)screenSize.X), random.Next(0, (int)screenSize.Y));
+                    GameWorld.MakeObject(Enemy.GetRandomNewEnemy(position));
+                }
+            }
+            else
+            {
+                Enemy[] roomEnemies = enemyApearanceProgression[Map.RoomCount];
+                foreach (Enemy enemy in roomEnemies)
+                {
+                    GameWorld.MakeObject(enemy);
+                }
+            }
         }
 
         public void InitializeObstacles()
@@ -158,7 +182,7 @@ namespace Garden_Watchers
             roomObjects.Clear();
             foreach (GameObject gameObject in gameObjects)
             {
-                if (gameObject is not Player)
+                if (gameObject is not Player & gameObject is not Bullet)
                 {
                     roomObjects.Add(gameObject);
                 }
