@@ -19,6 +19,11 @@ namespace Garden_Watchers
 
         static Map()
         {
+            ResetMap();
+        }
+
+        public static void ResetMap()
+        {
             rooms = new Dictionary<Vector2, Room>();
         }
 

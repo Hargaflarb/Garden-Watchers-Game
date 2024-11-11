@@ -99,7 +99,7 @@ namespace Garden_Watchers
             {
                 velocity = Vector2.Zero;                
                 charging = false;
-                other.TakeDamage(damage);
+                other.TakeDamage(damage, true);
             }
         }
     }

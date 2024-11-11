@@ -19,7 +19,8 @@ namespace Garden_Watchers
         private static Player player;
         private static Texture2D background;
         private static Random random;
-        
+        private bool isAlive;
+
         private static Vector2 playerLocation;
 
         //Properties
@@ -32,7 +33,8 @@ namespace Garden_Watchers
         public static GameWorld TheGameWorld { get; set; }
         public static Random Random { get => random; private set => random = value; }
         public static Player Player { get => player; private set => player = value; }
-
+        public bool IsAlive { get => isAlive; set => isAlive = value; }
+ 
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
@@ -53,7 +55,9 @@ namespace Garden_Watchers
         protected override void Initialize()
         {
             TheGameWorld = this;
-        
+            IsAlive = true;
+            Map.ResetMap();
+
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
@@ -118,9 +122,18 @@ namespace Garden_Watchers
             GameObjects.AddRange(AddedObjects);
             AddedObjects.Clear();
 
-
+            // lose thing
+            KeyboardState keyState = Keyboard.GetState();
+            if (IsAlive == false && keyState.IsKeyDown(Keys.Space))
+            {
+                GameObjects.Clear();
+                Initialize();
+            }
+            
+            
             base.Update(gameTime);
         }
+
 
 
         public static int GetNumberOfEnemies()
