@@ -15,8 +15,7 @@ namespace Garden_Watchers
         private static List<GameObject> removedObjects;
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
-        Character-Implementation---Echo
-        private Player player;
+        private static Player player;
         private Texture2D background;
         private bool isAlive;
 
