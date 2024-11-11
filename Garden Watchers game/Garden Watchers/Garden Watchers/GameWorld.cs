@@ -15,8 +15,8 @@ namespace Garden_Watchers
         private static List<GameObject> removedObjects;
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
-        private Player player;
-        private Texture2D background;
+        private static Player player;
+        private static Texture2D background;
         
         private static Vector2 playerLocation;
 
@@ -28,7 +28,7 @@ namespace Garden_Watchers
 
         public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
         public static GameWorld TheGameWorld { get; set; }
-        internal Player Player { get => player; private set => player = value; }
+        public static Player Player { get => player; private set => player = value; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
@@ -55,8 +55,8 @@ namespace Garden_Watchers
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
             Player = new Player(10, playerPosition, 500);
-            GameObject tempObstacle = new Obstacle(new Vector2(200,200));
-            GameObjects = new List<GameObject>() { Player, tempObstacle };
+            GameObjects = new List<GameObject>() { Player };
+
 
             GameObject gnome = new Gnome(3, new Vector2(50,50), 250);
             GameObjects.Add(gnome);
@@ -68,7 +68,7 @@ namespace Garden_Watchers
             gameObjects.Add(fairy);
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
-            Map.GoToRoom(0,0, false);
+            Map.GoToRoom(0,0, Direction.None, false);
             base.Initialize();
         }
 

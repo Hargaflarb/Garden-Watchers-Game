@@ -63,13 +63,29 @@ namespace Garden_Watchers
         }
 
 
+        public static Direction GetOppositeDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return Direction.Down;
+                case Direction.Down:
+                    return Direction.Up;
+                case Direction.Left:
+                    return Direction.Right;
+                case Direction.Right:
+                    return Direction.Left;
+                default:
+                    return Direction.None;
+            }
+
+        }
+
         public override void OnCollision(GameObject other)
         {
             if (other != this & other is Player)
             {
-                Vector2 size = GameWorld.ScreenSize;
-                GameWorld.TheGameWorld.Player.Position = new Vector2(size.X / 2, size.Y / 2);
-                Map.GoToRoom((int)leadingTo.X, (int)leadingTo.Y);
+                Map.GoToRoom((int)leadingTo.X, (int)leadingTo.Y, GetOppositeDirection(direction));
             }
         }
 
