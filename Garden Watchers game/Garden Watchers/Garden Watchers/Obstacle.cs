@@ -63,7 +63,7 @@ namespace Garden_Watchers
         public override void LoadContent(ContentManager content)
         {
             sprite = content.Load<Texture2D>("Obstacle");
-
+            base.LoadContent(content);
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)

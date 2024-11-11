@@ -37,7 +37,6 @@ namespace Garden_Watchers
             
             base.Update(gameTime, screenSize);
         }
-
-        
+       
     }
 }
