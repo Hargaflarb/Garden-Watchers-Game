@@ -13,6 +13,10 @@ namespace Garden_Watchers
         {
             Position = pos;
         }
+        public Obstacle(Vector2 pos, Vector2 hitboxSize) : base()
+        {
+            Position = pos;
+        }
 
 
         /// <summary>

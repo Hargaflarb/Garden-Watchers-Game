@@ -78,24 +78,6 @@ namespace Garden_Watchers
 
         public static void GoToRoom(int x, int y, Direction comingFrom, bool saveRoom = true)
         {
-            if (RoomCount == 12)
-            {
-                GameWorld.YouWon();
-            }
-
-            if (saveRoom)
-            {
-                shownRoom.SaveRoomObjects(GameWorld.GameObjects);
-            }
-
-            if (!rooms.ContainsKey(new Vector2(x, y)))
-            {
-                AddRoom(x, y);
-            }
-            shownRoom = rooms[new Vector2(x, y)];
-
-            shownRoom.WriteRoomObjects(saveRoom);
-
             Vector2 size = GameWorld.ScreenSize;
             switch (comingFrom)
             {
@@ -117,12 +99,31 @@ namespace Garden_Watchers
                 default:
                     break;
             }
+
+            if (RoomCount == 12)
+            {
+                GameWorld.YouWon();
+            }
+
+            if (saveRoom)
+            {
+                shownRoom.SaveRoomObjects(GameWorld.GameObjects);
+            }
+
+            if (!rooms.ContainsKey(new Vector2(x, y)))
+            {
+                AddRoom(x, y, comingFrom);
+            }
+            shownRoom = rooms[new Vector2(x, y)];
+
+            shownRoom.WriteRoomObjects(saveRoom);
+
         }
 
 
-        private static void AddRoom(int X, int Y)
+        private static void AddRoom(int X, int Y, Direction entrenceDirection)
         {
-            rooms.Add(new Vector2(X, Y), new Room(X, Y));
+            rooms.Add(new Vector2(X, Y), new Room(X, Y, entrenceDirection));
         }
     }
 }

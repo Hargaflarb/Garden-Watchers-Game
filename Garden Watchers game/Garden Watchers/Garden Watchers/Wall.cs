@@ -14,6 +14,10 @@ namespace Garden_Watchers
 
         }
 
+        public Wall(Vector2 pos, Vector2 hitboxSize) : base(pos, hitboxSize)
+        {
+            Position = pos;
+        }
 
         public override void LoadContent(ContentManager content)
         {
