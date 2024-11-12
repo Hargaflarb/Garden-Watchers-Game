@@ -159,5 +159,10 @@ namespace Garden_Watchers
         {
             //this is empty on purpose, as to not activate on non-characters
         }
+
+        public virtual void RecoverHealth()
+        {
+            ;
+        }
     }
 }

@@ -12,31 +12,44 @@ namespace Garden_Watchers
 {
     internal class HealthRecovery: Item
     {
-        private int healthRecovery=5;
-        private int charges = 1;
         
-        public HealthRecovery(int recoveredHP,int charges)
+        public HealthRecovery(Vector2 position)
         {
-            healthRecovery = recoveredHP;
-            this.charges = charges;
+            Position = position;
         }
-        public int RecoverHealth() 
-        {
-            charges--;
-            return healthRecovery;
-        }
+        
+        
 
         public void Update()
         {
-            if (charges < 1)
-            {
-                GameWorld.RemovedObjects.Add(this);
-            }
+           
         }
 
-        public override void UseItem()
+        public override void LoadContent(ContentManager content)
         {
-            RecoverHealth();
+            sprites = new Texture2D[1];
+
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                sprites[i] = content.Load<Texture2D>("healthItem");
+            }
+
+            sprite = sprites[0];
+
+            base.LoadContent(content);
+        }
+
+        public override void OnCollision(GameObject other)
+        {
+            if (other is Player)
+            {
+                if (GameWorld.Player.Health < 10)
+                {
+                    other.RecoverHealth();
+                    GameWorld.KillObject(this);
+                }
+            }
+            base.OnCollision(other);
         }
     }
 }

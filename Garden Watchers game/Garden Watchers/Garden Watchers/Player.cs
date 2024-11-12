@@ -33,6 +33,8 @@ namespace Garden_Watchers
         private float buttonCooldown = 0.3f;
         private float buttonTimer;
 
+        public int Bullets { get => bullets; set => bullets = value; }
+
         //Constructor
 
         /// <summary>
@@ -45,7 +47,7 @@ namespace Garden_Watchers
             Health = health;
             Position = position;
             this.speed = speed;
-            bullets = 6;
+            Bullets = 6;
             GameWorld.PlayerCharacterPosition = Position;
         }
 
@@ -148,7 +150,7 @@ namespace Garden_Watchers
         {
             if (usingGun)
             {
-                if (bullets > 0 && timer >= timeBetweenBullets)
+                if (Bullets > 0 && timer >= timeBetweenBullets)
                 {
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
                     double directionSum = Math.Atan2(direction.Y, direction.X);
@@ -168,7 +170,7 @@ namespace Garden_Watchers
                     GameWorld.AddedObjects.Add(bullet2);
                     GameWorld.AddedObjects.Add(bullet3);
                     timer = 0;
-                    bullets--;
+                    Bullets--;
                 }
             }
             else
@@ -193,8 +195,14 @@ namespace Garden_Watchers
 
         private void Reload()
         {
-            bullets = maxBullets;
+            Bullets = maxBullets;
             //time to reload?
+        }
+
+        public override void RecoverHealth()
+        {
+            Health += 5;
+            base.RecoverHealth();
         }
     }
 }
