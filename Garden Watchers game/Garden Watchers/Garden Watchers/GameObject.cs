@@ -1,8 +1,8 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Garden_Watchers
 {
@@ -32,7 +32,7 @@ namespace Garden_Watchers
         {
             get => position;
             set { position = value; Hitbox = new Rectangle((int)value.X - (Hitbox.Width / 2), (int)value.Y - (Hitbox.Height / 2), Hitbox.Width, Hitbox.Height); }
-        }    
+        }
 
         //Methods
         public void CheckCollision(GameObject other)
@@ -160,9 +160,17 @@ namespace Garden_Watchers
             //this is empty on purpose, as to not activate on non-characters
         }
 
+
+        public virtual void GiveInvincibilityFrames()
+        {
+            invincibilityTimer = 0;
+            takingDamage = true;
+        }
+      
         public virtual void RecoverHealth()
         {
-            ;
+         
+
         }
     }
 }

@@ -6,10 +6,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
-    internal class Obstacle : GameObject
+    public abstract class Obstacle : GameObject
     {
 
         public Obstacle(Vector2 pos) : base()
+        {
+            Position = pos;
+        }
+        public Obstacle(Vector2 pos, Vector2 hitboxSize) : base()
         {
             Position = pos;
         }
@@ -21,7 +25,6 @@ namespace Garden_Watchers
         /// <param name="other">The other obejct that is intersecting with this one.</param>
         public override void OnCollision(GameObject other)
         {
-            base.OnCollision(other);
             if (other is Character)
             {
                 Vector2 otherPos = ((Character)other).Position;
@@ -58,12 +61,6 @@ namespace Garden_Watchers
 
                 ((Character)other).Position = new Vector2(newXPosition, newYPosition);
             }
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
-            sprite = content.Load<Texture2D>("Obstacle");
-            base.LoadContent(content);
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
