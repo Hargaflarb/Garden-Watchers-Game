@@ -87,8 +87,12 @@ namespace Garden_Watchers
 
         public void InitializeObstacles()
         {
-            GameObject tempObstacle = new Obstacle(new Vector2(200, 200));
+            GameObject tempObstacle = new Wall(new Vector2(200, 200));
             GameWorld.MakeObject(tempObstacle);
+
+            GameObject tempObstacle2 = new PitFall(new Vector2(400, 200));
+            GameWorld.MakeObject(tempObstacle2);
+
         }
 
         public void InitializeDoors()

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
@@ -11,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
-    internal class PitFall : Obstacle
+    public class Wall : Obstacle
     {
-        public PitFall(Vector2 pos) : base(pos)
+        public Wall(Vector2 pos) : base(pos)
         {
 
         }
@@ -21,7 +17,7 @@ namespace Garden_Watchers
 
         public override void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("pitfall");
+            sprite = content.Load<Texture2D>("Obstacle");
             base.LoadContent(content);
         }
 
@@ -29,6 +25,11 @@ namespace Garden_Watchers
         public override void OnCollision(GameObject other)
         {
             base.OnCollision(other);
+
+            if (other is Bullet)
+            {
+                GameWorld.KillObject(other);
+            }
         }
 
     }
