@@ -160,10 +160,17 @@ namespace Garden_Watchers
             //this is empty on purpose, as to not activate on non-characters
         }
 
+
         public virtual void GiveInvincibilityFrames()
         {
             invincibilityTimer = 0;
             takingDamage = true;
+        }
+      
+        public virtual void RecoverHealth()
+        {
+         
+
         }
     }
 }

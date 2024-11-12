@@ -25,6 +25,10 @@ namespace Garden_Watchers
                 {
                     health = 0;
                 }
+                else if (value >= 10)
+                {
+                    health = 10;
+                }
                 else
                 {
                     health = value;
