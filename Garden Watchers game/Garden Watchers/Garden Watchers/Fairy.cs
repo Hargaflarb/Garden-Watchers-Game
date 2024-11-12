@@ -16,11 +16,11 @@ namespace Garden_Watchers
         private bool fleeing = false;
         private float movementSpeed;
         private float bulletTimer;
-        public Fairy(int health, Vector2 position, float speed) : base(health, position, speed)
+        public Fairy(Vector2 position) : base(position)
         {
-            movementSpeed = speed;
-            Health = health;
-            this.position = position;
+            speed = 0;
+            movementSpeed = 150;
+            Health = 2;
         }
 
         public override void LoadContent(ContentManager content)

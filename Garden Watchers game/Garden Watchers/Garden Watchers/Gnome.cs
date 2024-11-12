@@ -15,12 +15,19 @@ namespace Garden_Watchers
         private bool charging;
         private float cooldown;
         private int damage = 2;
-            
+
+
         public Gnome(int health, Vector2 position, float speed) : base(health, position, speed)
         {
             Health = health;
             Position = position;
             this.speed = speed;
+        }
+
+        public Gnome(Vector2 position) : base(position)
+        {
+            Health = 3;
+            speed = 250;
         }
 
         public override void LoadContent(ContentManager content)

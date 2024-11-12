@@ -15,6 +15,8 @@ namespace Garden_Watchers
         private static Dictionary<Vector2, Room> rooms;
         private static Room shownRoom;
 
+        public static int RoomCount { get => rooms.Count; }
+
         static Map()
         {
             ResetMap();
@@ -76,6 +78,11 @@ namespace Garden_Watchers
 
         public static void GoToRoom(int x, int y, Direction comingFrom, bool saveRoom = true)
         {
+            if (RoomCount == 12)
+            {
+                GameWorld.YouWon();
+            }
+
             if (saveRoom)
             {
                 shownRoom.SaveRoomObjects(GameWorld.GameObjects);
@@ -102,10 +109,10 @@ namespace Garden_Watchers
                     GameWorld.Player.Position = new Vector2(size.X / 2, size.Y - 300);
                     break;
                 case Direction.Left:
-                    GameWorld.Player.Position = new Vector2(0 + 300, size.Y / 2);
+                    GameWorld.Player.Position = new Vector2(size.X - 300, size.Y / 2);
                     break;
                 case Direction.Right:
-                    GameWorld.Player.Position = new Vector2(size.X + 300, size.Y / 2);
+                    GameWorld.Player.Position = new Vector2(0 + 300, size.Y / 2);
                     break;
                 default:
                     break;
