@@ -67,6 +67,7 @@ namespace Garden_Watchers
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
             Player = new Player(10, playerPosition, 500);
 
+
             GameObjects = new List<GameObject>() { Player };
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
@@ -130,6 +131,8 @@ namespace Garden_Watchers
                 Initialize();
             }
             
+           
+
             
             base.Update(gameTime);
         }
@@ -158,6 +161,14 @@ namespace Garden_Watchers
         public static void KillObject(GameObject gameObject)
         {
             removedObjects.Add(gameObject);
+            if (gameObject is Enemy)
+            {
+                if (GetNumberOfEnemies() == 1)
+                {
+                    HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y /2));
+                    MakeObject(health);
+                }
+            }
         }
 
         public static void KillAllObjects()
@@ -203,7 +214,17 @@ namespace Garden_Watchers
             
             // is UI so do after other stuff.
             _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Red);
-
+            _spriteBatch.DrawString(textFont, "Bullet: " + player.Bullets, new Vector2(10, 40), Color.Red);
+            
+            if (Player.UsingGun)
+            {
+                _spriteBatch.DrawString(textFont, "Current Weapon: Shotgun", new Vector2(10, 75), Color.Red);
+            }
+            else
+            {
+                _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
+            }
+            
 #if DEBUG
             // draw the hitbox and position of every gameObject
             foreach (GameObject gameObject in GameObjects)
