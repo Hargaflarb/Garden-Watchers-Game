@@ -215,7 +215,16 @@ namespace Garden_Watchers
             // is UI so do after other stuff.
             _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Red);
             _spriteBatch.DrawString(textFont, "Bullet: " + player.Bullets, new Vector2(10, 40), Color.Red);
-
+            
+            if (Player.UsingGun)
+            {
+                _spriteBatch.DrawString(textFont, "Current Weapon: Shotgun", new Vector2(10, 75), Color.Red);
+            }
+            else
+            {
+                _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
+            }
+            
 #if DEBUG
             // draw the hitbox and position of every gameObject
             foreach (GameObject gameObject in GameObjects)

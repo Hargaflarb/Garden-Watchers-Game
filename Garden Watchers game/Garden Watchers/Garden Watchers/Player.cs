@@ -34,6 +34,7 @@ namespace Garden_Watchers
         private float buttonTimer;
 
         public int Bullets { get => bullets; set => bullets = value; }
+        public bool UsingGun { get => usingGun; set => usingGun = value; }
 
         //Constructor
 
@@ -123,7 +124,7 @@ namespace Garden_Watchers
 
             if (keyState.IsKeyDown(Keys.Q)&&buttonTimer>=buttonCooldown)
             {
-                usingGun = !usingGun;
+                UsingGun = !UsingGun;
                 buttonTimer = 0;
             }
 
@@ -148,7 +149,7 @@ namespace Garden_Watchers
 
         private void UseWeapon()
         {
-            if (usingGun)
+            if (UsingGun)
             {
                 if (Bullets > 0 && timer >= timeBetweenBullets)
                 {
