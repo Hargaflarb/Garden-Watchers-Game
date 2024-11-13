@@ -59,8 +59,7 @@ namespace Garden_Watchers
             {
                 
                 Health -= damage;
-                invincibilityTimer = 0;
-                takingDamage = true;
+                GiveInvincibilityFrames();
                 if (Health <= 0)
                 {
                     if (this is Enemy)

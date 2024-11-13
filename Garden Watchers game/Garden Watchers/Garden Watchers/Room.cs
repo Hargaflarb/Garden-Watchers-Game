@@ -27,24 +27,26 @@ namespace Garden_Watchers
         private static Random random;
         private static Dictionary<int, Enemy[]> enemyApearanceProgression;
 
-        public Room(int X, int Y)
+        public Room(int X, int Y, Direction entrenceSide)
         {
             coordinates = new Vector2(X, Y);
             roomObjects = new List<GameObject>();
 
-            Initialize();
+            Initialize(entrenceSide);
         }
         static Room()
         {
             random = new Random();
-            enemyApearanceProgression = new Dictionary<int, Enemy[]>();
-            enemyApearanceProgression.Add(0, new Enemy[] { });
-            enemyApearanceProgression.Add(1, new Enemy[] { new Gnome(new Vector2(1500, 500)) });
-            enemyApearanceProgression.Add(2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) });
-            enemyApearanceProgression.Add(3, new Enemy[] { new Fairy(new Vector2(1000, 500)) });
-            enemyApearanceProgression.Add(4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) });
-            enemyApearanceProgression.Add(5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) });
-            enemyApearanceProgression.Add(12, new Enemy[] { new Gnome(20, new Vector2(1000, 500), 400) });
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
+            {
+                { 0, new Enemy[] { } },
+                { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
+                { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
+                { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
+                { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
+                { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
+                { 12, new Enemy[] { new Gnome(20, new Vector2(1000, 500), 400) } },
+            };
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
@@ -53,16 +55,16 @@ namespace Garden_Watchers
         /// <summary>
         /// Set puts obstacles, doors, enemies and more in the room.
         /// </summary>
-        public void Initialize()
+        public void Initialize(Direction entrenceSide)
         {
             InitializeDoors();
-            InitializeEnemies();
+            InitializeEnemies(entrenceSide);
             InitializeObstacles();
             //remember to load content of new stuff
         }
 
 
-        public void InitializeEnemies()
+        public void InitializeEnemies(Direction entrenceSide)
         {
             if (!enemyApearanceProgression.ContainsKey(Map.RoomCount))
             {
@@ -71,7 +73,28 @@ namespace Garden_Watchers
                 for (int i = 0; i < enemyAmount; i++)
                 {
                     Vector2 screenSize = GameWorld.ScreenSize;
-                    Vector2 position = new Vector2(random.Next(0, (int)screenSize.X), random.Next(0, (int)screenSize.Y));
+                    Rectangle spawnBounds = new Rectangle(0,0, (int)screenSize.X, (int)screenSize.Y);
+                    switch (entrenceSide)
+                    {
+                        case Direction.Up:
+                            spawnBounds.Y += 500;
+                            spawnBounds.Height -= 500;
+                            break;
+                        case Direction.Down:
+                            spawnBounds.Height -= 500;
+                            break;
+                        case Direction.Left:
+                            spawnBounds.X += 500;
+                            spawnBounds.Width -= 500;
+                            break;
+                        case Direction.Right:
+                            spawnBounds.Width -= 500;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Vector2 position = new Vector2(random.Next(spawnBounds.X, spawnBounds.Width), random.Next(spawnBounds.Y, spawnBounds.Height));
                     GameWorld.MakeObject(Enemy.GetRandomNewEnemy(position));
                 }
             }
@@ -87,8 +110,12 @@ namespace Garden_Watchers
 
         public void InitializeObstacles()
         {
-            GameObject tempObstacle = new Obstacle(new Vector2(200, 200));
+            GameObject tempObstacle = new Wall(new Vector2(200, 200));
             GameWorld.MakeObject(tempObstacle);
+
+            GameObject tempObstacle2 = new PitFall(new Vector2(400, 200));
+            GameWorld.MakeObject(tempObstacle2);
+
         }
 
         public void InitializeDoors()
