@@ -10,7 +10,7 @@ namespace Garden_Watchers
     {
         private int damage = 2;
         private Vector2 direction;
-        private float speed = 200;
+        private float speed;
         private bool playerBullet;
 
         public Bullet(Texture2D sprite, Vector2 position,Vector2 direction,bool playerBullet,float rotation,int speed):base()

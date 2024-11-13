@@ -224,6 +224,7 @@ namespace Garden_Watchers
             {
                 _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
             }
+
             
 #if DEBUG
             // draw the hitbox and position of every gameObject
