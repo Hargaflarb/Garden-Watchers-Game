@@ -131,9 +131,10 @@ namespace Garden_Watchers
         public virtual void Update(GameTime gameTime, Vector2 screenSize)
         {
             Position = CheckOutOfBounds(screenSize, Position);
-            invincibilityTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            invincibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (invincibilityTimer > invincibilityFrames)
+            if (invincibilityTimer <= 0)
             {
                 takingDamage = false;
             }
@@ -161,10 +162,9 @@ namespace Garden_Watchers
         }
 
 
-        public virtual void GiveInvincibilityFrames()
+        public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {
-            invincibilityTimer = 0;
-            takingDamage = true;
+            invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
         }
       
         public virtual void RecoverHealth()

@@ -59,7 +59,7 @@ namespace Garden_Watchers
         {
             InitializeDoors();
             InitializeEnemies(entrenceSide);
-            InitializeObstacles();
+            InitializeObstacles(entrenceSide);
             //remember to load content of new stuff
         }
 

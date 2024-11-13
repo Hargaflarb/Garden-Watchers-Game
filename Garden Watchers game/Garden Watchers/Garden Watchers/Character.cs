@@ -55,11 +55,11 @@ namespace Garden_Watchers
 
         public override void TakeDamage(int damage, bool isMeleeAttack)
         {
-            if (invincibilityTimer >= invincibilityFrames || isMeleeAttack == false)
+            if (invincibilityTimer <= 0 || isMeleeAttack == false)
             {
-                
                 Health -= damage;
                 GiveInvincibilityFrames();
+                takingDamage = true;
                 if (Health <= 0)
                 {
                     if (this is Enemy)

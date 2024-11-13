@@ -33,11 +33,14 @@ namespace Garden_Watchers
         private float buttonCooldown = 0.3f;
         private float buttonTimer;
 
-        private float dashTime = 0.7f;
+        private float dashCooldown = 1f;
+        private float dashCooldownTimer;
+        private float dashTime = 0.15f;
         private float dashTimer;
 
         public int Bullets { get => bullets; set => bullets = value; }
         public bool UsingGun { get => usingGun; set => usingGun = value; }
+        public bool IsDashing { get => dashTimer < dashTime; }
 
         //Constructor
 
@@ -46,7 +49,7 @@ namespace Garden_Watchers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="speed"></param>
-        public Player (int health, Vector2 position, float speed)
+        public Player(int health, Vector2 position, float speed)
         {
             Health = health;
             Position = position;
@@ -91,11 +94,12 @@ namespace Garden_Watchers
             base.Update(gameTime, screenSize);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             GameWorld.PlayerCharacterPosition = position;
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;   
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             buttonTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             dashTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (dashTimer <= dashTime)
+            dashCooldownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (dashTimer >= dashTime)
             {
                 speed = 500;
             }
@@ -134,10 +138,13 @@ namespace Garden_Watchers
 
             if (keyState.IsKeyDown(Keys.Space))
             {
-                Dash();
+                if (dashCooldownTimer >= dashCooldown)
+                {
+                    Dash();
+                }
             }
 
-            if (keyState.IsKeyDown(Keys.Q)&&buttonTimer>=buttonCooldown)
+            if (keyState.IsKeyDown(Keys.Q) && buttonTimer >= buttonCooldown)
             {
                 UsingGun = !UsingGun;
                 buttonTimer = 0;
@@ -158,9 +165,9 @@ namespace Garden_Watchers
                 velocity.Normalize();
             }
 
-            
 
-        } 
+
+        }
 
         private void UseWeapon()
         {
@@ -175,10 +182,10 @@ namespace Garden_Watchers
                     direction = new Vector2(XDirection, YDirection);
                     Bullet bullet1 = new Bullet(bulletSprite, position, direction, true, (float)directionSum, 200);
 
-                    float XDirection2 = (float)Math.Cos(directionSum-0.1);
-                    float YDirection2 = (float)Math.Sin(directionSum-0.1);
+                    float XDirection2 = (float)Math.Cos(directionSum - 0.1);
+                    float YDirection2 = (float)Math.Sin(directionSum - 0.1);
                     Vector2 direction2 = new Vector2(XDirection2, YDirection2);
-                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum-0.2f, 200);
+                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum - 0.2f, 200);
 
                     float XDirection3 = (float)Math.Cos(directionSum + 0.1);
                     float YDirection3 = (float)Math.Sin(directionSum + 0.1);
@@ -202,10 +209,10 @@ namespace Garden_Watchers
                     float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
                     Vector2 spawnpoint = new Vector2();
-                    spawnpoint.Y = position.Y+(direction.Y * sprite.Height);
-                    spawnpoint.X = position.X+(direction.X * sprite.Width);
-                   
-                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true,(float)directionSum);
+                    spawnpoint.Y = position.Y + (direction.Y * sprite.Height);
+                    spawnpoint.X = position.X + (direction.X * sprite.Width);
+
+                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true, (float)directionSum);
                     GameWorld.AddedObjects.Add(attack);
                     timer = 0;
                 }
@@ -215,7 +222,9 @@ namespace Garden_Watchers
         private void Dash()
         {
             dashTimer = 0;
-            speed = 1000;
+            dashCooldownTimer = 0;
+            speed = 2000;
+            GiveInvincibilityFrames(dashTime);
         }
 
         private void Reload()

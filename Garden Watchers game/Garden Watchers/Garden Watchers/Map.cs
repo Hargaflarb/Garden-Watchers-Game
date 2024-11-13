@@ -78,6 +78,8 @@ namespace Garden_Watchers
 
         public static void GoToRoom(int x, int y, Direction comingFrom, bool saveRoom = true)
         {
+            GameWorld.Player.GiveInvincibilityFrames(1);
+
             Vector2 size = GameWorld.ScreenSize;
             switch (comingFrom)
             {

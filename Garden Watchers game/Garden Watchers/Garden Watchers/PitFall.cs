@@ -34,7 +34,10 @@ namespace Garden_Watchers
 
         public override void OnCollision(GameObject other)
         {
-            base.OnCollision(other);
+            if (!GameWorld.Player.IsDashing)
+            {
+                base.OnCollision(other);
+            }
         }
 
     }
