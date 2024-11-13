@@ -34,7 +34,7 @@ namespace Garden_Watchers
 
                 float newXPosition = otherPos.X;
                 float newYPosition = otherPos.Y;
-                
+
                 if (Math.Abs(distance.X) > Math.Abs(distance.Y))
                 { // most likely hit from x-axis
                     if (distance.X < 0)
@@ -60,6 +60,21 @@ namespace Garden_Watchers
 
 
                 ((Character)other).Position = new Vector2(newXPosition, newYPosition);
+            }
+        }
+
+        public static Obstacle GetRandomNewObstacle(Vector2 pos)
+        {
+            int rando = GameWorld.Random.Next(0, 2);
+
+            switch (rando)
+            {
+                case 0:
+                    return new PitFall(pos);
+                case 1:
+                    return new Wall(pos);
+                default:
+                    return new Wall(pos);
             }
         }
 
