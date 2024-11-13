@@ -18,10 +18,10 @@ namespace Garden_Watchers
         private int bullets;
         private int maxBullets = 6;
         private float timeBetweenBullets = 1f;
+        private float timeBetweenAttacks = 0.5f;
         private Texture2D bulletSprite;
         //chainsaw things
         private Texture2D meleeSprite;
-        private float timeBetweenAttacks = 0.5f;
 
         //which weapon is in use
         private bool usingGun = true;
@@ -32,6 +32,9 @@ namespace Garden_Watchers
 
         private float buttonCooldown = 0.3f;
         private float buttonTimer;
+
+        private float dashTime = 0.7f;
+        private float dashTimer;
 
         public int Bullets { get => bullets; set => bullets = value; }
         public bool UsingGun { get => usingGun; set => usingGun = value; }
@@ -87,10 +90,17 @@ namespace Garden_Watchers
             // world board check
             base.Update(gameTime, screenSize);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            GameWorld.PlayerCharacterPosition= position;
+            GameWorld.PlayerCharacterPosition = position;
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;   
-            buttonTimer+= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mouseState =Mouse.GetState();
+            buttonTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            dashTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (dashTimer <= dashTime)
+            {
+                speed = 500;
+            }
+
+            mouseState = Mouse.GetState();
         }
 
         /// <summary>
@@ -120,6 +130,11 @@ namespace Garden_Watchers
             if (keyState.IsKeyDown(Keys.D))
             {
                 velocity += new Vector2(+1, 0);
+            }
+
+            if (keyState.IsKeyDown(Keys.Space))
+            {
+                Dash();
             }
 
             if (keyState.IsKeyDown(Keys.Q)&&buttonTimer>=buttonCooldown)
@@ -195,6 +210,12 @@ namespace Garden_Watchers
                     timer = 0;
                 }
             }
+        }
+
+        private void Dash()
+        {
+            dashTimer = 0;
+            speed = 1000;
         }
 
         private void Reload()
