@@ -108,8 +108,39 @@ namespace Garden_Watchers
             }
         }
 
-        public void InitializeObstacles()
+        public void InitializeObstacles(Direction entrenceSide)
         {
+            int obstacleAmount = random.Next(2, 4);
+            for (int i = 0; i < obstacleAmount; i++)
+            {
+                Vector2 screenSize = GameWorld.ScreenSize;
+                Rectangle spawnBounds = new Rectangle(0, 0, (int)screenSize.X, (int)screenSize.Y);
+                switch (entrenceSide)
+                {
+                    case Direction.Up:
+                        spawnBounds.Y += 500;
+                        spawnBounds.Height -= 500;
+                        break;
+                    case Direction.Down:
+                        spawnBounds.Height -= 500;
+                        break;
+                    case Direction.Left:
+                        spawnBounds.X += 500;
+                        spawnBounds.Width -= 500;
+                        break;
+                    case Direction.Right:
+                        spawnBounds.Width -= 500;
+                        break;
+                    default:
+                        break;
+                }
+
+                Vector2 position = new Vector2(random.Next(spawnBounds.X, spawnBounds.Width), random.Next(spawnBounds.Y, spawnBounds.Height));
+                GameWorld.MakeObject(Obstacle.GetRandomNewObstacle(position));
+            }
+
+
+
             GameObject tempObstacle = new Wall(new Vector2(200, 200));
             GameWorld.MakeObject(tempObstacle);
 
