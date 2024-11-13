@@ -241,7 +241,7 @@ namespace Garden_Watchers
                 _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
             }
 
-            if (Map.RoomCount == 11)
+            if (Map.RoomCount == 13)
             {
                 if (GetGnomeBoss(out GameObject gameObject))
                 {
