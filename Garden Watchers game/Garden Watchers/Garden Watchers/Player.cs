@@ -178,45 +178,21 @@ namespace Garden_Watchers
                     float XDirection = (float)Math.Cos(directionSum);
                     float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
-<<<<<<< Updated upstream
-                    Bullet bullet1 = new Bullet(bulletSprite, position, direction, true, (float)directionSum, 200);
 
-                    float XDirection2 = (float)Math.Cos(directionSum-0.1);
-                    float YDirection2 = (float)Math.Sin(directionSum-0.1);
-                    Vector2 direction2 = new Vector2(XDirection2, YDirection2);
-                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum-0.2f, 200);
-
-                    float XDirection3 = (float)Math.Cos(directionSum + 0.1);
-                    float YDirection3 = (float)Math.Sin(directionSum + 0.1);
-=======
-<<<<<<< HEAD
                     Bullet bullet1 = new Bullet(bulletSprite, position, direction, true, (float)directionSum, 600);
-                    float XDirection2 = (float)Math.Cos(directionSum-0.2);
-                    float YDirection2 = (float)Math.Sin(directionSum-0.2);
-                    Vector2 direction2 = new Vector2(XDirection2, YDirection2);
-                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum-0.2f, 600);
-                    float XDirection3 = (float)Math.Cos(directionSum + 0.2);
-                    float YDirection3 = (float)Math.Sin(directionSum + 0.2);
->>>>>>> Stashed changes
-                    Vector2 direction3 = new Vector2(XDirection3, YDirection3);
-                    Bullet bullet3 = new Bullet(bulletSprite, position, direction3, true, (float)directionSum + 0.2f, 600);
-=======
-                    Bullet bullet1 = new Bullet(bulletSprite, position, direction, true, (float)directionSum, 200);
 
                     float XDirection2 = (float)Math.Cos(directionSum-0.1);
                     float YDirection2 = (float)Math.Sin(directionSum-0.1);
                     Vector2 direction2 = new Vector2(XDirection2, YDirection2);
-                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum-0.2f, 200);
+                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum-0.1f, 600);
 
                     float XDirection3 = (float)Math.Cos(directionSum + 0.1);
                     float YDirection3 = (float)Math.Sin(directionSum + 0.1);
-                    Vector2 direction3 = new Vector2(XDirection3, YDirection3);
-                    Bullet bullet3 = new Bullet(bulletSprite, position, direction3, true, (float)directionSum + 0.2f, 200);
 
-<<<<<<< Updated upstream
-=======
->>>>>>> 4f844bc4fe1075cd339b494bf041423d96e3452b
->>>>>>> Stashed changes
+                    Vector2 direction3 = new Vector2(XDirection3, YDirection3);
+                    Bullet bullet3 = new Bullet(bulletSprite, position, direction3, true, (float)directionSum + 0.1f, 600);;
+
+
                     GameWorld.AddedObjects.Add(bullet1);
                     GameWorld.AddedObjects.Add(bullet2);
                     GameWorld.AddedObjects.Add(bullet3);

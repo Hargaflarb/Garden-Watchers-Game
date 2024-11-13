@@ -37,9 +37,7 @@ namespace Garden_Watchers
         static Room()
         {
             random = new Random();
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
+
             enemyApearanceProgression = new Dictionary<int, Enemy[]>();
             enemyApearanceProgression.Add(0, new Enemy[] { });
             enemyApearanceProgression.Add(1, new Enemy[] { new Gnome(new Vector2(1500, 500)) });
@@ -48,8 +46,7 @@ namespace Garden_Watchers
             enemyApearanceProgression.Add(4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) });
             enemyApearanceProgression.Add(5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) });
             enemyApearanceProgression.Add(12, new Enemy[] { new Gnome(20, new Vector2(10, 10), 400) });
-=======
->>>>>>> Stashed changes
+
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
                 { 0, new Enemy[] { } },
@@ -60,10 +57,7 @@ namespace Garden_Watchers
                 { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
                 { 12, new Enemy[] { new Gnome(20, new Vector2(1000, 500), 400) } },
             };
-<<<<<<< Updated upstream
-=======
->>>>>>> 4f844bc4fe1075cd339b494bf041423d96e3452b
->>>>>>> Stashed changes
+
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
