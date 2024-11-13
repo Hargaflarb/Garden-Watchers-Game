@@ -38,14 +38,7 @@ namespace Garden_Watchers
         {
             random = new Random();
 
-            enemyApearanceProgression = new Dictionary<int, Enemy[]>();
-            enemyApearanceProgression.Add(0, new Enemy[] { });
-            enemyApearanceProgression.Add(1, new Enemy[] { new Gnome(new Vector2(1500, 500)) });
-            enemyApearanceProgression.Add(2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) });
-            enemyApearanceProgression.Add(3, new Enemy[] { new Fairy(new Vector2(1000, 500)) });
-            enemyApearanceProgression.Add(4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) });
-            enemyApearanceProgression.Add(5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) });
-            enemyApearanceProgression.Add(12, new Enemy[] { new Gnome(20, new Vector2(10, 10), 400) });
+           
 
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
@@ -55,7 +48,7 @@ namespace Garden_Watchers
                 { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
                 { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
                 { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
-                { 12, new Enemy[] { new Gnome(20, new Vector2(1000, 500), 400) } },
+                { 12, new Enemy[] { new GnomeBoss(new Vector2(1000, 500)) } },
             };
 
         }

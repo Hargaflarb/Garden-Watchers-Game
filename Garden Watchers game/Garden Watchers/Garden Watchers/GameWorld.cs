@@ -34,7 +34,7 @@ namespace Garden_Watchers
         public static Random Random { get => random; private set => random = value; }
         public static Player Player { get => player; private set => player = value; }
         public bool IsAlive { get => isAlive; set => isAlive = value; }
- 
+
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
@@ -50,6 +50,21 @@ namespace Garden_Watchers
         static GameWorld()
         {
             Random = new Random();
+        }
+
+        private bool GetGnomeBoss(out GameObject gnomeBossClass)
+        {
+            foreach (GameObject gameObject in GameObjects)
+            {
+                if (gameObject is GnomeBoss)
+                {
+                    gnomeBossClass = gameObject;
+                    return true;
+                }
+            }
+
+            gnomeBossClass = null;
+            return false;
         }
 
         protected override void Initialize()
@@ -71,12 +86,12 @@ namespace Garden_Watchers
             GameObjects = new List<GameObject>() { Player };
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
-            Map.GoToRoom(0,0, Direction.None, false);
+            Map.GoToRoom(0, 0, Direction.None, false);
             base.Initialize();
         }
 
         protected override void LoadContent()
-        { 
+        {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
             background = Content.Load<Texture2D>("dirt");
@@ -130,10 +145,11 @@ namespace Garden_Watchers
                 GameObjects.Clear();
                 Initialize();
             }
-            
-           
 
-            
+
+
+
+
             base.Update(gameTime);
         }
 
@@ -165,7 +181,7 @@ namespace Garden_Watchers
             {
                 if (GetNumberOfEnemies() == 1)
                 {
-                    HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y /2));
+                    HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2));
                     MakeObject(health);
                 }
             }
@@ -211,11 +227,11 @@ namespace Garden_Watchers
                 gameObject.Draw(_spriteBatch);
             }
 
-            
+
             // is UI so do after other stuff.
             _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Red);
             _spriteBatch.DrawString(textFont, "Bullet: " + player.Bullets, new Vector2(10, 40), Color.Red);
-            
+
             if (Player.UsingGun)
             {
                 _spriteBatch.DrawString(textFont, "Current Weapon: Shotgun", new Vector2(10, 75), Color.Red);
@@ -225,7 +241,17 @@ namespace Garden_Watchers
                 _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
             }
 
-            
+            if (Map.RoomCount == 11)
+            {
+                if (GetGnomeBoss(out GameObject gameObject))
+                {
+                    _spriteBatch.DrawString(textFont, "BOSS HEALTH: " + ((GnomeBoss)gameObject).Health, new Vector2(ScreenSize.X / 2, 10), Color.Red);
+
+                }
+            }
+
+
+
 #if DEBUG
             // draw the hitbox and position of every gameObject
             foreach (GameObject gameObject in GameObjects)
