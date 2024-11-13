@@ -37,6 +37,9 @@ namespace Garden_Watchers
         static Room()
         {
             random = new Random();
+
+           
+
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
                 { 0, new Enemy[] { } },
@@ -45,8 +48,9 @@ namespace Garden_Watchers
                 { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
                 { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
                 { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
-                { 12, new Enemy[] { new Gnome(20, new Vector2(1000, 500), 400) } },
+                { 12, new Enemy[] { new GnomeBoss(new Vector2(1000, 500)) } },
             };
+
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }

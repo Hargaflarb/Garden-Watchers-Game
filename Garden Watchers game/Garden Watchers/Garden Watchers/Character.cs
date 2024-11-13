@@ -11,29 +11,15 @@ namespace Garden_Watchers
     public abstract class Character : GameObject
     {
         //Fields
-       
+
         protected float speed;
-        private int health;
+        protected int health;
 
         //Properties
-        public int Health 
-        { 
-            get => health; 
-            set
-            {
-                if (value < 0)
-                {
-                    health = 0;
-                }
-                else if (value >= 10)
-                {
-                    health = 10;
-                }
-                else
-                {
-                    health = value;
-                }
-            }
+        public virtual int Health
+        {
+            get => health;
+            set { health = value; }
         }
 
         //Methods
@@ -72,12 +58,12 @@ namespace Garden_Watchers
                         //Game Over sequence
                         GameWorld.KillObject(this);
                         GameWorld.TheGameWorld.IsAlive = false;
-                        
-                      
+
+
                     }
                 }
             }
-            
+
         }
 
     }
