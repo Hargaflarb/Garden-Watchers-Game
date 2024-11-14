@@ -21,7 +21,9 @@ namespace Garden_Watchers
         private static Texture2D background;
         private static Random random;
         private bool isAlive;
+        private static bool winning;
         private static Song backgroundMusic;
+
 
         private static Vector2 playerLocation;
 
@@ -36,6 +38,7 @@ namespace Garden_Watchers
         public static Random Random { get => random; private set => random = value; }
         public static Player Player { get => player; private set => player = value; }
         public bool IsAlive { get => isAlive; set => isAlive = value; }
+        public static bool Winning { get => winning; set => winning = value; }
 
 #if DEBUG
         private Texture2D hitboxPixel;
@@ -78,6 +81,7 @@ namespace Garden_Watchers
         {
             TheGameWorld = this;
             IsAlive = true;
+            Winning = false;
             Map.ResetMap();
 
             _graphics.PreferredBackBufferHeight = 1080;
@@ -152,8 +156,19 @@ namespace Garden_Watchers
             KeyboardState keyState = Keyboard.GetState();
             if (IsAlive == false && keyState.IsKeyDown(Keys.Space))
             {
-                GameObjects.Clear();
+                GameOver();
                 Initialize();
+            }
+
+
+            //Checking for Victory conditions
+            if (Winning == true)
+            {
+                YouWon();
+                if (keyState.IsKeyDown(Keys.Space))
+                {
+                    Initialize();
+                }
             }
 
             base.Update(gameTime);
@@ -177,7 +192,12 @@ namespace Garden_Watchers
 
         public static void YouWon()
         {
+            GameObjects.Clear();
+        }
 
+        public static void GameOver()
+        {
+            GameObjects.Clear();
         }
 
         public static void KillObject(GameObject gameObject)
@@ -244,7 +264,7 @@ namespace Garden_Watchers
 
             _spriteBatch.Draw(background, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.Orange);
 
-
+            
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -265,15 +285,24 @@ namespace Garden_Watchers
                 _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
             }
 
-            if (Map.RoomCount == 13)
+            if (Map.RoomCount == 7)
             {
                 if (GetGnomeBoss(out GameObject gameObject))
                 {
-                    _spriteBatch.DrawString(textFont, "BOSS HEALTH: " + ((GnomeBoss)gameObject).Health, new Vector2(ScreenSize.X / 2, 10), Color.Red);
+                    _spriteBatch.DrawString(textFont, "BOSS HEALTH: " + ((GnomeBoss)gameObject).Health, new Vector2(((GnomeBoss)gameObject).Position.X-150, ((GnomeBoss)gameObject).Position.Y-250), Color.Gold);
 
                 }
             }
 
+            if (!IsAlive)
+            {
+                _spriteBatch.DrawString(textFont, "GAME OVER\nPRESS SPACE BAR TO RETRY", new Vector2(ScreenSize.X/2 - 200, ScreenSize.Y/2), Color.Gold);
+            }
+
+            if (Winning)
+            {
+                _spriteBatch.DrawString(textFont, "YOU WIN!\nPRESS SPACE BAR TO RESTART", new Vector2(ScreenSize.X / 2 - 200, ScreenSize.Y / 2), Color.Gold);
+            }
 
 
 #if DEBUG
@@ -297,6 +326,7 @@ namespace Garden_Watchers
                 _spriteBatch.Draw(hitboxPixel, centerDot, null, Color.White);
             }
 #endif
+
 
 
             _spriteBatch.End();

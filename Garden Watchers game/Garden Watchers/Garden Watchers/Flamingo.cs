@@ -13,7 +13,7 @@ namespace Garden_Watchers
     {
         //Field
         private float timer;
-        private float explodeTime = 0.7F;
+        private float explodeTime = 0.6F;
         private bool timerStarted = false;
         private bool explode = false;
         private int damage = 10;
@@ -68,8 +68,9 @@ namespace Garden_Watchers
         {
             Vector2 distance = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
             float pythagorasDistance = (float)Math.Pow(Math.Pow(distance.X, 2) + Math.Pow(distance.Y, 2),0.5f);
+
             //stops moving & starts countdown
-            if (pythagorasDistance <= 150)
+            if (pythagorasDistance <= 150 & !explode)
             {
                 speed = 0;
                 timer = 0;
@@ -89,7 +90,8 @@ namespace Garden_Watchers
                 frames = 0;
                 spriteNumber = 0;
                 sprites = flashing;
-                if (timer >= 1)
+                if (timer >= explodeTime)
+
                 {
                     GameWorld.KillObject(this);
                     Explosion explosion = new Explosion(Position);

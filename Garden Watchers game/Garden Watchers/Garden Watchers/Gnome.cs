@@ -98,11 +98,13 @@ namespace Garden_Watchers
                 velocity = (direction);
                 speed = 250;
                 sprites = walkAnim;
+                spriteNumber = 0;
             }
             else if (velocity == Vector2.Zero)
             {
                 charging = false;
                 sprites = walkAnim;
+                spriteNumber = 0;
             }
         }
         /// <summary>
@@ -117,6 +119,7 @@ namespace Garden_Watchers
             {
                 yell.Play();
                 sprites = chargeAnim;
+                spriteNumber = 0;
                 charging = true;
                 speed = 700;
                 cooldown = 1;

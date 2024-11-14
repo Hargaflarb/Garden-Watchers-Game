@@ -16,10 +16,14 @@ namespace Garden_Watchers
         protected bool charging;
         protected float cooldown;
         protected int damage = 2;
+        private bool gnomeAlive = true;
+
         private Texture2D[] walkAnim;
         private Texture2D[] chargeAnim;
         private SoundEffect yell;
 
+        public bool GnomeAlive { get => gnomeAlive; set => gnomeAlive = value; }
+        
         //Constructors
         public GnomeBoss(int health, Vector2 position, float speed) : base(health, position, speed)
         {
@@ -81,6 +85,7 @@ namespace Garden_Watchers
             if (!charging)
             {
                 sprites = walkAnim;
+                spriteNumber = 0;
                 cooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (cooldown <= 0)
@@ -109,6 +114,8 @@ namespace Garden_Watchers
             else if (velocity == Vector2.Zero)
             {
                 charging = false;
+                sprites = walkAnim;
+                spriteNumber = 0;
             }
         }
 
@@ -123,6 +130,7 @@ namespace Garden_Watchers
             {
                 yell.Play();
                 sprites = chargeAnim;
+                spriteNumber = 0;
                 charging = true;
                 speed = 400;
                 cooldown = 2;
@@ -141,6 +149,8 @@ namespace Garden_Watchers
                 ((Player)other).TakeDamage(damage, true);
             }
         }
+
+        
 
     }
 }

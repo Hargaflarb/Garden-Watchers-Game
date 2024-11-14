@@ -73,6 +73,10 @@ namespace Garden_Watchers
                     {
                         //death animation could be added here?
                         GameWorld.KillObject(this);
+                        if (this is GnomeBoss)
+                        {
+                            GameWorld.Winning = true;
+                        }
                     }
                     else
                     {
