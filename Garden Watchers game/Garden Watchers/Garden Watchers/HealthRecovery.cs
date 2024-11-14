@@ -12,12 +12,14 @@ namespace Garden_Watchers
 {
     internal class HealthRecovery: Item
     {
-        
+        /// <summary>
+        /// Set the position of the new instance.
+        /// </summary>
+        /// <param name="position">The position.</param>
         public HealthRecovery(Vector2 position)
         {
             Position = position;
         }
-        
         
         public override void LoadContent(ContentManager content)
         {
@@ -33,6 +35,10 @@ namespace Garden_Watchers
             base.LoadContent(content);
         }
 
+        /// <summary>
+        /// Heals the player if health isn't full.
+        /// </summary>
+        /// <param name="other">Other GameObject.</param>
         public override void OnCollision(GameObject other)
         {
             base.OnCollision(other);

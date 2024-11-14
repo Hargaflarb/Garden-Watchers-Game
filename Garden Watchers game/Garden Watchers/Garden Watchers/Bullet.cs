@@ -13,6 +13,15 @@ namespace Garden_Watchers
         private float speed;
         private bool playerBullet;
 
+        /// <summary>
+        /// Instantiates a new Bullet.
+        /// </summary>
+        /// <param name="sprite">The Bullets sprite.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="direction">The direction of travel.</param>
+        /// <param name="playerBullet">Is the Bullet shot by the player?</param>
+        /// <param name="rotation">Rotation of the sprite.</param>
+        /// <param name="speed">Speed of the Bullet.</param>
         public Bullet(Texture2D sprite, Vector2 position, Vector2 direction, bool playerBullet, float rotation, int speed) : base()
         {
             this.sprite = sprite;
@@ -26,6 +35,11 @@ namespace Garden_Watchers
             Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
 
+        /// <summary>
+        /// Update the Bullets position and damage.
+        /// </summary>
+        /// <param name="gameTime">The GameTime.</param>
+        /// <param name="screenSize">The size of the graphics.</param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -51,6 +65,10 @@ namespace Garden_Watchers
             base.Update(gameTime, screenSize);
         }
 
+        /// <summary>
+        /// Handles collision with Characters.
+        /// </summary>
+        /// <param name="other">The ohter GameObject.</param>
         public override void OnCollision(GameObject other)
         {
             if (other is Character)
