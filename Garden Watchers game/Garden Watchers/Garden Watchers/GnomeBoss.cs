@@ -20,7 +20,7 @@ namespace Garden_Watchers
         private Texture2D[] chargeAnim;
         private SoundEffect yell;
 
-        //Constructor
+        //Constructors
         public GnomeBoss(int health, Vector2 position, float speed) : base(health, position, speed)
         {
             Health = health;
@@ -60,10 +60,12 @@ namespace Garden_Watchers
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
+            //if the gnome is stopped, it is no longer charging
             if (velocity == Vector2.Zero)
             {
                 charging = false;
             }
+            //control bool that flips sprite
             if (velocity.X > 0)
             {
                 facingRight = true;
@@ -72,6 +74,7 @@ namespace Garden_Watchers
             {
                 facingRight = false;
             }
+
             Chase();
             Charge();
 
@@ -86,9 +89,12 @@ namespace Garden_Watchers
             }
             base.Update(gameTime, screenSize);
         }
-
+        /// <summary>
+        /// When not charging, the gnome follows the players location
+        /// </summary>
         public void Chase()
         {
+            //if not charging or on cooldown
             if (charging == false && cooldown <= 0)
             {
                 Vector2 direction = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
@@ -99,6 +105,7 @@ namespace Garden_Watchers
                 velocity = (direction);
                 speed = 200;
             }
+            //if the gnome is stopped, it is no longer charging
             else if (velocity == Vector2.Zero)
             {
                 charging = false;
@@ -107,9 +114,11 @@ namespace Garden_Watchers
 
         public void Charge()
         {
+            //find distance between gnome & player
             Vector2 distance = new Vector2(Math.Abs(GameWorld.PlayerCharacterPosition.X - position.X), Math.Abs(GameWorld.PlayerCharacterPosition.Y - position.Y));
             float pythagorasDistance = (float)Math.Pow(Math.Pow(distance.X, 2) + Math.Pow(distance.Y, 2), 0.5f);
 
+            //when within certain distance of player position, charge is initiated
             if (pythagorasDistance <= 600 && cooldown <= 0)
             {
                 yell.Play();
@@ -119,7 +128,10 @@ namespace Garden_Watchers
                 cooldown = 2;
             }
         }
-
+        /// <summary>
+        /// when colliding, the gnome is stopped & if it hit the player, the player takes damage
+        /// </summary>
+        /// <param name="other">the object which was collided with</param>
         public override void OnCollision(GameObject other)
         {
             if (other is Player)

@@ -14,13 +14,17 @@ namespace Garden_Watchers
         private Rectangle hitbox;
         protected Vector2 position;
         protected Vector2 origin;
-        protected float rotation;
         protected float invincibilityFrames = 0.3f;
         protected float invincibilityTimer;
-        protected bool takingDamage = false;
         protected Vector2 velocity;
+        //visual feedback
+        protected float rotation;
+        protected bool takingDamage = false;
+        //animation
         protected int spriteNumber;
         protected bool moving;
+
+        //to avoid having to manually resize & edit sprites & animation frames
         protected float scale = 1;
         protected int framerate=6;
         protected int frames;
@@ -52,7 +56,7 @@ namespace Garden_Watchers
         /// <summary>
         /// Runs when GameObject is colliding with something else
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">the other Gameobject in the collision</param>
         public virtual void OnCollision(GameObject other)
         {
             if (this == other)
@@ -63,7 +67,7 @@ namespace Garden_Watchers
 
 
         /// <summary>
-        /// 
+        /// Makes sure the GameObject cannot go out of bounds & stops it if it tries
         /// </summary>
         /// <param name="screenSize"></param>
         /// <param name="vector"></param>
@@ -195,7 +199,10 @@ namespace Garden_Watchers
         {
             invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
         }
-      
+
+        /// <summary>
+        /// meant for using pickupable health packs, but not currently in use
+        /// </summary>
         public virtual void RecoverHealth()
         {
          

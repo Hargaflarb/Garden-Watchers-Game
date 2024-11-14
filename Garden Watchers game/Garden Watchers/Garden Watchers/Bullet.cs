@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace Garden_Watchers
 {
+    /// <summary>
+    /// damaging projectile spawned by player & fairies
+    /// </summary>
     internal class Bullet : GameObject
     {
         private int damage;
@@ -14,6 +17,15 @@ namespace Garden_Watchers
         private bool playerBullet;
         private float timeExisted;
 
+        /// <summary>
+        /// single bullet instantiation
+        /// </summary>
+        /// <param name="sprite">the bullet's sprite, determined by the GameObject instantiating it</param>
+        /// <param name="position">the bullet's starting position</param>
+        /// <param name="direction">where the bullet is going</param>
+        /// <param name="playerBullet">whether the bullet was fired by the player</param>
+        /// <param name="rotation">purely aesthetic</param>
+        /// <param name="speed"></param>
         public Bullet(Texture2D sprite, Vector2 position, Vector2 direction, bool playerBullet, float rotation, int speed) : base()
         {
             this.sprite = sprite;
@@ -31,6 +43,7 @@ namespace Garden_Watchers
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //move bullet in determined direction
             Position += (direction * speed) * deltaTime;
 
             timeExisted += deltaTime;
