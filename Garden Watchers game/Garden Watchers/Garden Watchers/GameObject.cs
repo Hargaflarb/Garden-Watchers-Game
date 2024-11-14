@@ -152,7 +152,7 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            if ((this is Player &&velocity!=Vector2.Zero)||this is not Player&&this is Character)
+            if ((this is Player && velocity != Vector2.Zero) || (this is not Player && this is Character))
             {
                 sprite = sprites[spriteNumber];
                 frames += 1;

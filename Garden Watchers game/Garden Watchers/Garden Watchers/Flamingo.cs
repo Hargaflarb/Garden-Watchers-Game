@@ -23,7 +23,7 @@ namespace Garden_Watchers
         {
             Health = 3;
             speed = 200;
-            scale = 0.3f;
+            scale = 0.2f;
         }
 
         public override void LoadContent(ContentManager content)
@@ -73,8 +73,9 @@ namespace Garden_Watchers
 
             if (explode == true)
             {
+                frames = 0;
+                spriteNumber = 0;
                 sprites = flashing;
-                framerate = 8;
                 if (timer >= 2)
                 {
                     GameWorld.KillObject(this);
