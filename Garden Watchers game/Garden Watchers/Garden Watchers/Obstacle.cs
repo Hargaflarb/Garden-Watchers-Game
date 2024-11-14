@@ -6,10 +6,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Garden_Watchers
 {
-    internal class Obstacle : GameObject
+    public abstract class Obstacle : GameObject
     {
 
         public Obstacle(Vector2 pos) : base()
+        {
+            Position = pos;
+        }
+        public Obstacle(Vector2 pos, Vector2 hitboxSize) : base()
         {
             Position = pos;
         }
@@ -21,7 +25,6 @@ namespace Garden_Watchers
         /// <param name="other">The other obejct that is intersecting with this one.</param>
         public override void OnCollision(GameObject other)
         {
-            base.OnCollision(other);
             if (other is Character)
             {
                 Vector2 otherPos = ((Character)other).Position;
@@ -31,7 +34,7 @@ namespace Garden_Watchers
 
                 float newXPosition = otherPos.X;
                 float newYPosition = otherPos.Y;
-                
+
                 if (Math.Abs(distance.X) > Math.Abs(distance.Y))
                 { // most likely hit from x-axis
                     if (distance.X < 0)
@@ -60,10 +63,19 @@ namespace Garden_Watchers
             }
         }
 
-        public override void LoadContent(ContentManager content)
+        public static Obstacle GetRandomNewObstacle(Vector2 pos)
         {
-            sprite = content.Load<Texture2D>("Obstacle");
-            base.LoadContent(content);
+            int rando = GameWorld.Random.Next(0, 2);
+
+            switch (rando)
+            {
+                case 0:
+                    return new PitFall(pos);
+                case 1:
+                    return new Wall(pos);
+                default:
+                    return new Wall(pos);
+            }
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)

@@ -37,6 +37,10 @@ namespace Garden_Watchers
                     other.TakeDamage(damage, true);
                 }
             }
+            else if (other is Bullet)
+            {
+                GameWorld.KillObject(other);
+            }
         }
 
         public override void Update(GameTime gameTime, Vector2 screenSize)

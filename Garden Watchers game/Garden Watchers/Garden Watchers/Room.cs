@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 
 namespace Garden_Watchers
@@ -24,17 +25,32 @@ namespace Garden_Watchers
         private Vector2 coordinates;
         private Direction doorDirection;
         private static Random random;
+        private static Dictionary<int, Enemy[]> enemyApearanceProgression;
 
-        public Room(int X, int Y)
+        public Room(int X, int Y, Direction entrenceSide)
         {
             coordinates = new Vector2(X, Y);
             roomObjects = new List<GameObject>();
 
-            Initialize();
+            Initialize(entrenceSide);
         }
         static Room()
         {
             random = new Random();
+
+           
+
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
+            {
+                { 0, new Enemy[] { } },
+                { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
+                { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
+                { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
+                { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
+                { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
+                { 12, new Enemy[] { new GnomeBoss(new Vector2(1000, 500)) } },
+            };
+
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
@@ -43,29 +59,98 @@ namespace Garden_Watchers
         /// <summary>
         /// Set puts obstacles, doors, enemies and more in the room.
         /// </summary>
-        public void Initialize()
+        public void Initialize(Direction entrenceSide)
         {
             InitializeDoors();
-            InitializeEnemies();
-            InitializeObstacles();
-            //member to load content of new stuff
+            InitializeEnemies(entrenceSide);
+            InitializeObstacles(entrenceSide);
+            //remember to load content of new stuff
         }
 
 
-        public void InitializeEnemies()
+        public void InitializeEnemies(Direction entrenceSide)
         {
-            GameObject gnome = new Gnome(3, new Vector2(50, 50), 250);
-            GameWorld.MakeObject(gnome);
+            if (!enemyApearanceProgression.ContainsKey(Map.RoomCount))
+            {
+                // random enemy
+                int enemyAmount = random.Next(2, 4);
+                for (int i = 0; i < enemyAmount; i++)
+                {
+                    Vector2 screenSize = GameWorld.ScreenSize;
+                    Rectangle spawnBounds = new Rectangle(0,0, (int)screenSize.X, (int)screenSize.Y);
+                    switch (entrenceSide)
+                    {
+                        case Direction.Up:
+                            spawnBounds.Y += 500;
+                            spawnBounds.Height -= 500;
+                            break;
+                        case Direction.Down:
+                            spawnBounds.Height -= 500;
+                            break;
+                        case Direction.Left:
+                            spawnBounds.X += 500;
+                            spawnBounds.Width -= 500;
+                            break;
+                        case Direction.Right:
+                            spawnBounds.Width -= 500;
+                            break;
+                        default:
+                            break;
+                    }
 
-            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
-            GameWorld.MakeObject(flamingo);
-
+                    Vector2 position = new Vector2(random.Next(spawnBounds.X, spawnBounds.Width), random.Next(spawnBounds.Y, spawnBounds.Height));
+                    GameWorld.MakeObject(Enemy.GetRandomNewEnemy(position));
+                }
+            }
+            else
+            {
+                Enemy[] roomEnemies = enemyApearanceProgression[Map.RoomCount];
+                foreach (Enemy enemy in roomEnemies)
+                {
+                    GameWorld.MakeObject(enemy);
+                }
+            }
         }
 
-        public void InitializeObstacles()
+        public void InitializeObstacles(Direction entrenceSide)
         {
-            GameObject tempObstacle = new Obstacle(new Vector2(200, 200));
+            int obstacleAmount = random.Next(2, 4);
+            for (int i = 0; i < obstacleAmount; i++)
+            {
+                Vector2 screenSize = GameWorld.ScreenSize;
+                Rectangle spawnBounds = new Rectangle(0, 0, (int)screenSize.X, (int)screenSize.Y);
+                switch (entrenceSide)
+                {
+                    case Direction.Up:
+                        spawnBounds.Y += 500;
+                        spawnBounds.Height -= 500;
+                        break;
+                    case Direction.Down:
+                        spawnBounds.Height -= 500;
+                        break;
+                    case Direction.Left:
+                        spawnBounds.X += 500;
+                        spawnBounds.Width -= 500;
+                        break;
+                    case Direction.Right:
+                        spawnBounds.Width -= 500;
+                        break;
+                    default:
+                        break;
+                }
+
+                Vector2 position = new Vector2(random.Next(spawnBounds.X, spawnBounds.Width), random.Next(spawnBounds.Y, spawnBounds.Height));
+                GameWorld.MakeObject(Obstacle.GetRandomNewObstacle(position));
+            }
+
+
+
+            GameObject tempObstacle = new Wall(new Vector2(200, 200));
             GameWorld.MakeObject(tempObstacle);
+
+            GameObject tempObstacle2 = new PitFall(new Vector2(400, 200));
+            GameWorld.MakeObject(tempObstacle2);
+
         }
 
         public void InitializeDoors()
@@ -158,7 +243,7 @@ namespace Garden_Watchers
             roomObjects.Clear();
             foreach (GameObject gameObject in gameObjects)
             {
-                if (gameObject is not Player)
+                if (gameObject is not Player & gameObject is not Bullet)
                 {
                     roomObjects.Add(gameObject);
                 }

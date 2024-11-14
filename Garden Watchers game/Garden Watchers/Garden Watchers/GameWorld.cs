@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Garden_Watchers
@@ -15,9 +16,9 @@ namespace Garden_Watchers
         private static List<GameObject> removedObjects;
         private static List<GameObject> addedObjects;
         private static Vector2 screenSize;
-        Character-Implementation---Echo
-        private Player player;
-        private Texture2D background;
+        private static Player player;
+        private static Texture2D background;
+        private static Random random;
         private bool isAlive;
 
         private static Vector2 playerLocation;
@@ -30,9 +31,10 @@ namespace Garden_Watchers
 
         public static Vector2 PlayerCharacterPosition { get => playerLocation; set => playerLocation = value; }
         public static GameWorld TheGameWorld { get; set; }
+        public static Random Random { get => random; private set => random = value; }
         public static Player Player { get => player; private set => player = value; }
         public bool IsAlive { get => isAlive; set => isAlive = value; }
- 
+
 #if DEBUG
         private Texture2D hitboxPixel;
 #endif
@@ -44,6 +46,25 @@ namespace Garden_Watchers
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+        }
+        static GameWorld()
+        {
+            Random = new Random();
+        }
+
+        private bool GetGnomeBoss(out GameObject gnomeBossClass)
+        {
+            foreach (GameObject gameObject in GameObjects)
+            {
+                if (gameObject is GnomeBoss)
+                {
+                    gnomeBossClass = gameObject;
+                    return true;
+                }
+            }
+
+            gnomeBossClass = null;
+            return false;
         }
 
         protected override void Initialize()
@@ -60,26 +81,17 @@ namespace Garden_Watchers
 
             Vector2 playerPosition = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
             Player = new Player(10, playerPosition, 500);
+
+
             GameObjects = new List<GameObject>() { Player };
-
-
-
-            GameObject gnome = new Gnome(6, new Vector2(50,50), 250);
-            GameObjects.Add(gnome);
-
-            GameObject flamingo = new Flamingo(3, new Vector2(25, 25), 200);
-            GameObjects.Add(flamingo);
-
-            GameObject fairy = new Fairy(2, new Vector2(1000, 900), 150);
-            gameObjects.Add(fairy);
             RemovedObjects = new List<GameObject>();
             AddedObjects = new List<GameObject>();
-            Map.GoToRoom(0,0, Direction.None, false);
+            Map.GoToRoom(0, 0, Direction.None, false);
             base.Initialize();
         }
 
         protected override void LoadContent()
-        { 
+        {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             textFont = Content.Load<SpriteFont>("File");
             background = Content.Load<Texture2D>("dirt");
@@ -126,6 +138,7 @@ namespace Garden_Watchers
             GameObjects.AddRange(AddedObjects);
             AddedObjects.Clear();
 
+            // lose thing
             KeyboardState keyState = Keyboard.GetState();
             if (IsAlive == false && keyState.IsKeyDown(Keys.Space))
             {
@@ -135,12 +148,43 @@ namespace Garden_Watchers
 
 
 
+
+
             base.Update(gameTime);
+        }
+
+
+
+        public static int GetNumberOfEnemies()
+        {
+            int output = 0;
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (gameObject is Enemy)
+                {
+                    output++;
+                }
+            }
+            return output;
+        }
+
+
+        public static void YouWon()
+        {
+
         }
 
         public static void KillObject(GameObject gameObject)
         {
             removedObjects.Add(gameObject);
+            if (gameObject is Enemy)
+            {
+                if (GetNumberOfEnemies() == 1)
+                {
+                    HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2));
+                    MakeObject(health);
+                }
+            }
         }
 
         public static void KillAllObjects()
@@ -183,9 +227,30 @@ namespace Garden_Watchers
                 gameObject.Draw(_spriteBatch);
             }
 
-            
+
             // is UI so do after other stuff.
             _spriteBatch.DrawString(textFont, "Health: " + player.Health, new Vector2(10, 5), Color.Red);
+            _spriteBatch.DrawString(textFont, "Bullet: " + player.Bullets, new Vector2(10, 40), Color.Red);
+
+            if (Player.UsingGun)
+            {
+                _spriteBatch.DrawString(textFont, "Current Weapon: Shotgun", new Vector2(10, 75), Color.Red);
+            }
+            else
+            {
+                _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
+            }
+
+            if (Map.RoomCount == 13)
+            {
+                if (GetGnomeBoss(out GameObject gameObject))
+                {
+                    _spriteBatch.DrawString(textFont, "BOSS HEALTH: " + ((GnomeBoss)gameObject).Health, new Vector2(ScreenSize.X / 2, 10), Color.Red);
+
+                }
+            }
+
+
 
 #if DEBUG
             // draw the hitbox and position of every gameObject

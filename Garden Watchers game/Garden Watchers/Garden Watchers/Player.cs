@@ -17,11 +17,11 @@ namespace Garden_Watchers
         //gun things
         private int bullets;
         private int maxBullets = 6;
-        private float timeBetweenBullets = 0.2f;
+        private float timeBetweenBullets = 1f;
+        private float timeBetweenAttacks = 0.5f;
         private Texture2D bulletSprite;
         //chainsaw things
         private Texture2D meleeSprite;
-        private float timeBetweenAttacks = 0.5f;
 
         //which weapon is in use
         private bool usingGun = true;
@@ -33,6 +33,35 @@ namespace Garden_Watchers
         private float buttonCooldown = 0.3f;
         private float buttonTimer;
 
+        private float dashCooldown = 1f;
+        private float dashCooldownTimer;
+        private float dashTime = 0.15f;
+        private float dashTimer;
+
+        public int Bullets { get => bullets; set => bullets = value; }
+        public bool UsingGun { get => usingGun; set => usingGun = value; }
+        public bool IsDashing { get => dashTimer < dashTime; }
+
+        public override int Health
+        {
+            get => health;
+            set
+            {
+                if (value < 0)
+                {
+                    health = 0;
+                }
+                else if (value >= 10)
+                {
+                    health = 10;
+                }
+                else
+                {
+                    health = value;
+                }
+            }
+        }
+
         //Constructor
 
         /// <summary>
@@ -40,12 +69,12 @@ namespace Garden_Watchers
         /// </summary>
         /// <param name="position"></param>
         /// <param name="speed"></param>
-        public Player (int health, Vector2 position, float speed)
+        public Player(int health, Vector2 position, float speed)
         {
             Health = health;
             Position = position;
             this.speed = speed;
-            bullets = 6;
+            Bullets = 6;
             GameWorld.PlayerCharacterPosition = Position;
         }
 
@@ -84,10 +113,18 @@ namespace Garden_Watchers
             // world board check
             base.Update(gameTime, screenSize);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            GameWorld.PlayerCharacterPosition= position;
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;   
-            buttonTimer+= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mouseState =Mouse.GetState();
+            GameWorld.PlayerCharacterPosition = position;
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            buttonTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            dashTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            dashCooldownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (dashTimer >= dashTime)
+            {
+                speed = 500;
+            }
+
+            mouseState = Mouse.GetState();
         }
 
         /// <summary>
@@ -119,9 +156,17 @@ namespace Garden_Watchers
                 velocity += new Vector2(+1, 0);
             }
 
-            if (keyState.IsKeyDown(Keys.Q)&&buttonTimer>=buttonCooldown)
+            if (keyState.IsKeyDown(Keys.Space))
             {
-                usingGun = !usingGun;
+                if (dashCooldownTimer >= dashCooldown)
+                {
+                    Dash();
+                }
+            }
+
+            if (keyState.IsKeyDown(Keys.Q) && buttonTimer >= buttonCooldown)
+            {
+                UsingGun = !UsingGun;
                 buttonTimer = 0;
             }
 
@@ -140,35 +185,43 @@ namespace Garden_Watchers
                 velocity.Normalize();
             }
 
-            
 
-        } 
+
+        }
 
         private void UseWeapon()
         {
-            if (usingGun)
+            if (UsingGun)
             {
-                if (bullets > 0 && timer >= timeBetweenBullets)
+                if (Bullets > 0 && timer >= timeBetweenBullets)
                 {
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
                     double directionSum = Math.Atan2(direction.Y, direction.X);
+                    
                     float XDirection = (float)Math.Cos(directionSum);
                     float YDirection = (float)Math.Sin(directionSum);
+                    
                     direction = new Vector2(XDirection, YDirection);
-                    Bullet bullet1 = new Bullet(bulletSprite, position, direction, true, (float)directionSum, 200);
-                    float XDirection2 = (float)Math.Cos(directionSum-0.2);
-                    float YDirection2 = (float)Math.Sin(directionSum-0.2);
+                    Bullet bullet1 = new Bullet(bulletSprite, position, direction, true, (float)directionSum, 600);
+
+                    float XDirection2 = (float)Math.Cos(directionSum - 0.1);
+                    float YDirection2 = (float)Math.Sin(directionSum - 0.1);
+                    
                     Vector2 direction2 = new Vector2(XDirection2, YDirection2);
-                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum-0.2f, 200);
-                    float XDirection3 = (float)Math.Cos(directionSum + 0.2);
-                    float YDirection3 = (float)Math.Sin(directionSum + 0.2);
+                    Bullet bullet2 = new Bullet(bulletSprite, position, direction2, true, (float)directionSum - 0.1f, 600);
+
+                    float XDirection3 = (float)Math.Cos(directionSum + 0.1);
+                    float YDirection3 = (float)Math.Sin(directionSum + 0.1);
+
                     Vector2 direction3 = new Vector2(XDirection3, YDirection3);
-                    Bullet bullet3 = new Bullet(bulletSprite, position, direction3, true, (float)directionSum + 0.2f, 200);
+                    Bullet bullet3 = new Bullet(bulletSprite, position, direction3, true, (float)directionSum + 0.1f, 600);;
+
+
                     GameWorld.AddedObjects.Add(bullet1);
                     GameWorld.AddedObjects.Add(bullet2);
                     GameWorld.AddedObjects.Add(bullet3);
                     timer = 0;
-                    bullets--;
+                    Bullets--;
                 }
             }
             else
@@ -181,20 +234,34 @@ namespace Garden_Watchers
                     float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
                     Vector2 spawnpoint = new Vector2();
-                    spawnpoint.Y = position.Y+(direction.Y * sprite.Height);
-                    spawnpoint.X = position.X+(direction.X * sprite.Width);
-                   
-                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true,(float)directionSum);
+                    spawnpoint.Y = position.Y + (direction.Y * sprite.Height);
+                    spawnpoint.X = position.X + (direction.X * sprite.Width);
+
+                    MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true, (float)directionSum);
                     GameWorld.AddedObjects.Add(attack);
                     timer = 0;
                 }
             }
         }
 
+        private void Dash()
+        {
+            dashTimer = 0;
+            dashCooldownTimer = 0;
+            speed = 2000;
+            GiveInvincibilityFrames(dashTime);
+        }
+
         private void Reload()
         {
-            bullets = maxBullets;
+            Bullets = maxBullets;
             //time to reload?
+        }
+
+        public override void RecoverHealth()
+        {
+            Health += 5;
+            base.RecoverHealth();
         }
     }
 }

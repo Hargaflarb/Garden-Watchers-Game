@@ -25,18 +25,9 @@ namespace Garden_Watchers
         }
         public override void OnCollision(GameObject other)
         {
-            if(other is Player)
-            {
-                PickUp();
-            }
+           
         }
-        public void PickUp()
-        {
-            pickedUp = true;
-            this.position = GameWorld.PlayerCharacterPosition;
-        }
-
-        public abstract void UseItem();
+        
 
 
     }

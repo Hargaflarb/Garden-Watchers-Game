@@ -11,25 +11,15 @@ namespace Garden_Watchers
     public abstract class Character : GameObject
     {
         //Fields
-       
+
         protected float speed;
-        private int health;
+        protected int health;
 
         //Properties
-        public int Health 
-        { 
-            get => health; 
-            set
-            {
-                if (value < 0)
-                {
-                    health = 0;
-                }
-                else
-                {
-                    health = value;
-                }
-            }
+        public virtual int Health
+        {
+            get => health;
+            set { health = value; }
         }
 
         //Methods
@@ -51,11 +41,10 @@ namespace Garden_Watchers
 
         public override void TakeDamage(int damage, bool isMeleeAttack)
         {
-            if (invincibilityTimer >= invincibilityFrames || isMeleeAttack == false)
+            if (invincibilityTimer <= 0 || isMeleeAttack == false)
             {
-                
                 Health -= damage;
-                invincibilityTimer = 0;
+                GiveInvincibilityFrames();
                 takingDamage = true;
                 if (Health <= 0)
                 {
@@ -69,12 +58,12 @@ namespace Garden_Watchers
                         //Game Over sequence
                         GameWorld.KillObject(this);
                         GameWorld.TheGameWorld.IsAlive = false;
-                        
-                      
+
+
                     }
                 }
             }
-            
+
         }
 
     }
