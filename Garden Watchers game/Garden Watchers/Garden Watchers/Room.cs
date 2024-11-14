@@ -38,7 +38,7 @@ namespace Garden_Watchers
             random = new Random();
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
-                { 0, new Enemy[] { new GnomeBoss(new Vector2(1000,500)) } },
+                { 0, new Enemy[] { } },
                 { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
                 { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
                 { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
