@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,6 +18,7 @@ namespace Garden_Watchers
         protected int damage = 2;
         protected Texture2D[] chargeAnim;
         protected Texture2D[] walkAnim;
+        protected SoundEffect yell;
 
         public Gnome(int health, Vector2 position, float speed) : base(health, position, speed)
         {
@@ -46,6 +48,7 @@ namespace Garden_Watchers
             }
             sprites = walkAnim;
             sprite = sprites[0];
+            yell = content.Load<SoundEffect>("yell");
             base.LoadContent(content);
         }
         public override void Update(GameTime gameTime, Vector2 screenSize)
@@ -103,6 +106,7 @@ namespace Garden_Watchers
             
             if (pythagorasDistance <= 600 && cooldown <= 0)
             {
+                yell.Play();
                 sprites = chargeAnim;
                 charging = true;
                 speed = 500;

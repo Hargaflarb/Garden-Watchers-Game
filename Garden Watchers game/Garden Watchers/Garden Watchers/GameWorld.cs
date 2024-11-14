@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -20,6 +21,7 @@ namespace Garden_Watchers
         private static Texture2D background;
         private static Random random;
         private bool isAlive;
+        private static Song backgroundMusic;
 
         private static Vector2 playerLocation;
 
@@ -101,7 +103,10 @@ namespace Garden_Watchers
             {
                 gameObject.LoadContent(Content);
             }
-
+            backgroundMusic = Content.Load<Song>("background music");
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f;
 #if DEBUG
             //loads the hitbox sprite.
             hitboxPixel = Content.Load<Texture2D>("Hitbox pixel");

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -33,6 +34,10 @@ namespace Garden_Watchers
         private float timer;
 
         MouseState mouseState;
+        
+        private SoundEffect gunshot;
+        private SoundEffect sawSfx;
+        private SoundEffect reloadGun;
 
         private float buttonCooldown = 0.3f;
         private float buttonTimer;
@@ -75,7 +80,7 @@ namespace Garden_Watchers
         /// <param name="speed"></param>
         public Player(int health, Vector2 position, float speed)
         {
-            scale = 0.3f;
+            scale = 0.25f;
             Health = health;
             Position = position;
             this.speed = speed;
@@ -129,6 +134,11 @@ namespace Garden_Watchers
 
             bulletSprite = content.Load<Texture2D>("bullet player");
             meleeSprite = content.Load<Texture2D>("tempSwipe");
+
+            hurt = content.Load<SoundEffect>("takes damage");
+            gunshot = content.Load<SoundEffect>("gunshot sfx");
+            sawSfx = content.Load<SoundEffect>("chainsaw sfx");
+            reloadGun = content.Load<SoundEffect>("reload");
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
@@ -290,6 +300,8 @@ namespace Garden_Watchers
             {
                 if (Bullets > 0 && timer >= timeBetweenBullets)
                 {
+                    gunshot.Play();
+
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
                     double directionSum = Math.Atan2(direction.Y, direction.X);
                     
@@ -323,6 +335,7 @@ namespace Garden_Watchers
             {
                 if (timer >= timeBetweenAttacks)
                 {
+                    sawSfx.Play();
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
                     double directionSum = Math.Atan2(direction.Y, direction.X);
                     float XDirection = (float)Math.Cos(directionSum);
@@ -349,8 +362,12 @@ namespace Garden_Watchers
 
         private void Reload()
         {
-            Bullets = maxBullets;
-            //time to reload?
+            if (bullets < maxBullets)
+            {
+                reloadGun.Play();
+                Bullets = maxBullets;
+                //time to reload?
+            }
         }
 
         public override void RecoverHealth()
