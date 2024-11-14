@@ -61,7 +61,11 @@ namespace Garden_Watchers
                 if ((playerBullet && other is Enemy) || (!playerBullet && other is Player))
                 {
                     ((Character)other).TakeDamage(damage, false);
-                    GameWorld.KillObject(this);
+
+                    if (!(other is Player & GameWorld.Player.IsDashing))
+                    {
+                        GameWorld.KillObject(this);
+                    }
                 }
             }
         }

@@ -14,6 +14,8 @@ namespace Garden_Watchers
 
         protected float speed;
         protected int health;
+        protected float hurtTime = 0.15f;
+        protected float hurtTimer;
 
         //Properties
         public virtual int Health
@@ -25,6 +27,18 @@ namespace Garden_Watchers
         //Methods
 
 
+        public override void Update(GameTime gameTime, Vector2 screenSize)
+        {
+            hurtTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (hurtTimer <= 0)
+            {
+                takingDamage = false;
+            }
+
+
+            base.Update(gameTime, screenSize);
+        }
 
 
         /// <summary>
@@ -41,11 +55,15 @@ namespace Garden_Watchers
 
         public virtual void TakeDamage(int damage, bool isMeleeAttack)
         {
-            if (invincibilityTimer <= 0 || isMeleeAttack == false)
+            if (invincibilityTimer <= 0)
             {
                 Health -= damage;
-                GiveInvincibilityFrames();
+                if (isMeleeAttack)
+                {
+                    GiveInvincibilityFrames();
+                }
                 takingDamage = true;
+                hurtTimer = hurtTime;
                 if (Health <= 0)
                 {
                     if (this is Enemy)

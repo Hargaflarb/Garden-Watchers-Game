@@ -133,11 +133,6 @@ namespace Garden_Watchers
             Position = CheckOutOfBounds(screenSize, Position);
             
             invincibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (invincibilityTimer <= 0)
-            {
-                takingDamage = false;
-            }
         }
 
         /// <summary>
