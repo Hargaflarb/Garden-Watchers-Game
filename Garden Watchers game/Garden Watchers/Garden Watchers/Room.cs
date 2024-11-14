@@ -119,18 +119,18 @@ namespace Garden_Watchers
                     switch (entrenceSide)
                     {
                         case Direction.Up:
-                            spawnBounds.Y += 500;
-                            spawnBounds.Height -= 500;
+                            spawnBounds.Y += 200;
+                            spawnBounds.Height -= 200;
                             break;
                         case Direction.Down:
-                            spawnBounds.Height -= 500;
+                            spawnBounds.Height -= 200;
                             break;
                         case Direction.Left:
-                            spawnBounds.X += 500;
-                            spawnBounds.Width -= 500;
+                            spawnBounds.X += 200;
+                            spawnBounds.Width -= 200;
                             break;
                         case Direction.Right:
-                            spawnBounds.Width -= 500;
+                            spawnBounds.Width -= 200;
                             break;
                         default:
                             break;
