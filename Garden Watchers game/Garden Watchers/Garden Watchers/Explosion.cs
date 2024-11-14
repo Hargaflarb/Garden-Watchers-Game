@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -14,6 +15,7 @@ namespace Garden_Watchers
         //Field
         private float timer;
         private int damage = 10;
+        private SoundEffect kaboom;
 
         public Explosion(Vector2 position)
         {
@@ -29,7 +31,8 @@ namespace Garden_Watchers
                 sprites[i] = content.Load<Texture2D>("explosion");
             }
             sprite = sprites[0];
-
+            kaboom = content.Load<SoundEffect>("explosion sfx");
+            kaboom.Play();
             base.LoadContent(content);
         }
 

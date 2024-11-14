@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,10 @@ namespace Garden_Watchers
         private float timeBetweenBullets = 1f;
         private float timeBetweenAttacks = 0.5f;
         private Texture2D bulletSprite;
+        private Texture2D idleShotgun;
+        private Texture2D idleChainsaw;
+        private Texture2D[] walkingShotgun;
+        private Texture2D[] walkingChainsaw;
         //chainsaw things
         private Texture2D meleeSprite;
 
@@ -23,6 +28,10 @@ namespace Garden_Watchers
         private float timer;
 
         MouseState mouseState;
+        
+        private SoundEffect gunshot;
+        private SoundEffect sawSfx;
+        private SoundEffect reloadGun;
 
         private float buttonCooldown = 0.3f;
         private float buttonTimer;
@@ -65,11 +74,12 @@ namespace Garden_Watchers
         /// <param name="speed"></param>
         public Player(int health, Vector2 position, float speed)
         {
+            scale = 0.25f;
             Health = health;
             Position = position;
             this.speed = speed;
             Bullets = 6;
-            GameWorld.PlayerCharacterPosition = Position;
+            GameWorld.PlayerCharacterPosition = Position;            
         }
 
         //Methods
@@ -80,16 +90,49 @@ namespace Garden_Watchers
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
-            sprites = new Texture2D[1];
+            sprites = new Texture2D[11];
+            walkingChainsaw = new Texture2D[11];
+            walkingShotgun = new Texture2D[11];
+
+            for (int i = 0; i < walkingChainsaw.Length; i++)
+            {                
+                if(i < 10)
+                {
+                    walkingChainsaw[i] = content.Load<Texture2D>("Player Character\\player walk chainsaw\\playerWalkChainsaw000"+i);
+                }
+                else
+                {
+                    walkingChainsaw[i] = content.Load<Texture2D>("Player Character\\player walk chainsaw\\playerWalkChainsaw0010");
+                }
+            }
+
+            for (int i = 0; i < walkingShotgun.Length; i++)
+            {
+                if (i < 10)
+                {
+                    walkingShotgun[i] = content.Load<Texture2D>("Player Character\\player walk shotgun\\playerWalkShotgun000" + i);
+                }
+                else
+                {
+                    walkingShotgun[i] = content.Load<Texture2D>("Player Character\\player walk shotgun\\playerWalkShotgun0010");
+                }
+            }
 
             for (int i = 0; i < sprites.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>("temp playercharacter");
+                sprites[i] = walkingShotgun[i];
             }
-            sprite = sprites[0];
+            idleShotgun = content.Load<Texture2D>("Player Character\\player idle shotgun");
+            idleChainsaw = content.Load<Texture2D>("Player Character\\player idle chainsaw");
+            sprite = idleShotgun;
 
-            bulletSprite = content.Load<Texture2D>("laserRed08");
+            bulletSprite = content.Load<Texture2D>("bullet player");
             meleeSprite = content.Load<Texture2D>("tempSwipe");
+
+            hurt = content.Load<SoundEffect>("takes damage");
+            gunshot = content.Load<SoundEffect>("gunshot sfx");
+            sawSfx = content.Load<SoundEffect>("chainsaw sfx");
+            reloadGun = content.Load<SoundEffect>("reload");
 
             // base.LoadContent is called to (fx.) set the hitbox
             base.LoadContent(content);
@@ -133,21 +176,55 @@ namespace Garden_Watchers
             if (keyState.IsKeyDown(Keys.W))
             {
                 velocity += new Vector2(0, -1);
+                if (usingGun)
+                {
+                    sprites = walkingShotgun;
+                }
+                else
+                {
+                    sprites = walkingChainsaw;
+                }
             }
 
             if (keyState.IsKeyDown(Keys.A))
             {
                 velocity += new Vector2(-1, 0);
+                facingRight = false;
+                if (usingGun)
+                {
+                    sprites = walkingShotgun;
+                }
+                else
+                {
+                    sprites = walkingChainsaw;
+                }
             }
 
             if (keyState.IsKeyDown(Keys.S))
             {
                 velocity += new Vector2(0, +1);
+                if (usingGun)
+                {
+                    sprites = walkingShotgun;
+                }
+                else
+                {
+                    sprites = walkingChainsaw;
+                }
             }
 
             if (keyState.IsKeyDown(Keys.D))
             {
                 velocity += new Vector2(+1, 0);
+                facingRight = true;
+                if (usingGun)
+                {
+                    sprites = walkingShotgun;
+                }
+                else
+                {
+                    sprites = walkingChainsaw;
+                }
             }
 
             if (keyState.IsKeyDown(Keys.Space))
@@ -155,6 +232,15 @@ namespace Garden_Watchers
                 if (dashCooldownTimer >= dashCooldown)
                 {
                     Dash();
+
+                    if (usingGun)
+                    {
+                        sprites = walkingShotgun;
+                    }
+                    else
+                    {
+                        sprites = walkingChainsaw;
+                    }
                 }
             }
 
@@ -162,6 +248,14 @@ namespace Garden_Watchers
             {
                 UsingGun = !UsingGun;
                 buttonTimer = 0;
+                if (usingGun)
+                {
+                    sprite = idleShotgun;
+                }
+                else
+                {
+                    sprite = idleChainsaw;
+                }
             }
 
             if (mouseState.LeftButton == ButtonState.Pressed)
@@ -176,7 +270,18 @@ namespace Garden_Watchers
 
             if (velocity != Vector2.Zero)
             {
-                velocity.Normalize();
+                velocity.Normalize();                
+            }
+            else
+            {
+                if (usingGun)
+                {
+                    sprite = idleShotgun;
+                }
+                else
+                {
+                    sprite = idleChainsaw;
+                }
             }
 
 
@@ -189,6 +294,8 @@ namespace Garden_Watchers
             {
                 if (Bullets > 0 && timer >= timeBetweenBullets)
                 {
+                    gunshot.Play();
+
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
                     double directionSum = Math.Atan2(direction.Y, direction.X);
                     
@@ -222,14 +329,15 @@ namespace Garden_Watchers
             {
                 if (timer >= timeBetweenAttacks)
                 {
+                    sawSfx.Play();
                     Vector2 direction = new Vector2((Mouse.GetState().Position.X - position.X), (Mouse.GetState().Position.Y - position.Y));
                     double directionSum = Math.Atan2(direction.Y, direction.X);
                     float XDirection = (float)Math.Cos(directionSum);
                     float YDirection = (float)Math.Sin(directionSum);
                     direction = new Vector2(XDirection, YDirection);
                     Vector2 spawnpoint = new Vector2();
-                    spawnpoint.Y = position.Y + (direction.Y * sprite.Height);
-                    spawnpoint.X = position.X + (direction.X * sprite.Width);
+                    spawnpoint.Y = position.Y + (direction.Y * sprite.Height*scale);
+                    spawnpoint.X = position.X + (direction.X * sprite.Width*scale);
 
                     MeleeAttack attack = new MeleeAttack(meleeSprite, spawnpoint, direction, true, (float)directionSum);
                     GameWorld.AddedObjects.Add(attack);
@@ -248,8 +356,12 @@ namespace Garden_Watchers
 
         private void Reload()
         {
-            Bullets = maxBullets;
-            //time to reload?
+            if (bullets < maxBullets)
+            {
+                reloadGun.Play();
+                Bullets = maxBullets;
+                //time to reload?
+            }
         }
 
         public override void RecoverHealth()
