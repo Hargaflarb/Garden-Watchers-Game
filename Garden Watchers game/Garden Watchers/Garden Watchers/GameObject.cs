@@ -139,11 +139,6 @@ namespace Garden_Watchers
             Position = CheckOutOfBounds(screenSize, Position);
             
             invincibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (invincibilityTimer <= 0)
-            {
-                takingDamage = false;
-            }
         }
 
         /// <summary>
@@ -193,11 +188,6 @@ namespace Garden_Watchers
                     spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, scale, SpriteEffects.None, 1);
                 }
             }            
-        }
-
-        public virtual void TakeDamage(int damage, bool isMeleeAttack)
-        {
-            //this is empty on purpose, as to not activate on non-characters
         }
 
 

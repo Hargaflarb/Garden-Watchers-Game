@@ -41,15 +41,15 @@ namespace Garden_Watchers
 
         public override void OnCollision(GameObject other)
         {
+            base.OnCollision(other);
             if (other is Player)
             {
                 if (GameWorld.Player.Health < 10)
                 {
-                    other.RecoverHealth();
+                    ((Player)other).RecoverHealth();
                     GameWorld.KillObject(this);
                 }
             }
-            base.OnCollision(other);
         }
     }
 }

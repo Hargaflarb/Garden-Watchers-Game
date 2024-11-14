@@ -181,15 +181,16 @@ namespace Garden_Watchers
 
         public static void KillObject(GameObject gameObject)
         {
-            removedObjects.Add(gameObject);
-            if (gameObject is Enemy)
+            if (gameObject is Enemy & !removedObjects.Contains(gameObject))
             {
                 if (GetNumberOfEnemies() == 1)
                 {
                     HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2));
                     MakeObject(health);
+                    KillAllBullets();
                 }
             }
+            removedObjects.Add(gameObject);
         }
 
         public static void KillAllObjects()
@@ -202,6 +203,18 @@ namespace Garden_Watchers
                 }
             }
         }
+
+        public static void KillAllBullets()
+        {
+            foreach (GameObject theObject in gameObjects)
+            {
+                if (theObject is Bullet)
+                {
+                    removedObjects.Add(theObject);
+                }
+            }
+        }
+
 
         public static void AddObjects(List<GameObject> gameObjects)
         {
