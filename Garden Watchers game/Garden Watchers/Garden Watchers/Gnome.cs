@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,7 +16,9 @@ namespace Garden_Watchers
         protected bool charging;
         protected float cooldown;
         protected int damage = 2;
-
+        protected Texture2D[] chargeAnim;
+        protected Texture2D[] walkAnim;
+        protected SoundEffect yell;
 
         public Gnome(int health, Vector2 position, float speed) : base(health, position, speed)
         {
@@ -28,18 +31,24 @@ namespace Garden_Watchers
         {
             Health = 10;
             speed = 250;
+            scale = 0.3f;
         }
 
         public override void LoadContent(ContentManager content)
-        {
-            sprites = new Texture2D[1];
-
-            for (int i = 0; i < sprites.Length; i++)
+        {      
+            walkAnim=new Texture2D[8];
+            chargeAnim=new Texture2D[9];
+            for (int i = 0; i < walkAnim.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>("garden_gnome");
+                walkAnim[i] = content.Load<Texture2D>("Gnome\\walking gnome\\gnomeWalk000"+i);
             }
-
+            for (int i = 0; i < chargeAnim.Length; i++)
+            {
+                chargeAnim[i] = content.Load<Texture2D>("Gnome\\charging gnome\\gnomeCharge000" + i);
+            }
+            sprites = walkAnim;
             sprite = sprites[0];
+            yell = content.Load<SoundEffect>("yell");
             base.LoadContent(content);
         }
         public override void Update(GameTime gameTime, Vector2 screenSize)
@@ -47,6 +56,14 @@ namespace Garden_Watchers
             if (velocity == Vector2.Zero)
             {
                 charging = false;
+            }
+            if (velocity.X > 0)
+            {
+                facingRight = true;
+            }
+            if (velocity.X < 0)
+            {
+                facingRight = false;
             }
             Chase();
             Charge();
@@ -73,10 +90,12 @@ namespace Garden_Watchers
                 direction = new Vector2(XDirection, YDirection);
                 velocity = (direction);
                 speed = 250;
+                sprites = walkAnim;
             }
             else if (velocity == Vector2.Zero)
             {
                 charging = false;
+                sprites = walkAnim;
             }
         }
 
@@ -87,6 +106,8 @@ namespace Garden_Watchers
             
             if (pythagorasDistance <= 600 && cooldown <= 0)
             {
+                yell.Play();
+                sprites = chargeAnim;
                 charging = true;
                 speed = 700;
                 cooldown = 1;
