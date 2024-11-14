@@ -28,6 +28,7 @@ namespace Garden_Watchers
         {
             Health = 40;
             speed = 200;
+            scale = 0.6f;
         }
 
 

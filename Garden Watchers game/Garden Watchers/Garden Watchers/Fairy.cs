@@ -21,11 +21,17 @@ namespace Garden_Watchers
             speed = 0;
             movementSpeed = 150;
             Health = 2;
+            scale= 0.3f;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("tempFairySprite");
+            sprites=new Texture2D[6];            
+            for(int i = 0; i < sprites.Length; i++)
+            {
+                sprites[i]=content.Load<Texture2D>("Fairy\\fairy v2\\fairy000" + i);
+            }
+            sprite = sprites[0];
             bulletSprite = content.Load<Texture2D>("laserRed08");
             base.LoadContent(content);
         }
