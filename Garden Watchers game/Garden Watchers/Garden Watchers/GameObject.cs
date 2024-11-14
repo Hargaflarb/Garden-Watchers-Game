@@ -151,6 +151,7 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            //animation
             if ((this is Player && velocity != Vector2.Zero) || (this is not Player && this is Character))
             {
                 sprite = sprites[spriteNumber];
@@ -169,7 +170,7 @@ namespace Garden_Watchers
                 }
                 
             }            
-
+            //all GameObjects
             if (takingDamage)
             {
                 if (facingRight)
@@ -194,7 +195,10 @@ namespace Garden_Watchers
             }            
         }
 
-
+        /// <summary>
+        /// triggered when a Character takes damage from a melee attack, to make sure not all health is lost within a few frames
+        /// </summary>
+        /// <param name="invincibilityTime"></param>
         public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {
             invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
