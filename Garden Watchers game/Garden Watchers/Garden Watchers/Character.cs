@@ -2,9 +2,10 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Garden_Watchers
-{
+{   
     /// <summary>
     /// The Character class which Enemy and Player uses
     /// </summary>
@@ -14,6 +15,7 @@ namespace Garden_Watchers
 
         protected float speed;
         protected int health;
+        protected SoundEffect hurt;
         protected float hurtTime = 0.15f;
         protected float hurtTimer;
 
@@ -57,6 +59,10 @@ namespace Garden_Watchers
         {
             if (invincibilityTimer <= 0)
             {
+                if(this is Player)
+                {
+                    hurt.Play();
+                }
                 Health -= damage;
                 if (isMeleeAttack)
                 {

@@ -19,6 +19,12 @@ namespace Garden_Watchers
         protected float invincibilityTimer;
         protected bool takingDamage = false;
         protected Vector2 velocity;
+        protected int spriteNumber;
+        protected bool moving;
+        protected float scale = 1;
+        protected int framerate=6;
+        protected int frames;
+        protected bool facingRight;
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -118,7 +124,7 @@ namespace Garden_Watchers
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             //hitbox does not currently change with rotation
-            Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
+            Hitbox = new Rectangle((int)position.X - (int)((sprite.Width * 2)/scale), (int)position.Y - (int)((sprite.Height * 2)/scale), (int)(sprite.Width*scale), (int)(sprite.Height*scale));
             
         }
 
@@ -141,13 +147,46 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            if ((this is Player && velocity != Vector2.Zero) || (this is not Player && this is Character))
+            {
+                sprite = sprites[spriteNumber];
+                frames += 1;
+                if (frames >= framerate)
+                {
+                    frames = 0;
+                    if (sprites.Length == spriteNumber + 1)
+                    {
+                        spriteNumber = 0;
+                    }
+                    else
+                    {
+                        spriteNumber += 1;
+                    }
+                }
+                
+            }            
+
             if (takingDamage)
             {
-                spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, 1, SpriteEffects.None, 1);
+                if (facingRight)
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, scale, SpriteEffects.FlipHorizontally, 1);
+                }
+                else
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, scale, SpriteEffects.None, 1);
+                }                
             }
             else
             {
-                spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, 1, SpriteEffects.None, 1);
+                if (facingRight)
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, scale, SpriteEffects.FlipHorizontally, 1);
+                }
+                else
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, scale, SpriteEffects.None, 1);
+                }
             }            
         }
 
