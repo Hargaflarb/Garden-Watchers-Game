@@ -78,6 +78,7 @@ namespace Garden_Watchers
             if (!charging)
             {
                 sprites = walkAnim;
+                spriteNumber = 0;
                 cooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (cooldown <= 0)
@@ -102,6 +103,8 @@ namespace Garden_Watchers
             else if (velocity == Vector2.Zero)
             {
                 charging = false;
+                sprites = walkAnim;
+                spriteNumber = 0;
             }
         }
 
@@ -114,6 +117,7 @@ namespace Garden_Watchers
             {
                 yell.Play();
                 sprites = chargeAnim;
+                spriteNumber = 0;
                 charging = true;
                 speed = 400;
                 cooldown = 2;

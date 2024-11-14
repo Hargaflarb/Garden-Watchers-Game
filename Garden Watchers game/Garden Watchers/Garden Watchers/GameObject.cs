@@ -124,7 +124,7 @@ namespace Garden_Watchers
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             //hitbox does not currently change with rotation
-            Hitbox = new Rectangle((int)position.X - (int)((sprite.Width * 2)/scale), (int)position.Y - (int)((sprite.Height * 2)/scale), (int)(sprite.Width*scale), (int)(sprite.Height*scale));
+            Hitbox = new Rectangle((int)position.X - (int)((sprite.Width / 2)/scale), (int)position.Y - (int)((sprite.Height / 2)/scale), (int)(sprite.Width*scale), (int)(sprite.Height*scale));
             
         }
 
