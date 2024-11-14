@@ -25,7 +25,7 @@ namespace Garden_Watchers
         }
         public override void OnCollision(GameObject other)
         {
-           
+            base.OnCollision(other);
         }
         
 

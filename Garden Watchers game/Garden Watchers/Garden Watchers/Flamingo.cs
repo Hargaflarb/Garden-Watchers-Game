@@ -13,24 +13,39 @@ namespace Garden_Watchers
     {
         //Field
         private float timer;
+        private float explodeTime = 0.6F;
         private bool timerStarted = false;
         private bool explode = false;
         private int damage = 10;
+        private Texture2D[] flashing;
+        private Texture2D[] walking;
 
         public Flamingo(Vector2 position) : base(position)
         {
             Health = 3;
             speed = 200;
+            scale = 0.2f;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            sprites = new Texture2D[1];
+            walking = new Texture2D[19];
 
-            for (int i = 0; i < sprites.Length; i++)
+            for (int i = 0; i < walking.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>("flamingo");
+                if (i < 10)
+                {
+                    walking[i] = content.Load<Texture2D>("Flamingo\\walk\\flamingoWalk000" + i);
+                }
+                else
+                {
+                    walking[i] = content.Load<Texture2D>("Flamingo\\walk\\flamingoWalk00" + i);
+                }
             }
+            sprites = walking;
+            flashing=new Texture2D[2];
+            flashing[0] = content.Load<Texture2D>("Flamingo\\blinking\\flamingo explosive frame 0000");
+            flashing[1] = content.Load<Texture2D>("Flamingo\\blinking\\flamingo explosive frame 0001");
             sprite = sprites[0];
             base.LoadContent(content);
         }
@@ -50,19 +65,31 @@ namespace Garden_Watchers
             Vector2 distance = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
             float pythagorasDistance = (float)Math.Pow(Math.Pow(distance.X, 2) + Math.Pow(distance.Y, 2),0.5f);
 
-            if (pythagorasDistance <= 150)
+            if (pythagorasDistance <= 150 & !explode)
             {
                 speed = 0;
+                timer = 0;
                 timerStarted = true;
                 explode = true;
             }
 
+            if (pythagorasDistance >= 400 & timer <= explodeTime/2)
+            {
+                speed = 400;
+                timerStarted = false;
+                explode = false;
+            }
+
             if (explode == true)
             {
-                if (timer >= 2)
+                frames = 0;
+                spriteNumber = 0;
+                sprites = flashing;
+                if (timer >= explodeTime)
+
                 {
                     GameWorld.KillObject(this);
-                    Explosion explosion = new Explosion(this.position);
+                    Explosion explosion = new Explosion(Position);
                     GameWorld.MakeObject(explosion);
                 }
                 
@@ -72,6 +99,14 @@ namespace Garden_Watchers
 
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
+            if (velocity.X > 0)
+            {
+                facingRight = true;
+            }
+            if (velocity.X < 0)
+            {
+                facingRight = false;
+            }
             Chase();
             Explode();
 

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,8 @@ namespace Garden_Watchers
         private static Random random;
         private bool isAlive;
         private static bool winning;
+        private static Song backgroundMusic;
+
 
         private static Vector2 playerLocation;
 
@@ -104,7 +107,10 @@ namespace Garden_Watchers
             {
                 gameObject.LoadContent(Content);
             }
-
+            backgroundMusic = Content.Load<Song>("background music");
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f;
 #if DEBUG
             //loads the hitbox sprite.
             hitboxPixel = Content.Load<Texture2D>("Hitbox pixel");
@@ -192,15 +198,16 @@ namespace Garden_Watchers
 
         public static void KillObject(GameObject gameObject)
         {
-            removedObjects.Add(gameObject);
-            if (gameObject is Enemy)
+            if (gameObject is Enemy & !removedObjects.Contains(gameObject))
             {
                 if (GetNumberOfEnemies() == 1)
                 {
                     HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2));
                     MakeObject(health);
+                    KillAllBullets();
                 }
             }
+            removedObjects.Add(gameObject);
         }
 
         public static void KillAllObjects()
@@ -213,6 +220,18 @@ namespace Garden_Watchers
                 }
             }
         }
+
+        public static void KillAllBullets()
+        {
+            foreach (GameObject theObject in gameObjects)
+            {
+                if (theObject is Bullet)
+                {
+                    removedObjects.Add(theObject);
+                }
+            }
+        }
+
 
         public static void AddObjects(List<GameObject> gameObjects)
         {

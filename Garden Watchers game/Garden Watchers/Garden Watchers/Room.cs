@@ -1,12 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
-using SharpDX.Direct3D11;
 
 
 namespace Garden_Watchers
@@ -14,7 +12,7 @@ namespace Garden_Watchers
     public enum Direction
     {
         None = 0,
-        Up  = 1,
+        Up = 1,
         Down = 2,
         Left = 4,
         Right = 8,
@@ -28,18 +26,18 @@ namespace Garden_Watchers
         private static Random random;
         private static Dictionary<int, Enemy[]> enemyApearanceProgression;
 
-        public Room(int X, int Y, Direction entrenceSide)
+        public Room(int X, int Y, Direction entrenceSide, int roomNumber)
         {
             coordinates = new Vector2(X, Y);
             roomObjects = new List<GameObject>();
 
-            Initialize(entrenceSide);
+            Initialize(entrenceSide, roomNumber);
         }
         static Room()
         {
             random = new Random();
 
-            enemyApearanceProgression = new Dictionary<int, Enemy[]>()
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
                 { 0, new Enemy[] { } },
                 { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
@@ -56,7 +54,7 @@ namespace Garden_Watchers
 
         public static void ResetRooms()
         {
-            enemyApearanceProgression = new Dictionary<int, Enemy[]>()
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
                 { 0, new Enemy[] { } },
                 { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
@@ -71,11 +69,11 @@ namespace Garden_Watchers
         /// <summary>
         /// Set puts obstacles, doors, enemies and more in the room.
         /// </summary>
-        public void Initialize(Direction entrenceSide)
+        public void Initialize(Direction entrenceSide, int roomNumber)
         {
             InitializeDoors();
             InitializeEnemies(entrenceSide);
-            InitializeObstacles(entrenceSide);
+            InitializeObstacles(entrenceSide, roomNumber);
             //remember to load content of new stuff
         }
 
@@ -89,7 +87,7 @@ namespace Garden_Watchers
                 for (int i = 0; i < enemyAmount; i++)
                 {
                     Vector2 screenSize = GameWorld.ScreenSize;
-                    Rectangle spawnBounds = new Rectangle(0,0, (int)screenSize.X, (int)screenSize.Y);
+                    Rectangle spawnBounds = new Rectangle(0, 0, (int)screenSize.X, (int)screenSize.Y);
                     switch (entrenceSide)
                     {
                         case Direction.Up:
@@ -125,45 +123,39 @@ namespace Garden_Watchers
             }
         }
 
-        public void InitializeObstacles(Direction entrenceSide)
+        public void InitializeObstacles(Direction entrenceSide, int roomNumber)
         {
-            int obstacleAmount = random.Next(2, 4);
-            for (int i = 0; i < obstacleAmount; i++)
+            if (roomNumber != 11) // boss room has no obstacle
             {
-                Vector2 screenSize = GameWorld.ScreenSize;
-                Rectangle spawnBounds = new Rectangle(0, 0, (int)screenSize.X, (int)screenSize.Y);
-                switch (entrenceSide)
+                int obstacleAmount = random.Next(2, 4);
+                for (int i = 0; i < obstacleAmount; i++)
                 {
-                    case Direction.Up:
-                        spawnBounds.Y += 500;
-                        spawnBounds.Height -= 500;
-                        break;
-                    case Direction.Down:
-                        spawnBounds.Height -= 500;
-                        break;
-                    case Direction.Left:
-                        spawnBounds.X += 500;
-                        spawnBounds.Width -= 500;
-                        break;
-                    case Direction.Right:
-                        spawnBounds.Width -= 500;
-                        break;
-                    default:
-                        break;
+                    Vector2 screenSize = GameWorld.ScreenSize;
+                    Rectangle spawnBounds = new Rectangle(200, 200, (int)screenSize.X - 200, (int)screenSize.Y - 200);
+                    switch (entrenceSide)
+                    {
+                        case Direction.Up:
+                            spawnBounds.Y += 200;
+                            spawnBounds.Height -= 200;
+                            break;
+                        case Direction.Down:
+                            spawnBounds.Height -= 200;
+                            break;
+                        case Direction.Left:
+                            spawnBounds.X += 200;
+                            spawnBounds.Width -= 200;
+                            break;
+                        case Direction.Right:
+                            spawnBounds.Width -= 200;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Vector2 position = new Vector2(random.Next(spawnBounds.X, spawnBounds.Width), random.Next(spawnBounds.Y, spawnBounds.Height));
+                    GameWorld.MakeObject(Obstacle.GetRandomNewObstacle(position));
                 }
-
-                Vector2 position = new Vector2(random.Next(spawnBounds.X, spawnBounds.Width), random.Next(spawnBounds.Y, spawnBounds.Height));
-                GameWorld.MakeObject(Obstacle.GetRandomNewObstacle(position));
             }
-
-
-
-            GameObject tempObstacle = new Wall(new Vector2(200, 200));
-            GameWorld.MakeObject(tempObstacle);
-
-            GameObject tempObstacle2 = new PitFall(new Vector2(400, 200));
-            GameWorld.MakeObject(tempObstacle2);
-
         }
 
         public void InitializeDoors()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,17 +17,25 @@ namespace Garden_Watchers
         private bool fleeing = false;
         private float movementSpeed;
         private float bulletTimer;
+        private SoundEffect magic;
         public Fairy(Vector2 position) : base(position)
         {
             speed = 0;
             movementSpeed = 150;
             Health = 2;
+            scale= 0.3f;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("tempFairySprite");
+            sprites=new Texture2D[6];            
+            for(int i = 0; i < sprites.Length; i++)
+            {
+                sprites[i]=content.Load<Texture2D>("Fairy\\fairy v2\\fairy000" + i);
+            }
+            sprite = sprites[0];
             bulletSprite = content.Load<Texture2D>("laserRed08");
+            magic = content.Load<SoundEffect>("magic bullet sfx");
             base.LoadContent(content);
         }
 
@@ -69,6 +78,7 @@ namespace Garden_Watchers
         {
             if (bulletTimer >= bulletRate)
             {
+                magic.Play();
                 Vector2 direction = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
                 double directionSum = Math.Atan2(direction.Y, direction.X);
                 float XDirection = (float)Math.Cos(directionSum);
