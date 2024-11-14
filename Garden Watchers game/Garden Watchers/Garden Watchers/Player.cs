@@ -28,7 +28,7 @@ namespace Garden_Watchers
         private float timer;
 
         MouseState mouseState;
-        
+
         private SoundEffect gunshot;
         private SoundEffect sawSfx;
         private SoundEffect reloadGun;
