@@ -15,6 +15,9 @@ namespace Garden_Watchers
         protected bool charging;
         protected float cooldown;
         protected int damage = 2;
+        private bool gnomeAlive = true;
+
+        public bool GnomeAlive { get => gnomeAlive; set => gnomeAlive = value; }
 
         //Constructor
         public GnomeBoss(int health, Vector2 position, float speed) : base(health, position, speed)
@@ -105,6 +108,8 @@ namespace Garden_Watchers
                 other.TakeDamage(damage, true);
             }
         }
+
+        
 
     }
 }
