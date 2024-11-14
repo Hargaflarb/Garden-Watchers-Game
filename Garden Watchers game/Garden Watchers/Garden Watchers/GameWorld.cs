@@ -149,7 +149,7 @@ namespace Garden_Watchers
 
             // lose thing
             KeyboardState keyState = Keyboard.GetState();
-            if (IsAlive == false && keyState.IsKeyDown(Keys.Space))
+            if (IsAlive == false && keyState.IsKeyDown(Keys.Enter))
             {
                 GameOver();
                 Initialize();
@@ -159,7 +159,7 @@ namespace Garden_Watchers
             if (Winning == true)
             {
                 YouWon();
-                if (keyState.IsKeyDown(Keys.Space))
+                if (keyState.IsKeyDown(Keys.Enter))
                 {
                     Initialize();
                 }
@@ -202,8 +202,11 @@ namespace Garden_Watchers
             {
                 if (GetNumberOfEnemies() == 1)
                 {
-                    HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2));
-                    MakeObject(health);
+                    if (Random.Next(0, 3) == 0)
+                    {
+                        HealthRecovery health = new HealthRecovery(new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2));
+                        MakeObject(health);
+                    }
                     KillAllBullets();
                 }
             }
@@ -255,7 +258,7 @@ namespace Garden_Watchers
 
             _spriteBatch.Draw(background, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.Orange);
 
-            
+
 
             foreach (GameObject gameObject in GameObjects)
             {
@@ -276,23 +279,23 @@ namespace Garden_Watchers
                 _spriteBatch.DrawString(textFont, "Current Weapon: Chainsaw", new Vector2(10, 75), Color.Red);
             }
 
-            if (Map.RoomCount == 7)
+            if (Map.RoomCount == 15)
             {
                 if (GetGnomeBoss(out GameObject gameObject))
                 {
-                    _spriteBatch.DrawString(textFont, "BOSS HEALTH: " + ((GnomeBoss)gameObject).Health, new Vector2(((GnomeBoss)gameObject).Position.X-150, ((GnomeBoss)gameObject).Position.Y-250), Color.Gold);
+                    _spriteBatch.DrawString(textFont, "BOSS HEALTH: " + ((GnomeBoss)gameObject).Health, new Vector2(((GnomeBoss)gameObject).Position.X - 150, ((GnomeBoss)gameObject).Position.Y - 250), Color.Gold);
 
                 }
             }
 
             if (!IsAlive)
             {
-                _spriteBatch.DrawString(textFont, "GAME OVER\nPRESS SPACE BAR TO RETRY", new Vector2(ScreenSize.X/2 - 200, ScreenSize.Y/2), Color.Gold);
+                _spriteBatch.DrawString(textFont, "GAME OVER\nPRESS ENTER BAR TO RETRY", new Vector2(ScreenSize.X / 2 - 200, ScreenSize.Y / 2), Color.Gold);
             }
 
             if (Winning)
             {
-                _spriteBatch.DrawString(textFont, "YOU WIN!\nPRESS SPACE BAR TO RESTART", new Vector2(ScreenSize.X / 2 - 200, ScreenSize.Y / 2), Color.Gold);
+                _spriteBatch.DrawString(textFont, "YOU WIN!\nPRESS ENTER BAR TO RESTART", new Vector2(ScreenSize.X / 2 - 200, ScreenSize.Y / 2), Color.Gold);
             }
 
 

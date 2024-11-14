@@ -12,7 +12,6 @@ namespace Garden_Watchers
         private Vector2 direction;
         private float speed;
         private bool playerBullet;
-        private float timeExisted;
 
         public Bullet(Texture2D sprite, Vector2 position, Vector2 direction, bool playerBullet, float rotation, int speed) : base()
         {
@@ -23,7 +22,6 @@ namespace Garden_Watchers
             this.rotation = rotation;
             this.speed = speed;
             damage = playerBullet ? 4 : 2;
-            timeExisted = 0;
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
@@ -33,7 +31,6 @@ namespace Garden_Watchers
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Position += (direction * speed) * deltaTime;
 
-            timeExisted += deltaTime;
             if (playerBullet)
             {
                 if (timeExisted <= 0.5f)

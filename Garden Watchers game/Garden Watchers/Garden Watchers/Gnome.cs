@@ -35,12 +35,12 @@ namespace Garden_Watchers
         }
 
         public override void LoadContent(ContentManager content)
-        {      
-            walkAnim=new Texture2D[8];
-            chargeAnim=new Texture2D[9];
+        {
+            walkAnim = new Texture2D[8];
+            chargeAnim = new Texture2D[9];
             for (int i = 0; i < walkAnim.Length; i++)
             {
-                walkAnim[i] = content.Load<Texture2D>("Gnome\\walking gnome\\gnomeWalk000"+i);
+                walkAnim[i] = content.Load<Texture2D>("Gnome\\walking gnome\\gnomeWalk000" + i);
             }
             for (int i = 0; i < chargeAnim.Length; i++)
             {
@@ -51,6 +51,7 @@ namespace Garden_Watchers
             yell = content.Load<SoundEffect>("yell");
             base.LoadContent(content);
         }
+
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             if (velocity == Vector2.Zero)
@@ -71,11 +72,12 @@ namespace Garden_Watchers
             if (!charging)
             {
                 cooldown -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }            
+            }
             if (cooldown <= 0)
             {
                 cooldown = 0;
             }
+
             base.Update(gameTime, screenSize);
         }
 
@@ -103,9 +105,9 @@ namespace Garden_Watchers
 
         public void Charge()
         {
-            Vector2 distance = new Vector2(Math.Abs(GameWorld.PlayerCharacterPosition.X - position.X),Math.Abs(GameWorld.PlayerCharacterPosition.Y - position.Y));
+            Vector2 distance = new Vector2(Math.Abs(GameWorld.PlayerCharacterPosition.X - Position.X), Math.Abs(GameWorld.PlayerCharacterPosition.Y - Position.Y));
             float pythagorasDistance = (float)Math.Pow(Math.Pow(distance.X, 2) + Math.Pow(distance.Y, 2), 0.5f);
-            
+
             if (pythagorasDistance <= 600 && cooldown <= 0)
             {
                 yell.Play();
@@ -114,16 +116,35 @@ namespace Garden_Watchers
                 charging = true;
                 speed = 700;
                 cooldown = 1;
-            }            
+            }
         }
 
         public override void OnCollision(GameObject other)
         {
             if (other is Player)
             {
-                velocity = Vector2.Zero;                
+                velocity = Vector2.Zero;
                 charging = false;
                 ((Player)other).TakeDamage(damage, true);
+            }
+            else if (other is Obstacle)
+            {
+                charging = false;
+                cooldown = 0.75f;
+
+                Vector2 direction = new Vector2(other.Position.X - Position.X, other.Position.Y - Position.Y);
+                double test = Math.Atan2(direction.Y, direction.X);
+                float XDirection = (float)Math.Cos(test + Math.PI);
+                float YDirection = (float)Math.Sin(test + Math.PI);
+                direction = new Vector2(XDirection, YDirection);
+                velocity = (direction);
+                speed = 250;
+
+
+
+                sprites = walkAnim;
+                spriteNumber = 0;
+
             }
         }
     }

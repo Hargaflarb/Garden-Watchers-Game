@@ -19,12 +19,6 @@ namespace Garden_Watchers
         }
         
         
-
-        public void Update()
-        {
-           
-        }
-
         public override void LoadContent(ContentManager content)
         {
             sprites = new Texture2D[1];

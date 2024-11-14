@@ -62,7 +62,6 @@ namespace Garden_Watchers
             }
         }
 
-
         public static Direction GetOppositeDirection(Direction direction)
         {
             switch (direction)

@@ -26,12 +26,12 @@ namespace Garden_Watchers
         private static Random random;
         private static Dictionary<int, Enemy[]> enemyApearanceProgression;
 
-        public Room(int X, int Y, Direction entrenceSide, int roomNumber)
+        public Room(int X, int Y, Direction entrenceSide)
         {
             coordinates = new Vector2(X, Y);
             roomObjects = new List<GameObject>();
 
-            Initialize(entrenceSide, roomNumber);
+            Initialize(entrenceSide);
         }
         static Room()
         {
@@ -39,13 +39,13 @@ namespace Garden_Watchers
 
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
-                { 0, new Enemy[] { } },
-                { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
-                { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
-                { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
-                { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
-                { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
-                { 12, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
+                { 1, new Enemy[] { } },
+                { 2, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
+                { 3, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
+                { 4, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
+                { 5, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
+                { 6, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
+                { 15, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
             };
         }
 
@@ -56,31 +56,31 @@ namespace Garden_Watchers
         {
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
-                { 0, new Enemy[] { } },
-                { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
-                { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
-                { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
-                { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
-                { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
-                { 12, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
+                { 1, new Enemy[] { } },
+                { 2, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
+                { 3, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
+                { 4, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
+                { 5, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
+                { 6, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
+                { 15, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
             };
         }
 
         /// <summary>
         /// Set puts obstacles, doors, enemies and more in the room.
         /// </summary>
-        public void Initialize(Direction entrenceSide, int roomNumber)
+        public void Initialize(Direction entrenceSide)
         {
             InitializeDoors();
             InitializeEnemies(entrenceSide);
-            InitializeObstacles(entrenceSide, roomNumber);
+            InitializeObstacles(entrenceSide);
             //remember to load content of new stuff
         }
 
 
         public void InitializeEnemies(Direction entrenceSide)
         {
-            if (!enemyApearanceProgression.ContainsKey(Map.RoomCount))
+            if (!enemyApearanceProgression.ContainsKey(Map.RoomCount + 1)) // +1 cus this room hasn't been added yet.
             {
                 // random enemy
                 int enemyAmount = random.Next(2, 4);
@@ -114,18 +114,17 @@ namespace Garden_Watchers
             }
             else
             {
-                Enemy[] roomEnemies = new Enemy[enemyApearanceProgression[Map.RoomCount].Count()];
-                enemyApearanceProgression[Map.RoomCount].CopyTo(roomEnemies, 0);
-                foreach (Enemy enemy in roomEnemies)
+                foreach (Enemy enemy in enemyApearanceProgression[Map.RoomCount + 1])
                 {
                     GameWorld.MakeObject(enemy);
                 }
             }
         }
 
-        public void InitializeObstacles(Direction entrenceSide, int roomNumber)
+        public void InitializeObstacles(Direction entrenceSide)
         {
-            if (roomNumber != 11) // boss room has no obstacle
+            int roomNumber = Map.RoomCount + 1; // +1 cus this room hasn't been added yet.
+            if (roomNumber != 15 & roomNumber != 1) // boss room and spawn room has no obstacles
             {
                 int obstacleAmount = random.Next(2, 4);
                 for (int i = 0; i < obstacleAmount; i++)

@@ -17,14 +17,16 @@ namespace Garden_Watchers
         protected float rotation;
         protected float invincibilityFrames = 0.3f;
         protected float invincibilityTimer;
+        protected float timeExisted = 0;
         protected bool takingDamage = false;
         protected Vector2 velocity;
         protected int spriteNumber;
         protected bool moving;
         protected float scale = 1;
-        protected int framerate=6;
+        protected int framerate = 6;
         protected int frames;
         protected bool facingRight;
+
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -139,6 +141,8 @@ namespace Garden_Watchers
             Position = CheckOutOfBounds(screenSize, Position);
             
             invincibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeExisted += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
         }
 
         /// <summary>
