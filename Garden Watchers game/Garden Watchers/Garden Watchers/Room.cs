@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
+using SharpDX.Direct3D11;
 
 
 namespace Garden_Watchers
@@ -38,8 +39,6 @@ namespace Garden_Watchers
         {
             random = new Random();
 
-           
-
             enemyApearanceProgression = new Dictionary<int, Enemy[]>()
             {
                 { 0, new Enemy[] { } },
@@ -48,13 +47,26 @@ namespace Garden_Watchers
                 { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
                 { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
                 { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
-                { 6, new Enemy[] { new GnomeBoss(40, new Vector2(1000, 500), 200)} },
+                { 12, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
             };
-
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
 
+
+        public static void ResetRooms()
+        {
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>()
+            {
+                { 0, new Enemy[] { } },
+                { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
+                { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
+                { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
+                { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
+                { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
+                { 12, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
+            };
+        }
 
         /// <summary>
         /// Set puts obstacles, doors, enemies and more in the room.
