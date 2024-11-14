@@ -125,7 +125,7 @@ namespace Garden_Watchers
 
         private static void AddRoom(int X, int Y, Direction entrenceDirection)
         {
-            rooms.Add(new Vector2(X, Y), new Room(X, Y, entrenceDirection));
+            rooms.Add(new Vector2(X, Y), new Room(X, Y, entrenceDirection, RoomCount - 1));
         }
     }
 }
