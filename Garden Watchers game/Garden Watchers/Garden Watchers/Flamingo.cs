@@ -117,10 +117,5 @@ namespace Garden_Watchers
             base.Update(gameTime, screenSize);
         }
 
-        public override void OnCollision(GameObject other)
-        {
-            
-            
-        }
     }
 }

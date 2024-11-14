@@ -57,6 +57,11 @@ namespace Garden_Watchers
             Random = new Random();
         }
 
+        /// <summary>
+        /// The GameObjects-list is searched to find and return the GnomeBoss instance.
+        /// </summary>
+        /// <param name="gnomeBossClass">The returned GnomeBoss instance.</param>
+        /// <returns>Rutruns true if GnomeBoss was found, false otherwise.</returns>
         private bool GetGnomeBoss(out GameObject gnomeBossClass)
         {
             foreach (GameObject gameObject in GameObjects)
@@ -72,6 +77,10 @@ namespace Garden_Watchers
             return false;
         }
 
+        /// <summary>
+        /// Initialize the GameWorlds feilds and other values.
+        /// Is called at the start of a run/game.
+        /// </summary>
         protected override void Initialize()
         {
             TheGameWorld = this;
@@ -96,6 +105,9 @@ namespace Garden_Watchers
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads the content that the GameWorld needs, aswell as all its initial GameObjects.
+        /// </summary>
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -118,6 +130,11 @@ namespace Garden_Watchers
 
         }
 
+        /// <summary>
+        /// Calls the Update methode for all GameObjects.
+        /// Adds and removes GameObjects from the GameObjects-list
+        /// </summary>
+        /// <param name="gameTime">The GameTime object</param>
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
@@ -171,7 +188,10 @@ namespace Garden_Watchers
         }
 
 
-
+        /// <summary>
+        /// Finds and count all enemies in GameObjects.
+        /// </summary>
+        /// <returns>The number of enemies.</returns>
         public static int GetNumberOfEnemies()
         {
             int output = 0;
@@ -185,17 +205,26 @@ namespace Garden_Watchers
             return output;
         }
 
-
+        /// <summary>
+        /// Removes all GameObjects, and is used when the player wins.
+        /// </summary>
         public static void YouWon()
         {
             GameObjects.Clear();
         }
 
+        /// <summary>
+        /// Removes all GameObjects, and is used when the player loses
+        /// </summary>
         public static void GameOver()
         {
             GameObjects.Clear();
         }
 
+        /// <summary>
+        /// Removes a GameObject from the GameObjects, and in the case that the killed object is the last Enemy in the Room; it acts acordingly.
+        /// </summary>
+        /// <param name="gameObject">GameObject to be removed.</param>
         public static void KillObject(GameObject gameObject)
         {
             if (gameObject is Enemy & !removedObjects.Contains(gameObject))
@@ -213,6 +242,9 @@ namespace Garden_Watchers
             removedObjects.Add(gameObject);
         }
 
+        /// <summary>
+        /// Removes every GameObject from the Player.
+        /// </summary>
         public static void KillAllObjects()
         {
             foreach (GameObject theObject in gameObjects)
@@ -224,6 +256,10 @@ namespace Garden_Watchers
             }
         }
 
+        /// <summary>
+        /// Removes all Bullets from the GameObjects.
+        /// Called after the last Enemy in a Room is killed.
+        /// </summary>
         public static void KillAllBullets()
         {
             foreach (GameObject theObject in gameObjects)
@@ -235,19 +271,31 @@ namespace Garden_Watchers
             }
         }
 
-
+        /// <summary>
+        /// Adds a the objects from list of GameObject to the GameWorld's GameObjects.
+        /// Is used when a lot of objects are being added at once.
+        /// </summary>
+        /// <param name="gameObjects">The list of GameObjects to be added.</param>
         public static void AddObjects(List<GameObject> gameObjects)
         {
             addedObjects.AddRange(gameObjects);
         }
 
+        /// <summary>
+        /// Loads a GameObjects content and then add it to the GameObjects-list.
+        /// Is used when adding new GameObjects the the list.
+        /// </summary>
+        /// <param name="gameObject">GameObject to be added.</param>
         public static void MakeObject(GameObject gameObject)
         {
             gameObject.LoadContent(TheGameWorld.Content);
             addedObjects.Add(gameObject);
         }
 
-
+        /// <summary>
+        /// Draws background, GameObjects and HUD to the screen.
+        /// </summary>
+        /// <param name="gameTime">The GameWorlds GameTime.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
