@@ -39,7 +39,7 @@ namespace Garden_Watchers
             Position += ((velocity * speed) * deltaTime);
         }
 
-        public override void TakeDamage(int damage, bool isMeleeAttack)
+        public virtual void TakeDamage(int damage, bool isMeleeAttack)
         {
             if (invincibilityTimer <= 0 || isMeleeAttack == false)
             {

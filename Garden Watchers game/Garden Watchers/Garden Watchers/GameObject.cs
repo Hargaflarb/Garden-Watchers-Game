@@ -156,11 +156,6 @@ namespace Garden_Watchers
             }            
         }
 
-        public virtual void TakeDamage(int damage, bool isMeleeAttack)
-        {
-            //this is empty on purpose, as to not activate on non-characters
-        }
-
 
         public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {

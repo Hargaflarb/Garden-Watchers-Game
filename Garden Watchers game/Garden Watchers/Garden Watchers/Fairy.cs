@@ -20,7 +20,7 @@ namespace Garden_Watchers
         {
             speed = 0;
             movementSpeed = 150;
-            Health = 2;
+            Health = 5;
         }
 
         public override void LoadContent(ContentManager content)

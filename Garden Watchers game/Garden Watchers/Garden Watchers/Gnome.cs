@@ -26,7 +26,7 @@ namespace Garden_Watchers
 
         public Gnome(Vector2 position) : base(position)
         {
-            Health = 3;
+            Health = 10;
             speed = 250;
         }
 
@@ -88,8 +88,8 @@ namespace Garden_Watchers
             if (pythagorasDistance <= 600 && cooldown <= 0)
             {
                 charging = true;
-                speed = 500;
-                cooldown = 2;
+                speed = 700;
+                cooldown = 1;
             }            
         }
 
@@ -99,7 +99,7 @@ namespace Garden_Watchers
             {
                 velocity = Vector2.Zero;                
                 charging = false;
-                other.TakeDamage(damage, true);
+                ((Player)other).TakeDamage(damage, true);
             }
         }
     }
