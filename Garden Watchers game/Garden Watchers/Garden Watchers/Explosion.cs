@@ -36,6 +36,11 @@ namespace Garden_Watchers
             base.LoadContent(content);
         }
 
+        /// <summary>
+        /// explosion lasts certain amount of time, then disappears
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="screenSize"></param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
