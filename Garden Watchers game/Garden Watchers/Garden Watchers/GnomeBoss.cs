@@ -102,7 +102,7 @@ namespace Garden_Watchers
             {
                 velocity = Vector2.Zero;
                 charging = false;
-                other.TakeDamage(damage, true);
+                ((Player)other).TakeDamage(damage, true);
             }
         }
 

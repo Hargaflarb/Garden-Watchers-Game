@@ -8,19 +8,22 @@ namespace Garden_Watchers
 {
     internal class Bullet : GameObject
     {
-        private int damage = 2;
+        private int damage;
         private Vector2 direction;
         private float speed;
         private bool playerBullet;
+        private float timeExisted;
 
-        public Bullet(Texture2D sprite, Vector2 position,Vector2 direction,bool playerBullet,float rotation,int speed):base()
-        { 
+        public Bullet(Texture2D sprite, Vector2 position, Vector2 direction, bool playerBullet, float rotation, int speed) : base()
+        {
             this.sprite = sprite;
             Position = position;
             this.direction = direction;
-            this.playerBullet=playerBullet;
+            this.playerBullet = playerBullet;
             this.rotation = rotation;
             this.speed = speed;
+            damage = playerBullet ? 4 : 2;
+            timeExisted = 0;
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
@@ -28,17 +31,36 @@ namespace Garden_Watchers
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Position += (direction * speed)*deltaTime;
+            Position += (direction * speed) * deltaTime;
+
+            timeExisted += deltaTime;
+            if (playerBullet)
+            {
+                if (timeExisted <= 0.5f)
+                {
+                    damage = 4;
+                }
+                else if (timeExisted <= 1f)
+                {
+                    damage = 3;
+                }
+                else
+                {
+                    damage = 2;
+                }
+            }
+
+
             base.Update(gameTime, screenSize);
         }
 
         public override void OnCollision(GameObject other)
         {
-            if(other is Character)
+            if (other is Character)
             {
-                if ((playerBullet && other is Enemy)||(!playerBullet && other is Player))
+                if ((playerBullet && other is Enemy) || (!playerBullet && other is Player))
                 {
-                    other.TakeDamage(damage, false);
+                    ((Character)other).TakeDamage(damage, false);
                     GameWorld.KillObject(this);
                 }
             }

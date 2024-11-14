@@ -13,14 +13,15 @@ namespace Garden_Watchers
     {
         //Field
         private float timer;
+        private float explodeTime = 0.7F;
         private bool timerStarted = false;
         private bool explode = false;
         private int damage = 10;
 
         public Flamingo(Vector2 position) : base(position)
         {
-            Health = 3;
-            speed = 200;
+            Health = 7;
+            speed = 400;
         }
 
         public override void LoadContent(ContentManager content)
@@ -53,16 +54,24 @@ namespace Garden_Watchers
             if (pythagorasDistance <= 150)
             {
                 speed = 0;
+                timer = 0;
                 timerStarted = true;
                 explode = true;
             }
 
+            if (pythagorasDistance >= 400 & timer <= explodeTime/2)
+            {
+                speed = 400;
+                timerStarted = false;
+                explode = false;
+            }
+
             if (explode == true)
             {
-                if (timer >= 2)
+                if (timer >= 1)
                 {
                     GameWorld.KillObject(this);
-                    Explosion explosion = new Explosion(this.position);
+                    Explosion explosion = new Explosion(Position);
                     GameWorld.MakeObject(explosion);
                 }
                 
