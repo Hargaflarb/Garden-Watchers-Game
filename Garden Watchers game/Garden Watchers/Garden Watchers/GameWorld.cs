@@ -52,6 +52,9 @@ namespace Garden_Watchers
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
+        /// <summary>
+        /// Instatiates the random field.
+        /// </summary>
         static GameWorld()
         {
             Random = new Random();
