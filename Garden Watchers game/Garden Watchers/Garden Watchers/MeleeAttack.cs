@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace Garden_Watchers
 {
-    internal class MeleeAttack:GameObject
+    internal class MeleeAttack : GameObject
     {
         private Vector2 direction;
         private float swipeTime=0.2f;
         private bool playerAttack;
         private float timePassed = 0;
-        private int damage = 4;
+        private int damage = 10;
         public MeleeAttack(Texture2D sprite,Vector2 position, Vector2 direction, bool playerAttack,float rotation)
         {
             this.sprite = sprite;

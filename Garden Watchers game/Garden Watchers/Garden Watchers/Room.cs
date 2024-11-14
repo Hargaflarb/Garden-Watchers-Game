@@ -22,10 +22,16 @@ namespace Garden_Watchers
     {
         private List<GameObject> roomObjects;
         private Vector2 coordinates;
-        private Direction doorDirection;
+        private Direction doorDirections;
         private static Random random;
         private static Dictionary<int, Enemy[]> enemyApearanceProgression;
 
+        /// <summary>
+        /// Makes a new Room.
+        /// </summary>
+        /// <param name="X">The x-coordinate of the room.<</param>
+        /// <param name="Y">The y-coordinate of the room.<</param>
+        /// <param name="entrenceSide">The side of the Room the Player will appear in. (middle if none)</param>
         public Room(int X, int Y, Direction entrenceSide)
         {
             coordinates = new Vector2(X, Y);
@@ -33,6 +39,10 @@ namespace Garden_Watchers
 
             Initialize(entrenceSide);
         }
+
+        /// <summary>
+        /// Instatiates the random field.
+        /// </summary>
         static Room()
         {
             random = new Random();
@@ -49,9 +59,10 @@ namespace Garden_Watchers
             };
         }
 
-        public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
 
-
+        /// <summary>
+        /// Re-instatiates the "tutorial-enemies", and is used when starting a new run/game.
+        /// </summary>
         public static void ResetRooms()
         {
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
@@ -67,9 +78,11 @@ namespace Garden_Watchers
         }
 
         /// <summary>
-        /// Set puts obstacles, doors, enemies and more in the room.
+        /// Places doors, random enemies and random obstacles in the room.
+        /// Is used when entering the room for the first time.
         /// </summary>
-        public void Initialize(Direction entrenceSide)
+        /// <param name="entrenceSide">The side of the room that the player enters from, where objects worn't be placed.</param>
+        private void Initialize(Direction entrenceSide)
         {
             InitializeDoors();
             InitializeEnemies(entrenceSide);
@@ -77,8 +90,12 @@ namespace Garden_Watchers
             //remember to load content of new stuff
         }
 
-
-        public void InitializeEnemies(Direction entrenceSide)
+        /// <summary>
+        /// Places random enemies in the room, if there isn't a specified set of enemies to insert.
+        /// Is used in instantiation.
+        /// </summary>
+        /// <param name="entrenceSide">The side of the room that the player enters from, where enemies worn't be placed.</param>
+        private void InitializeEnemies(Direction entrenceSide)
         {
             if (!enemyApearanceProgression.ContainsKey(Map.RoomCount + 1)) // +1 cus this room hasn't been added yet.
             {
@@ -121,7 +138,12 @@ namespace Garden_Watchers
             }
         }
 
-        public void InitializeObstacles(Direction entrenceSide)
+        /// <summary>
+        /// Places random obstacles in the room.
+        /// Is used in instantiation.
+        /// </summary>
+        /// <param name="entrenceSide"></param>
+        private void InitializeObstacles(Direction entrenceSide)
         {
             int roomNumber = Map.RoomCount + 1; // +1 cus this room hasn't been added yet.
             if (roomNumber != 15 & roomNumber != 1) // boss room and spawn room has no obstacles
@@ -157,7 +179,12 @@ namespace Garden_Watchers
             }
         }
 
-        public void InitializeDoors()
+        /// <summary>
+        /// Dectects when there are doors in adjacent room and make connecting doors thereto.
+        /// If no room is found, it's randomly decided wether or not to place a door. (100% for top-door)
+        /// Is used in instantiation.
+        /// </summary>
+        private void InitializeDoors()
         {
             Direction directions = Map.GetSurroundingDoors(coordinates);
 
@@ -211,37 +238,56 @@ namespace Garden_Watchers
 
         }
 
-
+        /// <summary>
+        /// Deternines wether the room has a door pointing in opposite direction of the given one.
+        /// Is often used when deternining wether an adjacent room has a conecting door.
+        /// </summary>
+        /// <param name="direction">The direction to check the opposite of.</param>
+        /// <returns>Wether or not the room has a one the opposit side.</returns>
         public bool HasOppositeDirection(Direction direction)
         {
             switch (direction)
             {
                 case Direction.Up:
-                    return doorDirection.HasFlag(Direction.Down);
+                    return doorDirections.HasFlag(Direction.Down);
                 case Direction.Down:
-                    return doorDirection.HasFlag(Direction.Up);
+                    return doorDirections.HasFlag(Direction.Up);
                 case Direction.Left:
-                    return doorDirection.HasFlag(Direction.Right);
+                    return doorDirections.HasFlag(Direction.Right);
                 case Direction.Right:
-                    return doorDirection.HasFlag(Direction.Left);
+                    return doorDirections.HasFlag(Direction.Left);
                 default:
                     return false;
             }
         }
 
+        /// <summary>
+        /// Is used when adding a Door to the Room, during instantiation.
+        /// </summary>
+        /// <param name="X">The x-coordinate of the room this door will lead to.</param>
+        /// <param name="Y">The y-coordinate of the room this door will lead to.</param>
+        /// <param name="direction">The side of the room where the door is placed.</param>
         private void MakeDoor(int X, int Y, Direction direction)
         {
             MakeObject(new Door(X, Y, direction));
-            doorDirection += (int)direction;
+            doorDirections += (int)direction;
         }
 
+        /// <summary>
+        /// Loads the content of the object and adds it to the Room's object-list.
+        /// </summary>
+        /// <param name="gameObject"></param>
         public void MakeObject(GameObject gameObject)
         {
             gameObject.LoadContent(GameWorld.TheGameWorld.Content);
             roomObjects.Add(gameObject);
         }
 
-
+        /// <summary>
+        /// Saves all the GameObjects from a list, given they aren't a Player or a Bullet.
+        /// Is used when exiting a Room.
+        /// </summary>
+        /// <param name="gameObjects">The list of GameObjects to save.</param>
         public void SaveRoomObjects(List<GameObject> gameObjects)
         {
             roomObjects.Clear();
@@ -254,6 +300,11 @@ namespace Garden_Watchers
             }
         }
 
+        /// <summary>
+        /// Adds all the Rooms saved GameObjects to the GameWorld.
+        /// Is used when entering a Room.
+        /// </summary>
+        /// <param name="killPrevious">If true; the GameObject in GameWorld will be removed, before adding new ones.</param>
         public void WriteRoomObjects(bool killPrevious)
         {
             if (killPrevious)

@@ -43,6 +43,11 @@ namespace Garden_Watchers
         }
 
         //Methods
+        /// <summary>
+        /// Checks if another GameObject is collieding with it, and calls OnCollision if it is.
+        /// Is called for all the GameWorlds object every update.
+        /// </summary>
+        /// <param name="other">The other GameObject to check for.</param>
         public void CheckCollision(GameObject other)
         {
             if (Hitbox.Intersects(other.Hitbox))
@@ -118,10 +123,11 @@ namespace Garden_Watchers
             }
             return new Vector2(X, Y);
         }
+
         /// <summary>
-        /// Abstract method for loading sprites
+        /// Abstract method for loading sprites, aswell as setting the objects hitbox and draw origin.
         /// </summary>
-        /// <param name="content"></param>
+        /// <param name="content">The ContentManager the is loading the content.</param>
         public virtual void LoadContent(ContentManager content)
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
@@ -194,16 +200,19 @@ namespace Garden_Watchers
             }            
         }
 
-
+        /// <summary>
+        /// Makes this GameObject invincible for a set time.
+        /// Is mainly used for objects of the Character sub-class.
+        /// </summary>
+        /// <param name="invincibilityTime">The length of time in ssecond. (is 0 by deafult)</param>
         public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {
             invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
         }
       
+
         public virtual void RecoverHealth()
         {
-         
-
         }
     }
 }
