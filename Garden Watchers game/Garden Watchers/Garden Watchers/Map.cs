@@ -25,6 +25,7 @@ namespace Garden_Watchers
         public static void ResetMap()
         {
             rooms = new Dictionary<Vector2, Room>();
+            Room.ResetRooms();
         }
 
         /// <summary>
@@ -100,11 +101,6 @@ namespace Garden_Watchers
                     break;
                 default:
                     break;
-            }
-
-            if (RoomCount == 12)
-            {
-                GameWorld.YouWon();
             }
 
             if (saveRoom)

@@ -36,6 +36,7 @@ namespace Garden_Watchers
         static Room()
         {
             random = new Random();
+
             enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
             {
                 { 0, new Enemy[] { } },
@@ -44,12 +45,26 @@ namespace Garden_Watchers
                 { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
                 { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
                 { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
-                { 12, new Enemy[] { new GnomeBoss(new Vector2(1000, 500)) } },
+                { 12, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
             };
         }
 
         public Direction DoorDirection { get => doorDirection; set => doorDirection = value; }
 
+
+        public static void ResetRooms()
+        {
+            enemyApearanceProgression = new Dictionary<int, Enemy[]>(7)
+            {
+                { 0, new Enemy[] { } },
+                { 1, new Enemy[] { new Gnome(new Vector2(1500, 500)) } },
+                { 2, new Enemy[] { new Gnome(new Vector2(1500, 250)), new Gnome(new Vector2(1500, 500)), new Gnome(new Vector2(1500, 750)) } },
+                { 3, new Enemy[] { new Fairy(new Vector2(1000, 500)) } },
+                { 4, new Enemy[] { new Fairy(new Vector2(1500, 500)), new Fairy(new Vector2(500, 500)) } },
+                { 5, new Enemy[] { new Flamingo(new Vector2(1000, 500)) } },
+                { 12, new Enemy[] { new GnomeBoss(100, new Vector2(1000, 500), 200)} },
+            };
+        }
 
         /// <summary>
         /// Set puts obstacles, doors, enemies and more in the room.
@@ -99,7 +114,8 @@ namespace Garden_Watchers
             }
             else
             {
-                Enemy[] roomEnemies = enemyApearanceProgression[Map.RoomCount];
+                Enemy[] roomEnemies = new Enemy[enemyApearanceProgression[Map.RoomCount].Count()];
+                enemyApearanceProgression[Map.RoomCount].CopyTo(roomEnemies, 0);
                 foreach (Enemy enemy in roomEnemies)
                 {
                     GameWorld.MakeObject(enemy);
