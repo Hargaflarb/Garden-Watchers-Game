@@ -10,13 +10,23 @@ using System.Windows.Forms;
 
 namespace Garden_Watchers
 {
-    internal class MeleeAttack:GameObject
+    internal class MeleeAttack : GameObject
     {
         private Vector2 direction;
         private float swipeTime=0.2f;
         private bool playerAttack;
         private float timePassed = 0;
-        private int damage = 4;
+        private int damage = 10;
+
+
+        /// <summary>
+        /// Instantiates a new attack.
+        /// </summary>
+        /// <param name="sprite">The Bullets sprite.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="direction">The direction of travel.</param>
+        /// <param name="playerAttack">Is the attack done by the player?</param>
+        /// <param name="rotation">Rotation of the sprite.</param>
         public MeleeAttack(Texture2D sprite,Vector2 position, Vector2 direction, bool playerAttack,float rotation)
         {
             this.sprite = sprite;
@@ -28,6 +38,10 @@ namespace Garden_Watchers
             Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
         }
 
+        /// <summary>
+        /// Handles collision with Characters.
+        /// </summary>
+        /// <param name="other">The ohter GameObject.</param>
         public override void OnCollision(GameObject other)
         {
             if(other is Character)
@@ -43,6 +57,11 @@ namespace Garden_Watchers
             }
         }
 
+        /// <summary>
+        /// Update the attacks timePassed.
+        /// </summary>
+        /// <param name="gameTime">The GameTime.</param>
+        /// <param name="screenSize">The size of the graphics.</param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             base.Update(gameTime, screenSize);

@@ -9,14 +9,13 @@ namespace Garden_Watchers
 {
     public class Wall : Obstacle
     {
+        /// <summary>
+        /// Set the position of the instance.
+        /// </summary>
+        /// <param name="pos">The position.</param>
         public Wall(Vector2 pos) : base(pos)
         {
 
-        }
-
-        public Wall(Vector2 pos, Vector2 hitboxSize) : base(pos, hitboxSize)
-        {
-            Position = pos;
         }
 
         public override void LoadContent(ContentManager content)
@@ -25,7 +24,11 @@ namespace Garden_Watchers
             base.LoadContent(content);
         }
 
-
+        /// <summary>
+        /// Activates on collision and makes sure a character can not walk over/inside the obstacle.
+        /// If bullets collide they are removed.
+        /// </summary>
+        /// <param name="other">The other obejct that is intersecting with this one.</param>
         public override void OnCollision(GameObject other)
         {
             base.OnCollision(other);

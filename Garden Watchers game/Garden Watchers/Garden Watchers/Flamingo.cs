@@ -22,8 +22,8 @@ namespace Garden_Watchers
 
         public Flamingo(Vector2 position) : base(position)
         {
-            Health = 3;
-            speed = 200;
+            Health = 7;
+            speed = 400;
             scale = 0.2f;
         }
 
@@ -122,10 +122,5 @@ namespace Garden_Watchers
             base.Update(gameTime, screenSize);
         }
 
-        public override void OnCollision(GameObject other)
-        {
-            
-            
-        }
     }
 }

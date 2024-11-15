@@ -21,7 +21,7 @@ namespace Garden_Watchers
         {
             Position = position;
         }
-
+        
 
         /// <summary>
         /// Loads sprites
@@ -39,15 +39,18 @@ namespace Garden_Watchers
         /// <param name="screenSize"></param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
-            Move(gameTime, screenSize);
-            
+            if (timeExisted >= 0.25f)
+            {
+                Move(gameTime, screenSize);
+            }
+
             base.Update(gameTime, screenSize);
         }
 
 
         public static Enemy GetRandomNewEnemy(Vector2 position)
         {
-            int random = GameWorld.Random.Next(0,3);
+            int random = GameWorld.Random.Next(0, 3);
 
             switch (random)
             {

@@ -8,16 +8,14 @@ namespace Garden_Watchers
 {
     public abstract class Obstacle : GameObject
     {
-
+        /// <summary>
+        /// Set the position of the instance.
+        /// </summary>
+        /// <param name="pos">The position.</param>
         public Obstacle(Vector2 pos) : base()
         {
             Position = pos;
         }
-        public Obstacle(Vector2 pos, Vector2 hitboxSize) : base()
-        {
-            Position = pos;
-        }
-
 
         /// <summary>
         /// Activates on collision and makes sure a character can not walk over/inside the obstacle
@@ -63,6 +61,12 @@ namespace Garden_Watchers
             }
         }
 
+        /// <summary>
+        /// Picks randomized sub-class, and returns an instance of it.
+        /// Is used when making random obstacles.
+        /// </summary>
+        /// <param name="pos">The position of the new obstacle</param>
+        /// <returns>The new obstacle of a random sub-class</returns>
         public static Obstacle GetRandomNewObstacle(Vector2 pos)
         {
             int rando = GameWorld.Random.Next(0, 2);
@@ -76,11 +80,6 @@ namespace Garden_Watchers
                 default:
                     return new Wall(pos);
             }
-        }
-
-        public override void Update(GameTime gameTime, Vector2 screenSize)
-        {
-
         }
 
     }

@@ -22,7 +22,7 @@ namespace Garden_Watchers
         {
             speed = 0;
             movementSpeed = 150;
-            Health = 2;
+            Health = 5;
             scale= 0.3f;
         }
 

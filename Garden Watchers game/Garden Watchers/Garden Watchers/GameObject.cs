@@ -16,6 +16,9 @@ namespace Garden_Watchers
         protected Vector2 origin;
         protected float invincibilityFrames = 0.3f;
         protected float invincibilityTimer;
+
+        protected float timeExisted = 0;
+        protected bool takingDamage = false;
         protected Vector2 velocity;
         //visual feedback
         protected float rotation;
@@ -26,9 +29,10 @@ namespace Garden_Watchers
 
         //to avoid having to manually resize & edit sprites & animation frames
         protected float scale = 1;
-        protected int framerate=6;
+        protected int framerate = 6;
         protected int frames;
         protected bool facingRight;
+
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -45,6 +49,11 @@ namespace Garden_Watchers
         }
 
         //Methods
+        /// <summary>
+        /// Checks if another GameObject is collieding with it, and calls OnCollision if it is.
+        /// Is called for all the GameWorlds object every update.
+        /// </summary>
+        /// <param name="other">The other GameObject to check for.</param>
         public void CheckCollision(GameObject other)
         {
             if (Hitbox.Intersects(other.Hitbox))
@@ -120,10 +129,11 @@ namespace Garden_Watchers
             }
             return new Vector2(X, Y);
         }
+
         /// <summary>
-        /// Abstract method for loading sprites
+        /// Abstract method for loading sprites, aswell as setting the objects hitbox and draw origin.
         /// </summary>
-        /// <param name="content"></param>
+        /// <param name="content">The ContentManager the is loading the content.</param>
         public virtual void LoadContent(ContentManager content)
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
@@ -143,6 +153,8 @@ namespace Garden_Watchers
             Position = CheckOutOfBounds(screenSize, Position);
             
             invincibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeExisted += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
         }
 
         /// <summary>
@@ -196,21 +208,21 @@ namespace Garden_Watchers
         }
 
         /// <summary>
+        /// Makes this GameObject invincible for a set time.
         /// triggered when a Character takes damage from a melee attack, to make sure not all health is lost within a few frames
         /// </summary>
-        /// <param name="invincibilityTime"></param>
+        /// <param name="invincibilityTime">The length of time in ssecond. (is 0 by deafult)</param>
         public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {
             invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
         }
+
 
         /// <summary>
         /// meant for using pickupable health packs, but not currently in use
         /// </summary>
         public virtual void RecoverHealth()
         {
-         
-
         }
     }
 }
