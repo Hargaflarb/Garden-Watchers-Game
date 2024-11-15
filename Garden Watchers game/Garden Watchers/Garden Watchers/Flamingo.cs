@@ -49,7 +49,9 @@ namespace Garden_Watchers
             sprite = sprites[0];
             base.LoadContent(content);
         }
-
+        /// <summary>
+        /// follows player while outside certain distance
+        /// </summary>
         public void Chase()
         {
             Vector2 direction = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
@@ -59,12 +61,15 @@ namespace Garden_Watchers
             direction = new Vector2(XDirection, YDirection);
             velocity = (direction);
         }
-
+        /// <summary>
+        /// if within certain distance of player, starts a timer then explodes
+        /// </summary>
         public void Explode()
         {
             Vector2 distance = new Vector2(GameWorld.PlayerCharacterPosition.X - position.X, GameWorld.PlayerCharacterPosition.Y - position.Y);
             float pythagorasDistance = (float)Math.Pow(Math.Pow(distance.X, 2) + Math.Pow(distance.Y, 2),0.5f);
 
+            //stops moving & starts countdown
             if (pythagorasDistance <= 150 & !explode)
             {
                 speed = 0;

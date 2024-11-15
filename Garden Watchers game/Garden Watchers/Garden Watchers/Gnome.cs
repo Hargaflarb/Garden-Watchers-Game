@@ -19,7 +19,12 @@ namespace Garden_Watchers
         protected Texture2D[] chargeAnim;
         protected Texture2D[] walkAnim;
         protected SoundEffect yell;
-
+        /// <summary>
+        /// If specific stats are required
+        /// </summary>
+        /// <param name="health"></param>
+        /// <param name="position"></param>
+        /// <param name="speed"></param>
         public Gnome(int health, Vector2 position, float speed) : base(health, position, speed)
         {
             Health = health;
@@ -80,7 +85,9 @@ namespace Garden_Watchers
 
             base.Update(gameTime, screenSize);
         }
-
+        /// <summary>
+        /// while not charging, moves toward the players curent position
+        /// </summary>
         public void Chase()
         {
             if (charging == false && cooldown <= 0)
@@ -102,7 +109,9 @@ namespace Garden_Watchers
                 spriteNumber = 0;
             }
         }
-
+        /// <summary>
+        /// if within certain distance, logs the player's position & charges toward it
+        /// </summary>
         public void Charge()
         {
             Vector2 distance = new Vector2(Math.Abs(GameWorld.PlayerCharacterPosition.X - Position.X), Math.Abs(GameWorld.PlayerCharacterPosition.Y - Position.Y));

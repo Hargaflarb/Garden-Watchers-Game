@@ -175,6 +175,7 @@ namespace Garden_Watchers
                 Initialize();
             }
 
+
             //Checking for Victory conditions
             if (Winning == true)
             {
@@ -184,8 +185,6 @@ namespace Garden_Watchers
                     Initialize();
                 }
             }
-
-
 
             base.Update(gameTime);
         }
@@ -247,6 +246,7 @@ namespace Garden_Watchers
 
         /// <summary>
         /// Removes every GameObject from the Player.
+        /// when resetting the game to start anew
         /// </summary>
         public static void KillAllObjects()
         {
@@ -262,6 +262,7 @@ namespace Garden_Watchers
         /// <summary>
         /// Removes all Bullets from the GameObjects.
         /// Called after the last Enemy in a Room is killed.
+        /// if all enemies in a room are defeated, despawns all bullets
         /// </summary>
         public static void KillAllBullets()
         {

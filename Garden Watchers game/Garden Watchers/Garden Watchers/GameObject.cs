@@ -14,14 +14,20 @@ namespace Garden_Watchers
         private Rectangle hitbox;
         protected Vector2 position;
         protected Vector2 origin;
-        protected float rotation;
         protected float invincibilityFrames = 0.3f;
         protected float invincibilityTimer;
+
         protected float timeExisted = 0;
         protected bool takingDamage = false;
         protected Vector2 velocity;
+        //visual feedback
+        protected float rotation;
+        protected bool takingDamage = false;
+        //animation
         protected int spriteNumber;
         protected bool moving;
+
+        //to avoid having to manually resize & edit sprites & animation frames
         protected float scale = 1;
         protected int framerate = 6;
         protected int frames;
@@ -59,7 +65,7 @@ namespace Garden_Watchers
         /// <summary>
         /// Runs when GameObject is colliding with something else
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">the other Gameobject in the collision</param>
         public virtual void OnCollision(GameObject other)
         {
             if (this == other)
@@ -70,7 +76,7 @@ namespace Garden_Watchers
 
 
         /// <summary>
-        /// 
+        /// Makes sure the GameObject cannot go out of bounds & stops it if it tries
         /// </summary>
         /// <param name="screenSize"></param>
         /// <param name="vector"></param>
@@ -157,6 +163,7 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            //animation
             if ((this is Player && velocity != Vector2.Zero) || (this is not Player && this is Character))
             {
                 sprite = sprites[spriteNumber];
@@ -175,7 +182,7 @@ namespace Garden_Watchers
                 }
                 
             }            
-
+            //all GameObjects
             if (takingDamage)
             {
                 if (facingRight)
@@ -202,15 +209,18 @@ namespace Garden_Watchers
 
         /// <summary>
         /// Makes this GameObject invincible for a set time.
-        /// Is mainly used for objects of the Character sub-class.
+        /// triggered when a Character takes damage from a melee attack, to make sure not all health is lost within a few frames
         /// </summary>
         /// <param name="invincibilityTime">The length of time in ssecond. (is 0 by deafult)</param>
         public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {
             invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
         }
-      
 
+
+        /// <summary>
+        /// meant for using pickupable health packs, but not currently in use
+        /// </summary>
         public virtual void RecoverHealth()
         {
         }

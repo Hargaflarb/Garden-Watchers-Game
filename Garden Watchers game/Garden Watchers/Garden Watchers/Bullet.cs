@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace Garden_Watchers
 {
+    /// <summary>
+    /// damaging projectile spawned by player & fairies
+    /// </summary>
     internal class Bullet : GameObject
     {
         private int damage;
@@ -43,6 +46,7 @@ namespace Garden_Watchers
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //move bullet in determined direction
             Position += (direction * speed) * deltaTime;
 
             if (playerBullet)
