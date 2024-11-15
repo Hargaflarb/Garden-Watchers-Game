@@ -18,7 +18,6 @@ namespace Garden_Watchers
         protected float invincibilityTimer;
 
         protected float timeExisted = 0;
-        protected bool takingDamage = false;
         protected Vector2 velocity;
         //visual feedback
         protected float rotation;
