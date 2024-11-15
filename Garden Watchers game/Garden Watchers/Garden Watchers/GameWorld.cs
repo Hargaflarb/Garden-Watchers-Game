@@ -57,6 +57,11 @@ namespace Garden_Watchers
             Random = new Random();
         }
 
+        /// <summary>
+        /// checks if the boss has been defeated
+        /// </summary>
+        /// <param name="gnomeBossClass"></param>
+        /// <returns></returns>
         private bool GetGnomeBoss(out GameObject gnomeBossClass)
         {
             foreach (GameObject gameObject in GameObjects)
@@ -155,6 +160,7 @@ namespace Garden_Watchers
                 Initialize();
             }
 
+
             //Checking for Victory conditions
             if (Winning == true)
             {
@@ -164,8 +170,6 @@ namespace Garden_Watchers
                     Initialize();
                 }
             }
-
-
 
             base.Update(gameTime);
         }
@@ -210,6 +214,9 @@ namespace Garden_Watchers
             removedObjects.Add(gameObject);
         }
 
+        /// <summary>
+        /// when resetting the game to start anew
+        /// </summary>
         public static void KillAllObjects()
         {
             foreach (GameObject theObject in gameObjects)
@@ -220,7 +227,9 @@ namespace Garden_Watchers
                 }
             }
         }
-
+        /// <summary>
+        /// if all enemies in a room are defeated, despawns all bullets
+        /// </summary>
         public static void KillAllBullets()
         {
             foreach (GameObject theObject in gameObjects)

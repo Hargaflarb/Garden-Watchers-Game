@@ -46,7 +46,9 @@ namespace Garden_Watchers
             Shoot();
             base.Update(gameTime, screenSize);
         }
-
+        /// <summary>
+        /// when Player is too close, the fairy moves away in a direct line
+        /// </summary>
         public void Flee()
         {
             velocity = Vector2.Zero;
@@ -73,7 +75,9 @@ namespace Garden_Watchers
                 speed = 0;
             }
         }
-
+        /// <summary>
+        /// instantiates a bullet aimed at the player's current location at regular intervals
+        /// </summary>
         public void Shoot()
         {
             if (bulletTimer >= bulletRate)

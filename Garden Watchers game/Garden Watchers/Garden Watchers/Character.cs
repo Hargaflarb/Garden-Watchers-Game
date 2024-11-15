@@ -12,7 +12,6 @@ namespace Garden_Watchers
     public abstract class Character : GameObject
     {
         //Fields
-
         protected float speed;
         protected int health;
         protected SoundEffect hurt;
@@ -27,12 +26,10 @@ namespace Garden_Watchers
         }
 
         //Methods
-
-
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             hurtTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            //for colouring the sprite
             if (hurtTimer <= 0)
             {
                 takingDamage = false;
@@ -74,7 +71,7 @@ namespace Garden_Watchers
                 {
                     if (this is Enemy)
                     {
-                        //death animation?
+                        //death animation could be added here?
                         GameWorld.KillObject(this);
                         if (this is GnomeBoss)
                         {
