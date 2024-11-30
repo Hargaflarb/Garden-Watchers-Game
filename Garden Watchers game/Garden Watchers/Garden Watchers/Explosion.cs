@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -14,6 +15,7 @@ namespace Garden_Watchers
         //Field
         private float timer;
         private int damage = 10;
+        private SoundEffect kaboom;
 
         public Explosion(Vector2 position)
         {
@@ -29,10 +31,16 @@ namespace Garden_Watchers
                 sprites[i] = content.Load<Texture2D>("explosion");
             }
             sprite = sprites[0];
-
+            kaboom = content.Load<SoundEffect>("explosion sfx");
+            kaboom.Play();
             base.LoadContent(content);
         }
 
+        /// <summary>
+        /// explosion lasts certain amount of time, then disappears
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="screenSize"></param>
         public override void Update(GameTime gameTime, Vector2 screenSize)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -48,7 +56,7 @@ namespace Garden_Watchers
         {
             if (other is Player)
             {
-                other.TakeDamage(damage, true);
+                ((Player)other).TakeDamage(damage, true);
             }
             base.OnCollision(other);
         }

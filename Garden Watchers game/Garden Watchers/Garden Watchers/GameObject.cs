@@ -14,11 +14,24 @@ namespace Garden_Watchers
         private Rectangle hitbox;
         protected Vector2 position;
         protected Vector2 origin;
-        protected float rotation;
         protected float invincibilityFrames = 0.3f;
         protected float invincibilityTimer;
-        protected bool takingDamage = false;
+
+        protected float timeExisted = 0;
         protected Vector2 velocity;
+        //visual feedback
+        protected float rotation;
+        protected bool takingDamage = false;
+        //animation
+        protected int spriteNumber;
+        protected bool moving;
+
+        //to avoid having to manually resize & edit sprites & animation frames
+        protected float scale = 1;
+        protected int framerate = 6;
+        protected int frames;
+        protected bool facingRight;
+
 
         /// <summary>
         /// The Hitbox is a rectangle the surounds the game objects sprite, and is used to detect colission.
@@ -35,6 +48,11 @@ namespace Garden_Watchers
         }
 
         //Methods
+        /// <summary>
+        /// Checks if another GameObject is collieding with it, and calls OnCollision if it is.
+        /// Is called for all the GameWorlds object every update.
+        /// </summary>
+        /// <param name="other">The other GameObject to check for.</param>
         public void CheckCollision(GameObject other)
         {
             if (Hitbox.Intersects(other.Hitbox))
@@ -46,7 +64,7 @@ namespace Garden_Watchers
         /// <summary>
         /// Runs when GameObject is colliding with something else
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">the other Gameobject in the collision</param>
         public virtual void OnCollision(GameObject other)
         {
             if (this == other)
@@ -57,7 +75,7 @@ namespace Garden_Watchers
 
 
         /// <summary>
-        /// 
+        /// Makes sure the GameObject cannot go out of bounds & stops it if it tries
         /// </summary>
         /// <param name="screenSize"></param>
         /// <param name="vector"></param>
@@ -110,15 +128,16 @@ namespace Garden_Watchers
             }
             return new Vector2(X, Y);
         }
+
         /// <summary>
-        /// Abstract method for loading sprites
+        /// Abstract method for loading sprites, aswell as setting the objects hitbox and draw origin.
         /// </summary>
-        /// <param name="content"></param>
+        /// <param name="content">The ContentManager the is loading the content.</param>
         public virtual void LoadContent(ContentManager content)
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             //hitbox does not currently change with rotation
-            Hitbox = new Rectangle((int)position.X - (sprite.Width / 2), (int)position.Y - (sprite.Height / 2), sprite.Width, sprite.Height);
+            Hitbox = new Rectangle((int)position.X - (int)((sprite.Width / 2)/scale), (int)position.Y - (int)((sprite.Height / 2)/scale), (int)(sprite.Width*scale), (int)(sprite.Height*scale));
             
         }
 
@@ -131,12 +150,10 @@ namespace Garden_Watchers
         public virtual void Update(GameTime gameTime, Vector2 screenSize)
         {
             Position = CheckOutOfBounds(screenSize, Position);
-            invincibilityTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            invincibilityTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeExisted += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (invincibilityTimer > invincibilityFrames)
-            {
-                takingDamage = false;
-            }
         }
 
         /// <summary>
@@ -145,32 +162,66 @@ namespace Garden_Watchers
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            //animation
+            if ((this is Player && velocity != Vector2.Zero) || (this is not Player && this is Character))
+            {
+                sprite = sprites[spriteNumber];
+                frames += 1;
+                if (frames >= framerate)
+                {
+                    frames = 0;
+                    if (sprites.Length == spriteNumber + 1)
+                    {
+                        spriteNumber = 0;
+                    }
+                    else
+                    {
+                        spriteNumber += 1;
+                    }
+                }
+                
+            }            
+            //all GameObjects
             if (takingDamage)
             {
-                spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, 1, SpriteEffects.None, 1);
+                if (facingRight)
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, scale, SpriteEffects.FlipHorizontally, 1);
+                }
+                else
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.Red, rotation, origin, scale, SpriteEffects.None, 1);
+                }                
             }
             else
             {
-                spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, 1, SpriteEffects.None, 1);
+                if (facingRight)
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, scale, SpriteEffects.FlipHorizontally, 1);
+                }
+                else
+                {
+                    spriteBatch.Draw(sprite, Position, null, Color.White, rotation, origin, scale, SpriteEffects.None, 1);
+                }
             }            
         }
 
-        public virtual void TakeDamage(int damage, bool isMeleeAttack)
+        /// <summary>
+        /// Makes this GameObject invincible for a set time.
+        /// triggered when a Character takes damage from a melee attack, to make sure not all health is lost within a few frames
+        /// </summary>
+        /// <param name="invincibilityTime">The length of time in ssecond. (is 0 by deafult)</param>
+        public virtual void GiveInvincibilityFrames(float invincibilityTime = 0)
         {
-            //this is empty on purpose, as to not activate on non-characters
+            invincibilityTimer = invincibilityTime == 0 ? invincibilityFrames : invincibilityTime;
         }
 
 
-        public virtual void GiveInvincibilityFrames()
-        {
-            invincibilityTimer = 0;
-            takingDamage = true;
-        }
-      
+        /// <summary>
+        /// meant for using pickupable health packs, but not currently in use
+        /// </summary>
         public virtual void RecoverHealth()
         {
-         
-
         }
     }
 }

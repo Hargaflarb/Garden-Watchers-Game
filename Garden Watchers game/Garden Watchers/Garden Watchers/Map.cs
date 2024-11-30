@@ -15,6 +15,9 @@ namespace Garden_Watchers
         private static Dictionary<Vector2, Room> rooms;
         private static Room shownRoom;
 
+        /// <summary>
+        /// Returns the amount of room in the map.
+        /// </summary>
         public static int RoomCount { get => rooms.Count; }
 
         static Map()
@@ -22,9 +25,13 @@ namespace Garden_Watchers
             ResetMap();
         }
 
+        /// <summary>
+        /// This Reset the map and is used when starting a new run/game/round
+        /// </summary>
         public static void ResetMap()
         {
             rooms = new Dictionary<Vector2, Room>();
+            Room.ResetRooms();
         }
 
         /// <summary>
@@ -75,9 +82,18 @@ namespace Garden_Watchers
             return directions;
         }
 
-
+        /// <summary>
+        /// Places the player in a the room next to the current one, and make a new one if no such room exists.
+        /// Is used when opening a door.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the room to enter.</param>
+        /// <param name="y">The y-coordinate of the room to enter.</param>
+        /// <param name="comingFrom">The side of the room the Player will appear in. (appears in the middle if none)</param>
+        /// <param name="saveRoom">Wehter or not the save the contents in the current room. (is true by deafult)</param>
         public static void GoToRoom(int x, int y, Direction comingFrom, bool saveRoom = true)
         {
+            GameWorld.Player.GiveInvincibilityFrames(1);
+
             Vector2 size = GameWorld.ScreenSize;
             switch (comingFrom)
             {
@@ -100,11 +116,6 @@ namespace Garden_Watchers
                     break;
             }
 
-            if (RoomCount == 12)
-            {
-                GameWorld.YouWon();
-            }
-
             if (saveRoom)
             {
                 shownRoom.SaveRoomObjects(GameWorld.GameObjects);
@@ -120,7 +131,12 @@ namespace Garden_Watchers
 
         }
 
-
+        /// <summary>
+        /// Makes a new room and adds it the Map.
+        /// </summary>
+        /// <param name="X">The x-coordinate of the room.<</param>
+        /// <param name="Y">The y-coordinate of the room.<</param>
+        /// <param name="entrenceDirection">The side of the room the player will appear in. (middle if none)</param>
         private static void AddRoom(int X, int Y, Direction entrenceDirection)
         {
             rooms.Add(new Vector2(X, Y), new Room(X, Y, entrenceDirection));

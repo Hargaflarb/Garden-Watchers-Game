@@ -12,19 +12,15 @@ namespace Garden_Watchers
 {
     internal class HealthRecovery: Item
     {
-        
+        /// <summary>
+        /// Set the position of the new instance.
+        /// </summary>
+        /// <param name="position">The position.</param>
         public HealthRecovery(Vector2 position)
         {
             Position = position;
         }
         
-        
-
-        public void Update()
-        {
-           
-        }
-
         public override void LoadContent(ContentManager content)
         {
             sprites = new Texture2D[1];
@@ -39,17 +35,21 @@ namespace Garden_Watchers
             base.LoadContent(content);
         }
 
+        /// <summary>
+        /// Heals the player if health isn't full.
+        /// </summary>
+        /// <param name="other">Other GameObject.</param>
         public override void OnCollision(GameObject other)
         {
+            base.OnCollision(other);
             if (other is Player)
             {
                 if (GameWorld.Player.Health < 10)
                 {
-                    other.RecoverHealth();
+                    ((Player)other).RecoverHealth();
                     GameWorld.KillObject(this);
                 }
             }
-            base.OnCollision(other);
         }
     }
 }
